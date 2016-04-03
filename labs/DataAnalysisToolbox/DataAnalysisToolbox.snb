@@ -1,0 +1,43 @@
+{
+  "metadata" : {
+    "name" : "DataAnalysisToolbox",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : [ "com.databricks:spark-csv_2.10:1.4.0" ],
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "95D05E6947F345E89118DB4D3FFFA6B7"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Data Analysis Toolbox"
+  }, {
+    "metadata" : {
+      "id" : "EB9614E2CD184E678F6BC1B93365EF96"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this lab we are going to get familiar with **Breeze** numerical processing library, **Bokeh** plotting library, Spark **RDD** (resilient distributed datasets) and Spark **DataFrames** (distributed collections of data organized into named columns) in a way of offering little challenges and solving them."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "51F8A0B8B4CD4E428971A244E456E37B"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}
