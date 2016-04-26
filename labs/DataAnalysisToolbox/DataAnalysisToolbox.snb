@@ -219,7 +219,7 @@
       "id" : "2BEAC9974E47494086A3DFB018508CC2"
     },
     "cell_type" : "code",
-    "source" : "def closesValue(X: DenseMatrix[Double], v: Double): Double = ???",
+    "source" : "def closestValue(X: DenseMatrix[Double], v: Double): Double = ???",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -240,18 +240,18 @@
       "id" : "0F75F38E392944A99C10DF4C2826140D"
     },
     "cell_type" : "code",
-    "source" : "// Solution for problem 4\nimport scala.math.abs\n\ndef closesValue(X: DenseMatrix[Double], v: Double): Double =\n  X(argmin(X.map(e => abs(e - v))))",
+    "source" : "// Solution for problem 4\nimport scala.math.abs\n\ndef closestValue(X: DenseMatrix[Double], v: Double): Double =\n  X(argmin(X.map(e => abs(e - v))))",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import scala.math.abs\nclosesValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
+      "text" : "import scala.math.abs\nclosestValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 374
+      "execution_count" : 396
     } ]
   }, {
     "metadata" : {
