@@ -30,14 +30,227 @@
     "source" : "In this lab we are going to get familiar with **Breeze** numerical processing library, **Bokeh** plotting library, Spark **RDD** (resilient distributed datasets) and Spark **DataFrames** (distributed collections of data organized into named columns) in a way of offering little challenges and solving them."
   }, {
     "metadata" : {
+      "id" : "51F8A0B8B4CD4E428971A244E456E37B"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Breeze"
+  }, {
+    "metadata" : {
+      "id" : "495A983C298B4D4E835A8D1BA7951D40"
+    },
+    "cell_type" : "markdown",
+    "source" : "[Quick start tutorial](https://github.com/scalanlp/breeze/wiki/Quickstart)"
+  }, {
+    "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true,
-      "id" : "51F8A0B8B4CD4E428971A244E456E37B"
+      "collapsed" : false,
+      "id" : "9A1F20BEE5614F5288F63802F1C959D9"
+    },
+    "cell_type" : "code",
+    "source" : "import breeze.linalg._",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import breeze.linalg._\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "DFBA1EA8C73C462B8D8A75B8DF86A8E5"
+    },
+    "cell_type" : "markdown",
+    "source" : "** Problem 1.** Implement a method that takes Matrix X and two sequences ii and jj of equal size as an input and produces breeze.linalg.DenseVector[Double] of elements [X[ii[0], jj[0]], X[ii[1], jj[1]], ..., X[ii[N-1], jj[N-1]]]."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D02A774908504FD68919A102A39E9A1B"
+    },
+    "cell_type" : "code",
+    "source" : "def constructVector(X: Matrix[Double], ii: Seq[Int], jj: Seq[Int]): DenseVector[Double] = ???",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "constructVector: (X: breeze.linalg.Matrix[Double], ii: Seq[Int], jj: Seq[Int])breeze.linalg.DenseVector[Double]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A57CE7E24EF64E79BF84E5E8B4305A5B"
+    },
+    "cell_type" : "code",
+    "source" : "// solution for problem 1\ndef constructVector(X: Matrix[Double], ii: Seq[Int], jj: Seq[Int]): DenseVector[Double] =\n  DenseVector(ii.zip(jj).map(ix => X(ix._1, ix._2)).toArray)\n\nconstructVector(DenseMatrix((1.0,2.0,3.0), \n                            (4.0,5.0,6.0), \n                            (7.0, 8.0, 9.0)), \n                List(0, 1, 2), List(0, 1, 2))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "constructVector: (X: breeze.linalg.Matrix[Double], ii: Seq[Int], jj: Seq[Int])breeze.linalg.DenseVector[Double]\nres4: breeze.linalg.DenseVector[Double] = DenseVector(1.0, 5.0, 9.0)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "DenseVector(1.0, 5.0, 9.0)"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "D8CA43DDDF6B40FF90E502D3E8AF8853"
+    },
+    "cell_type" : "markdown",
+    "source" : "** Problem 2. ** Write a method to calculate the product of nonzero elements on the diagonal of a rectangular matrix. For example, for X = Matrix((1.0, 0.0, 1.0), (2.0, 0.0, 2.0), (3.0, 0.0, 3.0), (4.0, 4.0, 4.0)) the answer is Some(3). If there are no nonzero elements, the method should return None."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B3D4225AFB974919A498F73F1261CDB2"
+    },
+    "cell_type" : "code",
+    "source" : "def nonzeroProduct(X: Matrix[Double]): Option[Double] = ???",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "nonzeroProduct: (X: breeze.linalg.Matrix[Double])Option[Double]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "446C8EF7D64F4D39830B992B5C71E7AF"
+    },
+    "cell_type" : "code",
+    "source" : "// solution for problem 2\ndef nonzeroProduct(X: Matrix[Double]): Option[Double] =\n  (0 until min(X.rows, X.cols)).map(i => X(i, i)).filter(_ != 0) match {\n  case Seq() => None\n  case xs => Some(xs.reduce(_ * _))\n}\n\nnonzeroProduct(Matrix((1.0, 0.0, 1.0), (2.0, 0.0, 2.0), (3.0, 0.0, 3.0), (4.0, 4.0, 4.0)))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "nonzeroProduct: (X: breeze.linalg.Matrix[Double])Option[Double]\nres7: Option[Double] = Some(3.0)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "Some(3.0)"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "923401B0BDF545A79CD054DD311A085A"
+    },
+    "cell_type" : "markdown",
+    "source" : "** Problem 3. ** Write a method to find the maximum element of the vector with the preceding zero element. For example, for Vector(6, 2, 0, 3, 0, 0, 5, 7, 0) the answer is Some(5). If there are no such an elements, the method should return None."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "EA7AF589BB6647C9B5E822642FEED048"
+    },
+    "cell_type" : "code",
+    "source" : "def maxAfterZeroElement(vec: Vector[Double]): Option[Double] = ???",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "maxAfterZeroElement: (vec: breeze.linalg.Vector[Double])Option[Double]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A69FB921286E41FCA109F75D9B698A9F"
+    },
+    "cell_type" : "code",
+    "source" : "def maxAfterZeroElement(vec: Vector[Double]): Option[Double] =\n  vec.toArray.foldLeft((None, false): (Option[Double], Boolean))(\n    (prev: (Option[Double], Boolean), el: Double) =>\n    if (el == 0) {\n      (prev._1, true)\n    } else {\n      prev match {\n        case (p, false) => (p, false)\n        case (None, true) => (Some(el), false)\n        case (Some(m), true) => ({if (el > m) Some(el) else Some(m)}, false)\n      }\n    }\n  )._1",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "maxAfterZeroElement: (vec: breeze.linalg.Vector[Double])Option[Double]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 36
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C13DF67001A84B47922E66E86D2AC4D3"
     },
     "cell_type" : "code",
     "source" : "",
-    "outputs" : [ ]
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "v: breeze.linalg.Vector[Int] = DenseVector(6, 2, 0, 3, 0, 0, 5, 7, 0)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab561465915-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "75ADD252B34E4EAABC0D21E50B96AF70"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res59: Option[Int] = Some(5)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "Some(5)"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 34
+    } ]
   } ],
   "nbformat" : 4
 }
