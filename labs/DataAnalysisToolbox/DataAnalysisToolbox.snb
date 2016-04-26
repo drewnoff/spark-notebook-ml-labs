@@ -48,18 +48,18 @@
       "id" : "9A1F20BEE5614F5288F63802F1C959D9"
     },
     "cell_type" : "code",
-    "source" : "import breeze.linalg._",
+    "source" : "import breeze.linalg._\nimport breeze.stats.{mean, stddev}\nimport breeze.stats.distributions._",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import breeze.linalg._\n"
+      "text" : "import breeze.linalg._\nimport breeze.stats.{mean, stddev}\nimport breeze.stats.distributions._\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 1
+      "execution_count" : 283
     } ]
   }, {
     "metadata" : {
@@ -209,22 +209,80 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "C13DF67001A84B47922E66E86D2AC4D3"
+      "collapsed" : true,
+      "id" : "5FD54847415148EC872CDB23065D42A0"
     },
     "cell_type" : "code",
     "source" : "",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "B8D5C66ED4EB48859128CDCF17BAC141"
+    },
+    "cell_type" : "markdown",
+    "source" : "** Problem 5. ** Write a method that takes Matrix X and scales each column of this matrix by subtracting mean value and dividing by standard deviation of the column. For testing one can generate random matrix. Avoid division by zero."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5D942106942C459E850AD8126B2CE709"
+    },
+    "cell_type" : "code",
+    "source" : "def scale(X: DenseMatrix[Double]): Unit = ???",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "v: breeze.linalg.Vector[Int] = DenseVector(6, 2, 0, 3, 0, 0, 5, 7, 0)\n"
+      "text" : "scale: (X: breeze.linalg.DenseMatrix[Double])Unit\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 194
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "16F51358CEB846309D858984F38CB4D8"
+    },
+    "cell_type" : "code",
+    "source" : "// Solution for problem 5\ndef scale(X: DenseMatrix[Double]): Unit = {\n  val mm = mean(X(::, *))    // using broadcasting\n  val std = stddev(X(::, *)) // https://github.com/scalanlp/breeze/wiki/Quickstart#broadcasting\n  (0 until X.cols).foreach{i =>\n    if (std(0, i) == 0.0) {\n      X(::, i) := 0.0\n    } else {\n      X(::, i) := (X(::, i) - mm(0, i)) :/ std(0, i)\n    }\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "scale: (X: breeze.linalg.DenseMatrix[Double])Unit\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 314
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "26EBF924AEC34E28809536FAD8F74D6F"
+    },
+    "cell_type" : "code",
+    "source" : "// Another solution for problem 5\ndef scale(X: DenseMatrix[Double]): Unit =\n  (0 until X.cols).map{i =>\n    val col = X(::, i)\n    val std = stddev(col)\n    if (std != 0.0) {\n      X(::, i) := (col - mean(col)) / std\n    } else {\n      X(::, i) := DenseVector.zeros[Double](col.size)\n    }\n  }",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "scale: (X: breeze.linalg.DenseMatrix[Double])Unit\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 323
     } ]
   }, {
     "metadata" : {
@@ -232,24 +290,24 @@
       "input_collapsed" : false,
       "collapsed" : false,
       "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab561465915-0\"\n}",
+        "tabs_state" : "{\n  \"tab_id\": \"#tab301562629-0\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
       },
-      "id" : "75ADD252B34E4EAABC0D21E50B96AF70"
+      "id" : "4E50151E12884DE88DCACA72B0CD50D7"
     },
     "cell_type" : "code",
-    "source" : "",
+    "source" : "// Let's test our scale method on random data\nval norm = new Gaussian(10, 100)\nval m = DenseMatrix.rand(10, 3, norm)\nscale(m)\nprint(m)",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res59: Option[Int] = Some(5)\n"
+      "text" : "1.5959940330299565    0.5144993191427956    0.8078912232509088    \n0.1814965217458261    0.9719002990338235    0.6677721134502422    \n-0.6722415591970995   -0.1964230392134715   -0.7915223320307204   \n-0.40093407505165507  -1.8874174501095753   -0.19433491041898687  \n0.8237111059141926    1.535363580508465     -0.1392092529354012   \n-1.5416050430500852   0.866781711773292     -2.273744174479173    \n0.627400225517307     -0.7927307050601026   0.4770973117439786    \n0.732706531425559     -0.1854392417219602   0.9359131094295869    \n-1.3496885651613855   -0.21739424765479076  0.8930934169242185    \n0.003160824827384095  -0.6091402266984758   -0.38295650493465383  norm: breeze.stats.distributions.Gaussian = Gaussian(10.0, 100.0)\nm: breeze.linalg.DenseMatrix[Double] = \n1.5959940330299565    0.5144993191427956    0.8078912232509088    \n0.1814965217458261    0.9719002990338235    0.6677721134502422    \n-0.6722415591970995   -0.1964230392134715   -0.7915223320307204   \n-0.40093407505165507  -1.8874174501095753   -0.19433491041898687  \n0.8237111059141926    1.535363580508465     -0.1392092529354012   \n-1.5416050430500852   0.866781711773292     -2.273744174479173    \n0.627400225517307     -0.7927307050601026   0.4770973117439786    \n0.732706531425559     -0.1854392417219602   0.9359131094295869    \n-1.3496885651613855   -0.21739424765479076  0.8930934169242185    \n0.003160824827384095  -0.6091402266984758   -0.38295650493465383  \n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "Some(5)"
+        "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 34
+      "execution_count" : 327
     } ]
   } ],
   "nbformat" : 4
