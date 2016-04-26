@@ -207,14 +207,52 @@
     } ]
   }, {
     "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true,
       "id" : "5FD54847415148EC872CDB23065D42A0"
     },
+    "cell_type" : "markdown",
+    "source" : "** Problem 4. ** Write a method that takes Matrix X and some number Double v and returns closest matrix element to given number v. For example: for X = new DenseMatrix(2, 5, DenseVector.range(0, 10).mapValues(_.toDouble).toArray) and v = 3.6 the answer would be 4.0."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2BEAC9974E47494086A3DFB018508CC2"
+    },
     "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
+    "source" : "def closesValue(X: DenseMatrix[Double], v: Double): Double = ???",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "closesValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 349
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "0F75F38E392944A99C10DF4C2826140D"
+    },
+    "cell_type" : "code",
+    "source" : "// Solution for problem 4\nimport scala.math.abs\n\ndef closesValue(X: DenseMatrix[Double], v: Double): Double =\n  X(argmin(X.map(e => abs(e - v))))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.math.abs\nclosesValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 374
+    } ]
   }, {
     "metadata" : {
       "id" : "B8D5C66ED4EB48859128CDCF17BAC141"
