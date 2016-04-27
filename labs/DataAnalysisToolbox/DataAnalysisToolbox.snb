@@ -59,7 +59,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 283
+      "execution_count" : 3
     } ]
   }, {
     "metadata" : {
@@ -86,7 +86,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 2
+      "execution_count" : 4
     } ]
   }, {
     "metadata" : {
@@ -100,14 +100,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "constructVector: (X: breeze.linalg.Matrix[Double], ii: Seq[Int], jj: Seq[Int])breeze.linalg.DenseVector[Double]\nres4: breeze.linalg.DenseVector[Double] = DenseVector(1.0, 5.0, 9.0)\n"
+      "text" : "constructVector: (X: breeze.linalg.Matrix[Double], ii: Seq[Int], jj: Seq[Int])breeze.linalg.DenseVector[Double]\nres7: breeze.linalg.DenseVector[Double] = DenseVector(1.0, 5.0, 9.0)\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "DenseVector(1.0, 5.0, 9.0)"
       },
       "output_type" : "execute_result",
-      "execution_count" : 3
+      "execution_count" : 5
     } ]
   }, {
     "metadata" : {
@@ -134,7 +134,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 6
     } ]
   }, {
     "metadata" : {
@@ -148,14 +148,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "nonzeroProduct: (X: breeze.linalg.Matrix[Double])Option[Double]\nres7: Option[Double] = Some(3.0)\n"
+      "text" : "nonzeroProduct: (X: breeze.linalg.Matrix[Double])Option[Double]\nres10: Option[Double] = Some(3.0)\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "Some(3.0)"
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 7
     } ]
   }, {
     "metadata" : {
@@ -182,7 +182,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 6
+      "execution_count" : 8
     } ]
   }, {
     "metadata" : {
@@ -203,7 +203,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 36
+      "execution_count" : 9
     } ]
   }, {
     "metadata" : {
@@ -223,14 +223,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "closesValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
+      "text" : "closestValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 349
+      "execution_count" : 10
     } ]
   }, {
     "metadata" : {
@@ -251,7 +251,28 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 396
+      "execution_count" : 11
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2187AA8E3A4542A19A8728D6D6F7761A"
+    },
+    "cell_type" : "code",
+    "source" : "// Another solution for problem 4\nimport breeze.numerics.abs\n\ndef closestValue(X: DenseMatrix[Double], v: Double): Double =\n  X(argmin(abs(X - v)))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import breeze.numerics.abs\nclosestValue: (X: breeze.linalg.DenseMatrix[Double], v: Double)Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 12
     } ]
   }, {
     "metadata" : {
@@ -278,7 +299,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 194
+      "execution_count" : 13
     } ]
   }, {
     "metadata" : {
@@ -299,7 +320,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 314
+      "execution_count" : 14
     } ]
   }, {
     "metadata" : {
@@ -320,7 +341,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 323
+      "execution_count" : 15
     } ]
   }, {
     "metadata" : {
@@ -334,29 +355,119 @@
       "id" : "4E50151E12884DE88DCACA72B0CD50D7"
     },
     "cell_type" : "code",
-    "source" : "// Let's test our scale method on random data\nval norm = new Gaussian(12, 20)\nval m = DenseMatrix.rand(10, 3, norm)\nprintln(m)\nprintln(\"============\")\nscale(m)\nprintln(m)",
+    "source" : "// Let's test our scale method on random data\nval nd = new Gaussian(12, 20)\nval m = DenseMatrix.rand(10, 3, nd)\nprintln(m)\nprintln(\"============\")\nscale(m)\nprintln(m)",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "-19.120207695944945  6.9780816142164745   -1.776112895645614   \n-9.136737549485343   58.81547736971615    35.884260500357115   \n-3.7191523189800364  -2.8288190125439616  9.365192348004122    \n-13.473329427644256  26.661321851948525   13.125288121201395   \n17.58421316047033    13.444880855214926   -8.507178426275232   \n15.453350436057013   43.15360851423798    1.0812115930598214   \n-8.030557670295185   -10.606004370052876  4.677901567562331    \n5.765298302203643    -25.138473178323316  -18.24908086741496   \n3.995636595801436    -4.336844800922417   -20.256187736868355  \n7.341505558915851    23.47130571217817    -3.0622159366546153  \n============\n-1.5288498976686704   -0.23361282956218254  -0.1846038169793478    \n-0.7163801335012341   1.7903096376805792    2.1294025490353237     \n-0.27548892733615515  -0.6165102769211533   0.49996324741026155    \n-1.0692984804136714   0.5348932183338699    0.7309988100296926     \n1.458210885769384     0.01887478259986566   -0.5981878333712847    \n1.2847980834291859    1.1788127097653898    -0.009038190289736238  \n-0.626357556943412    -0.9201601796133376   0.21195705609471227    \n0.49636987991269366   -1.4875611783882936   -1.1967699034121488    \n0.3523521578016475    -0.6753891466984188   -1.3200947049044223    \n0.6246439889502322    0.41034326280368183   -0.2636272136130502    \nnorm: breeze.stats.distributions.Gaussian = Gaussian(12.0, 20.0)\nm: breeze.linalg.DenseMatrix[Double] = \n-1.5288498976686704   -0.23361282956218254  -0.1846038169793478    \n-0.7163801335012341   1.7903096376805792    2.1294025490353237     \n-0.27548892733615515  -0.6165102769211533   0.49996324741026155    \n-1.0692984804136714   0.5348932183338699    0.7309988100296926     \n1.458210885769384     0.01887478259986566   -0.5981878333712847    \n1.2847980834291859    1.1788127097653898    -0.009038190289736238  \n-0.626357556943412    -0.9201601796133376   0.21195705609471227    \n0.49636987991269366   -1.4875611783882936   -1.1967699034121488    \n0.3523521578016475    -0.6753891466984188   -1.3200947049044223    \n0.6246439889502322    0.41034326280368183   -0.2636272136130502    \n"
+      "text" : "9.599506781392831    6.280671248216523   12.141589175070516   \n-3.713928009461444   32.53175969149672   20.37041735720641    \n-6.37116557570188    8.729748313197284   24.311202742779223   \n19.272868368538294   16.637351959919265  32.0862050106171     \n-14.019174183428923  13.086085176608107  37.562514600512046   \n-21.484110101685346  21.52719509908875   43.5983300309783     \n49.352531591612276   -15.8565753173608   6.317005783722339    \n6.358639793708001    16.3610832360443    3.306376163443886    \n20.912225346732754   23.077536365965933  -6.041257533715417   \n-13.75438580987926   8.978062171863545   -6.3994462759691615  \n============\n0.23450414395858352  -0.532311597642218      -0.25869080454552734  \n-0.3918856266639191  1.5062781003182386      0.20572005980847605   \n-0.5169071899009476  -0.3421227875679812     0.42812639843158456   \n0.6896304761867651   0.27196067661266277     0.8669246627336226    \n-0.8767417805059219  -0.0038212550512221367  1.1759914719828948    \n-1.2279629019523943  0.6516928873243013      1.5166351455534963    \n2.104862055617098    -2.251431278614859      -0.5874131629914492   \n0.08202313804803585  0.25050638241922135     -0.7573242454999637   \n0.7667613186531317   0.7720882660457432      -1.2848772030871232   \n-0.8642836334404315  -0.32283939384388477    -1.305092322386012    \nnd: breeze.stats.distributions.Gaussian = Gaussian(12.0, 20.0)\nm: breeze.linalg.DenseMatrix[Double] = \n0.23450414395858352  -0.532311597642218      -0.25869080454552734  \n-0.3918856266639191  1.5062781003182386      0.20572005980847605   \n-0.5169071899009476  -0.3421227875679812     0.42812639843158456   \n0.6896304761867651   0.27196067661266277     0.8669246627336226    \n-0.8767417805059219  -0.0038212550512221367  1.1759914719828948    \n-1.2279629019523943  0.6516928873243013      1.5166351455534963    \n2.104862055617098    -2.251431278614859      -0.5874131629914492   \n0.08202313804803585  0.25050638241922135     -0.7573242454999637   \n0.7667613186531317   0.7720882660457432      -1.2848772030871232   \n-0.8642836334404315  -0.32283939384388477    -1.305092322386012    \n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 330
+      "execution_count" : 16
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "C4A3752987EE46F18747BCB4C34A4022"
+    },
+    "cell_type" : "markdown",
+    "source" : "** Problem 6. ** Implement a method that for given matrix X finds:\n* the determinant\n* the trace\n* max and min elements\n* Frobenius Norm\n* eigenvalues\n* inverse matrix\n\nFor testing one can generate random matrix from normal distribution $N(10, 1)$."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "9BD53A5E493848E1BE168CD483002AE5"
+    },
+    "cell_type" : "code",
+    "source" : "def getStats(X: Matrix[Double]): Unit = ???",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "getStats: (X: breeze.linalg.Matrix[Double])Unit\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 52
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4DDB7D9BF36A482485E3C4E6B380C429"
+    },
+    "cell_type" : "code",
+    "source" : "// Solution for problem 6\ndef getStats(X: DenseMatrix[Double]): String = {\n  val dt = det(X)\n  val tr = trace(X)\n  val minE = min(X)\n  val maxE = max(X)\n  val frob = breeze.linalg.norm(X.toDenseVector)\n  val ev = eig(X).eigenvalues\n  val invM = inv(X)\n  \n  s\"\"\"Stats:\n     |determinant: $dt\n     |trace: $tr\n     |min element: $minE\n     |max element: $maxE\n     |Frobenius Norm: $frob\n     |eigenvalues: $ev\n     |inverse matrix:\\n$invM\"\"\".stripMargin \n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "getStats: (X: breeze.linalg.DenseMatrix[Double])String\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 73
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : true,
-      "id" : "C4A3752987EE46F18747BCB4C34A4022"
+      "id" : "D784DB3C1C244CCDA1E52E063A34A820"
     },
     "cell_type" : "code",
-    "source" : "",
+    "source" : "// Let's test our scale method on random data\nval nd = new Gaussian(10, 1)\nval X = DenseMatrix.rand(4, 4, nd)\nprintln(getSt)",
     "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "79479A6475BF4C3C9BB94A4B2D9771AB"
+    },
+    "cell_type" : "code",
+    "source" : "println(getStats(m))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "Stats:\ndeterminant: 41.914804106399906\ntrace: 43.936177320649236\nmin element: 9.379411225354211\nmax element: 17.84417407281853\nFrobenius Norm: 50.36703791447856\neigenvalues: DenseVector(49.37505011623383, 0.10136539178883221, -2.7701190936867084, -2.7701190936867084)\ninverse matrix:\n-1.1725459647041807  0.6830627423391604   2.2414570462016914  -2.2657582538777374  \n3.0557785743727672   -1.902917221227752   -6.572349828361608  7.0414687652697205   \n-3.5212460508532892  1.9719356315129852   7.81321734239318    -8.07016796535549    \n2.188068200764961    -1.0593598840811294  -4.567445239939355  4.486255732340604    \n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 74
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A97F5563BE6843FAA042CBBF241E57A0"
+    },
+    "cell_type" : "code",
+    "source" : "ev.eigenvalues",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res64: breeze.linalg.DenseVector[Double] = DenseVector(32.46424919657296, -2.46424919657298, -4.793153113860696E-16, 1.6818088025315485E-15)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "DenseVector(32.46424919657296, -2.46424919657298, -4.793153113860696E-16, 1.6818088025315485E-15)"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 46
+    } ]
   } ],
   "nbformat" : 4
 }
