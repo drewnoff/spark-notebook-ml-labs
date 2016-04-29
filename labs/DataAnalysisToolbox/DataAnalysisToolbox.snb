@@ -523,21 +523,21 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res48: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
+      "text" : "res270: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond52bc64581f934ac1412071db1853bd6&quot;,&quot;partitionIndexId&quot;:&quot;anon58c82ae527a1cab44ee17b296b762396&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;PassengerId&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Survived&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Pclass&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Age&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;SibSp&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Parch&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Ticket&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Fare&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Cabin&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Embarked&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona71a8267b0e685290f433f7bb86e3f16&quot;,&quot;partitionIndexId&quot;:&quot;anonba99d317035acebe79c3f330f7a18e15&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;PassengerId&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Survived&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Pclass&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Age&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;SibSp&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Parch&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Ticket&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Fare&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Cabin&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Embarked&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 27
+      "execution_count" : 147
     } ]
   }, {
     "metadata" : {
       "id" : "DBF5D59E48644943A1DCF3290EC7724A"
     },
     "cell_type" : "markdown",
-    "source" : "**Problem 1.** Describe given dataset by answering following questions. How many women and men were on board? How many passengers were in each class? What is the average/minimum/maximum age of passengers?"
+    "source" : "**Problem 1.** Describe given dataset by answering following questions. How many women and men were on board? How many passengers were in each class? What is the average/minimum/maximum age of passengers? What can you say about the number of the surviving passengers?"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -550,15 +550,123 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "+------+-----+\n|   Sex|count|\n+------+-----+\n|female|  314|\n|  male|  577|\n+------+-----+\n\n+------+-----+\n|Pclass|count|\n+------+-----+\n|     1|  216|\n|     2|  184|\n|     3|  491|\n+------+-----+\n\n+-----------------+--------+--------+\n|      Average Age|min(Age)|max(Age)|\n+-----------------+--------+--------+\n|29.69911764705882|    0.42|    80.0|\n+-----------------+--------+--------+\n\n+--------+-----+-----------------+\n|Survived|count|                %|\n+--------+-----+-----------------+\n|       0|  549|61.61616161616161|\n|       1|  342|38.38383838383838|\n+--------+-----+-----------------+\n\nimport org.apache.spark.sql.functions.{min, max, mean}\ntotalPassengers: Long = 891\nsurvived: org.apache.spark.sql.DataFrame = [Survived: int, count: bigint]\n"
+      "text" : "+------+-----+\n|   Sex|count|\n+------+-----+\n|female|  314|\n|  male|  577|\n+------+-----+\n\n+------+-----+\n|Pclass|count|\n+------+-----+\n|     1|  216|\n|     2|  184|\n|     3|  491|\n+------+-----+\n\n+-----------------+--------+--------+\n|      Average Age|min(Age)|max(Age)|\n+-----------------+--------+--------+\n|29.69911764705882|    0.42|    80.0|\n+-----------------+--------+--------+\n\n+--------+-----+-----------------+\n|Survived|count|                %|\n+--------+-----+-----------------+\n|       0|  549|61.61616161616161|\n|       1|  342|38.38383838383838|\n+--------+-----+-----------------+\n\nimport org.apache.spark.sql.functions.{min, max, mean, sum, count}\ntotalPassengers: Long = 891\nsurvived: org.apache.spark.sql.DataFrame = [Survived: int, count: bigint]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 56
+      "execution_count" : 68
     } ]
+  }, {
+    "metadata" : {
+      "id" : "2701E64C61A9449F8D39321805D04617"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem 2.** Is it true that women were more likely to survive than men? Who had more chances to survive: the passenger with a cheap ticket or the passenger with an expensive one? Is that true that youngest passengers had more chances to survive?"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F5F8F9E9230B48198F712BB858E20088"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.functions.{sum, count}\nimport org.apache.spark.sql.types.IntegerType",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.sql.functions.{sum, count}\nimport org.apache.spark.sql.types.IntegerType\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B5146158FCE840F18D117849A753763D"
+    },
+    "cell_type" : "code",
+    "source" : "// Answer for q1\ndf.groupBy(\"Sex\")\n  .agg((sum(\"Survived\") / count(\"Survived\"))\n       .alias(\"survived part\"))\n.show()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "+------+-------------------+\n|   Sex|      survived part|\n+------+-------------------+\n|female| 0.7420382165605095|\n|  male|0.18890814558058924|\n+------+-------------------+\n\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "4766317B0FF04ADE8B934A6EBF804F6C"
+    },
+    "cell_type" : "markdown",
+    "source" : "Women were more likely to survive."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A28384DB4DE041FC84578CC118E3002D"
+    },
+    "cell_type" : "code",
+    "source" : "// Answer for q2\nval survivedByFareRange = df.select(df(\"Survived\"), \n                                  ((df(\"Fare\") / (df(\"SibSp\") + df(\"Parch\") + 1) / 5).cast(IntegerType)\n                                  ).alias(\"fareRange\"))\n\nsurvivedByFareRange.groupBy(\"fareRange\")\n                   .agg((sum(\"Survived\") / count(\"Survived\")).alias(\"Survived part\"),\n                      count(\"Survived\").alias(\"passengers num\"))\n.sort(\"fareRange\")\n.show()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "+---------+-------------------+--------------+\n|fareRange|      Survived part|passengers num|\n+---------+-------------------+--------------+\n|        0|0.26744186046511625|            86|\n|        1|0.27058823529411763|           425|\n|        2| 0.4122137404580153|           131|\n|        3| 0.5652173913043478|            23|\n|        4| 0.2222222222222222|             9|\n|        5| 0.5714285714285714|            70|\n|        6|             0.5625|            32|\n|        7|               0.56|            25|\n|        8|                0.6|            15|\n|        9|               0.75|             8|\n|       10| 0.4166666666666667|            12|\n|       11|                0.8|            10|\n|       13|                1.0|             3|\n|       14|               0.25|             4|\n|       15| 0.6666666666666666|             9|\n|       16|                1.0|             3|\n|       17|                1.0|             3|\n|       18|                1.0|             1|\n|       21|                1.0|             3|\n|       22|                1.0|             2|\n+---------+-------------------+--------------+\nonly showing top 20 rows\n\nsurvivedByFareRange: org.apache.spark.sql.DataFrame = [Survived: int, fareRange: int]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "15372F99F9814A52B4D2D2D9C8E2905E"
+    },
+    "cell_type" : "markdown",
+    "source" : "We can see that passengers with cheapest tickets had lowest chances to survive. To obtain ticket cost per passenger we had to divide ticket fare by number of persons (one person itself + number of Siblings/Spouses aboard + number of parents/children aboard) included in fare."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "68DA8C02FAA8436389AF389C963E9F70"
+    },
+    "cell_type" : "code",
+    "source" : "// Answer for q3\nval survivedByAgeDecade = df.select(df(\"Survived\"), \n                                    ((df(\"Age\") / 10).cast(IntegerType)).alias(\"decade\"))\nsurvivedByAgeDecade.filter(survivedByAgeDecade(\"decade\") >= 0).\n                groupBy(\"decade\")\n                .agg((sum(\"Survived\") / count(\"Survived\")).alias(\"Survived part\"),\n                      count(\"Survived\").alias(\"passengers num\"))\n.sort(\"decade\")\n.show()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "+------+-------------------+--------------+\n|decade|      Survived part|passengers num|\n+------+-------------------+--------------+\n|     0| 0.6129032258064516|            62|\n|     1| 0.4019607843137255|           102|\n|     2|               0.35|           220|\n|     3|  0.437125748502994|           167|\n|     4|0.38202247191011235|            89|\n|     5| 0.4166666666666667|            48|\n|     6| 0.3157894736842105|            19|\n|     7|                0.0|             6|\n|     8|                1.0|             1|\n+------+-------------------+--------------+\n\nsurvivedByAgeDecade: org.apache.spark.sql.DataFrame = [Survived: int, decade: int]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 9
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "EDFE29761BF04E489D3BFAC831A2F7A2"
+    },
+    "cell_type" : "markdown",
+    "source" : "Here we can see that youngest passengers had more chances to survive"
   } ],
   "nbformat" : 4
 }
