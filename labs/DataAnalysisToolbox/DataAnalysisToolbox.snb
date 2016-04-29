@@ -27,7 +27,7 @@
       "id" : "EB9614E2CD184E678F6BC1B93365EF96"
     },
     "cell_type" : "markdown",
-    "source" : "In this lab we are going to get familiar with **Breeze** numerical processing library, **Bokeh** plotting library, Spark **RDD** (resilient distributed datasets) and Spark **DataFrames** (distributed collections of data organized into named columns) in a way of offering little challenges and solving them."
+    "source" : "In this lab we are going to get familiar with **Breeze** numerical processing library, **Bokeh** plotting library and Spark **DataFrames** (distributed collections of data organized into named columns) in a way of offering little challenges and solving them."
   }, {
     "metadata" : {
       "id" : "51F8A0B8B4CD4E428971A244E456E37B"
@@ -39,7 +39,7 @@
       "id" : "495A983C298B4D4E835A8D1BA7951D40"
     },
     "cell_type" : "markdown",
-    "source" : "[Quick start tutorial](https://github.com/scalanlp/breeze/wiki/Quickstart)"
+    "source" : "* [Quick start tutorial](https://github.com/scalanlp/breeze/wiki/Quickstart)"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -96,7 +96,7 @@
       "id" : "A57CE7E24EF64E79BF84E5E8B4305A5B"
     },
     "cell_type" : "code",
-    "source" : "// solution for problem 1\ndef constructVector(X: Matrix[Double], ii: Seq[Int], jj: Seq[Int]): DenseVector[Double] =\n  DenseVector(ii.zip(jj).map(ix => X(ix._1, ix._2)).toArray)\n\nconstructVector(DenseMatrix((1.0,2.0,3.0), \n                            (4.0,5.0,6.0), \n                            (7.0, 8.0, 9.0)), \n                List(0, 1, 2), List(0, 1, 2))",
+    "source" : "// Solution for problem 1\ndef constructVector(X: Matrix[Double], ii: Seq[Int], jj: Seq[Int]): DenseVector[Double] =\n  DenseVector(ii.zip(jj).map(ix => X(ix._1, ix._2)).toArray)\n\nconstructVector(DenseMatrix((1.0,2.0,3.0), \n                            (4.0,5.0,6.0), \n                            (7.0, 8.0, 9.0)), \n                List(0, 1, 2), List(0, 1, 2))",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -144,7 +144,7 @@
       "id" : "446C8EF7D64F4D39830B992B5C71E7AF"
     },
     "cell_type" : "code",
-    "source" : "// solution for problem 2\ndef nonzeroProduct(X: Matrix[Double]): Option[Double] =\n  (0 until min(X.rows, X.cols)).map(i => X(i, i)).filter(_ != 0) match {\n  case Seq() => None\n  case xs => Some(xs.reduce(_ * _))\n}\n\nnonzeroProduct(Matrix((1.0, 0.0, 1.0), (2.0, 0.0, 2.0), (3.0, 0.0, 3.0), (4.0, 4.0, 4.0)))",
+    "source" : "// Solution for problem 2\ndef nonzeroProduct(X: Matrix[Double]): Option[Double] =\n  (0 until min(X.rows, X.cols)).map(i => X(i, i)).filter(_ != 0) match {\n  case Seq() => None\n  case xs => Some(xs.reduce(_ * _))\n}\n\nnonzeroProduct(Matrix((1.0, 0.0, 1.0), (2.0, 0.0, 2.0), (3.0, 0.0, 3.0), (4.0, 4.0, 4.0)))",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -347,7 +347,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false,
+      "collapsed" : true,
       "presentation" : {
         "tabs_state" : "{\n  \"tab_id\": \"#tab301562629-0\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
@@ -356,18 +356,7 @@
     },
     "cell_type" : "code",
     "source" : "// Let's test our scale method on random data\nval nd = new Gaussian(12, 20)\nval m = DenseMatrix.rand(10, 3, nd)\nprintln(m)\nprintln(\"============\")\nscale(m)\nprintln(m)",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "9.599506781392831    6.280671248216523   12.141589175070516   \n-3.713928009461444   32.53175969149672   20.37041735720641    \n-6.37116557570188    8.729748313197284   24.311202742779223   \n19.272868368538294   16.637351959919265  32.0862050106171     \n-14.019174183428923  13.086085176608107  37.562514600512046   \n-21.484110101685346  21.52719509908875   43.5983300309783     \n49.352531591612276   -15.8565753173608   6.317005783722339    \n6.358639793708001    16.3610832360443    3.306376163443886    \n20.912225346732754   23.077536365965933  -6.041257533715417   \n-13.75438580987926   8.978062171863545   -6.3994462759691615  \n============\n0.23450414395858352  -0.532311597642218      -0.25869080454552734  \n-0.3918856266639191  1.5062781003182386      0.20572005980847605   \n-0.5169071899009476  -0.3421227875679812     0.42812639843158456   \n0.6896304761867651   0.27196067661266277     0.8669246627336226    \n-0.8767417805059219  -0.0038212550512221367  1.1759914719828948    \n-1.2279629019523943  0.6516928873243013      1.5166351455534963    \n2.104862055617098    -2.251431278614859      -0.5874131629914492   \n0.08202313804803585  0.25050638241922135     -0.7573242454999637   \n0.7667613186531317   0.7720882660457432      -1.2848772030871232   \n-0.8642836334404315  -0.32283939384388477    -1.305092322386012    \nnd: breeze.stats.distributions.Gaussian = Gaussian(12.0, 20.0)\nm: breeze.linalg.DenseMatrix[Double] = \n0.23450414395858352  -0.532311597642218      -0.25869080454552734  \n-0.3918856266639191  1.5062781003182386      0.20572005980847605   \n-0.5169071899009476  -0.3421227875679812     0.42812639843158456   \n0.6896304761867651   0.27196067661266277     0.8669246627336226    \n-0.8767417805059219  -0.0038212550512221367  1.1759914719828948    \n-1.2279629019523943  0.6516928873243013      1.5166351455534963    \n2.104862055617098    -2.251431278614859      -0.5874131629914492   \n0.08202313804803585  0.25050638241922135     -0.7573242454999637   \n0.7667613186531317   0.7720882660457432      -1.2848772030871232   \n-0.8642836334404315  -0.32283939384388477    -1.305092322386012    \n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 16
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "id" : "C4A3752987EE46F18747BCB4C34A4022"
@@ -420,12 +409,23 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true,
+      "collapsed" : false,
       "id" : "D784DB3C1C244CCDA1E52E063A34A820"
     },
     "cell_type" : "code",
-    "source" : "// Let's test our scale method on random data\nval nd = new Gaussian(10, 1)\nval X = DenseMatrix.rand(4, 4, nd)\nprintln(getSt)",
-    "outputs" : [ ]
+    "source" : "// Let's test our scale method on random data\nval nd = new Gaussian(10, 1)\nval X = DenseMatrix.rand(4, 4, nd)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "nd: breeze.stats.distributions.Gaussian = Gaussian(10.0, 1.0)\nX: breeze.linalg.DenseMatrix[Double] = \n9.764669131159627   9.28500301591061    8.956346794609928  10.717348874392329  \n9.268576142991856   10.6934488652767    9.38377044034161   8.856707393443772   \n9.90468891186542    10.767809011199333  7.888834533653101  9.973474205176775   \n10.253806212235116  9.696281372203591   9.921247766873682  9.504578030616202   \n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 76
+    } ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -434,39 +434,130 @@
       "id" : "79479A6475BF4C3C9BB94A4B2D9771AB"
     },
     "cell_type" : "code",
-    "source" : "println(getStats(m))",
+    "source" : "println(getStats(X))",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "Stats:\ndeterminant: 41.914804106399906\ntrace: 43.936177320649236\nmin element: 9.379411225354211\nmax element: 17.84417407281853\nFrobenius Norm: 50.36703791447856\neigenvalues: DenseVector(49.37505011623383, 0.10136539178883221, -2.7701190936867084, -2.7701190936867084)\ninverse matrix:\n-1.1725459647041807  0.6830627423391604   2.2414570462016914  -2.2657582538777374  \n3.0557785743727672   -1.902917221227752   -6.572349828361608  7.0414687652697205   \n-3.5212460508532892  1.9719356315129852   7.81321734239318    -8.07016796535549    \n2.188068200764961    -1.0593598840811294  -4.567445239939355  4.486255732340604    \n"
+      "text" : "Stats:\ndeterminant: 59.55982098832586\ntrace: 37.85153056070563\nmin element: 7.888834533653101\nmax element: 10.767809011199333\nFrobenius Norm: 38.82099395136666\neigenvalues: DenseVector(38.70767507560935, 1.4219902080485667, -0.6749621428545479, -1.6031725800977699)\ninverse matrix:\n-0.6804264509362117   -0.8745955402448818  0.5537693552273275    1.0011386128852418     \n-0.13415104487905632  0.4190199801620603   0.14173130426731043   -0.38791278284722774   \n0.19912767025839462   0.39506856339832697  -0.5509366500462      -0.014558764282152414  \n0.6630628180364178    0.10367892714202503  -0.16692284982356664  -0.5639102244057939    \n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 74
+      "execution_count" : 78
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "404A38FB45D04DDA8B95411B222E5B32"
+    },
+    "cell_type" : "markdown",
+    "source" : "### DataFrames"
+  }, {
+    "metadata" : {
+      "id" : "A9AB8D7810AC4D9B87264791C4E7B7A3"
+    },
+    "cell_type" : "markdown",
+    "source" : "* https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html\n* http://spark.apache.org/docs/latest/sql-programming-guide.html\n"
+  }, {
+    "metadata" : {
+      "id" : "74C7B037A6D3468E8ADC7B908BE2CB5F"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this lab we will be using [data](https://www.kaggle.com/c/titanic/download/train.csv) from [Titanic dataset](https://www.kaggle.com/c/titanic/data).\nTo load data from csv file direct to Spark's Dataframe we will use [spark-csv](http://spark-packages.org/package/databricks/spark-csv) package.\nTo add spark-csv package to spark notebook one could add \"com.databricks:spark-csv_2.10:1.4.0\" (or \"com.databricks:spark-csv_2.11:1.4.0\" for Scala 2.11) dependency into customDeps conf section. Alternatively one could specify this dependency in `--packages` command line option while submiting spark application to a cluster (`spark-submit`) or launching spark shell (`spark-shell`). "
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "872EF7C30A5445EF8396B740C8F8F8E6"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.SQLContext",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.sql.SQLContext\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 25
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : false,
-      "id" : "A97F5563BE6843FAA042CBBF241E57A0"
+      "id" : "F2D176345BC14B5FB8AE1A5B318E735A"
     },
     "cell_type" : "code",
-    "source" : "ev.eigenvalues",
+    "source" : "val sqlContext = new SQLContext(sc)\n\nval df = sqlContext.read\n    .format(\"com.databricks.spark.csv\")\n    .option(\"header\", \"true\")\n    .option(\"inferSchema\", \"true\")\n    .load(\"notebooks/labs/DataAnalysisToolbox/titanic.csv\")",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res64: breeze.linalg.DenseVector[Double] = DenseVector(32.46424919657296, -2.46424919657298, -4.793153113860696E-16, 1.6818088025315485E-15)\n"
+      "text" : "sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@65efa115\ndf: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "DenseVector(32.46424919657296, -2.46424919657298, -4.793153113860696E-16, 1.6818088025315485E-15)"
+        "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 46
+      "execution_count" : 26
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab775355343-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "CAD8C0E1677C4D34AD5FC421E802C2C3"
+    },
+    "cell_type" : "code",
+    "source" : "// df.show()\ndf.limit(5)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res48: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond52bc64581f934ac1412071db1853bd6&quot;,&quot;partitionIndexId&quot;:&quot;anon58c82ae527a1cab44ee17b296b762396&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;PassengerId&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Survived&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Pclass&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Age&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;SibSp&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Parch&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Ticket&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Fare&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Cabin&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Embarked&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 27
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "DBF5D59E48644943A1DCF3290EC7724A"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem 1.** Describe given dataset by answering following questions. How many women and men were on board? How many passengers were in each class? What is the average/minimum/maximum age of passengers?"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4D10AC2744DC4142818107095741FC98"
+    },
+    "cell_type" : "code",
+    "source" : "// Solution for problem 1\nimport org.apache.spark.sql.functions.{min, max, mean}\n\ndf.groupBy(\"Sex\").count().show()\ndf.groupBy(\"Pclass\").count().show()\ndf.select(mean(\"Age\").alias(\"Average Age\"), min(\"Age\"), max(\"Age\")).show()\n\nval totalPassengers = df.count()\nval survived = df.groupBy(\"Survived\").count()\nsurvived.withColumn(\"%\", (survived(\"count\") / totalPassengers) * 100).show()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "+------+-----+\n|   Sex|count|\n+------+-----+\n|female|  314|\n|  male|  577|\n+------+-----+\n\n+------+-----+\n|Pclass|count|\n+------+-----+\n|     1|  216|\n|     2|  184|\n|     3|  491|\n+------+-----+\n\n+-----------------+--------+--------+\n|      Average Age|min(Age)|max(Age)|\n+-----------------+--------+--------+\n|29.69911764705882|    0.42|    80.0|\n+-----------------+--------+--------+\n\n+--------+-----+-----------------+\n|Survived|count|                %|\n+--------+-----+-----------------+\n|       0|  549|61.61616161616161|\n|       1|  342|38.38383838383838|\n+--------+-----+-----------------+\n\nimport org.apache.spark.sql.functions.{min, max, mean}\ntotalPassengers: Long = 891\nsurvived: org.apache.spark.sql.DataFrame = [Survived: int, count: bigint]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 56
     } ]
   } ],
   "nbformat" : 4
