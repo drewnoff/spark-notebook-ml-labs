@@ -59,7 +59,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 3
+      "execution_count" : 1
     } ]
   }, {
     "metadata" : {
@@ -86,7 +86,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 2
     } ]
   }, {
     "metadata" : {
@@ -100,14 +100,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "constructVector: (X: breeze.linalg.Matrix[Double], ii: Seq[Int], jj: Seq[Int])breeze.linalg.DenseVector[Double]\nres7: breeze.linalg.DenseVector[Double] = DenseVector(1.0, 5.0, 9.0)\n"
+      "text" : "constructVector: (X: breeze.linalg.Matrix[Double], ii: Seq[Int], jj: Seq[Int])breeze.linalg.DenseVector[Double]\nres4: breeze.linalg.DenseVector[Double] = DenseVector(1.0, 5.0, 9.0)\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "DenseVector(1.0, 5.0, 9.0)"
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 3
     } ]
   }, {
     "metadata" : {
@@ -134,7 +134,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 6
+      "execution_count" : 4
     } ]
   }, {
     "metadata" : {
@@ -148,14 +148,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "nonzeroProduct: (X: breeze.linalg.Matrix[Double])Option[Double]\nres10: Option[Double] = Some(3.0)\n"
+      "text" : "nonzeroProduct: (X: breeze.linalg.Matrix[Double])Option[Double]\nres7: Option[Double] = Some(3.0)\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "Some(3.0)"
       },
       "output_type" : "execute_result",
-      "execution_count" : 7
+      "execution_count" : 5
     } ]
   }, {
     "metadata" : {
@@ -182,7 +182,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 6
     } ]
   }, {
     "metadata" : {
@@ -203,7 +203,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 9
+      "execution_count" : 7
     } ]
   }, {
     "metadata" : {
@@ -230,7 +230,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 10
+      "execution_count" : 8
     } ]
   }, {
     "metadata" : {
@@ -251,7 +251,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 11
+      "execution_count" : 9
     } ]
   }, {
     "metadata" : {
@@ -272,7 +272,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 12
+      "execution_count" : 10
     } ]
   }, {
     "metadata" : {
@@ -299,7 +299,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 13
+      "execution_count" : 11
     } ]
   }, {
     "metadata" : {
@@ -320,7 +320,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 14
+      "execution_count" : 12
     } ]
   }, {
     "metadata" : {
@@ -341,13 +341,13 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 15
+      "execution_count" : 13
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true,
+      "collapsed" : false,
       "presentation" : {
         "tabs_state" : "{\n  \"tab_id\": \"#tab301562629-0\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
@@ -356,7 +356,18 @@
     },
     "cell_type" : "code",
     "source" : "// Let's test our scale method on random data\nval nd = new Gaussian(12, 20)\nval m = DenseMatrix.rand(10, 3, nd)\nprintln(m)\nprintln(\"============\")\nscale(m)\nprintln(m)",
-    "outputs" : [ ]
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "-21.651391671847804  35.44931342068098   10.926394090778718   \n13.938264703700872   26.61381217108204   -37.63248657151396   \n1.068355672893576    61.24929306449911   38.70156513910773    \n-9.202186933173046   10.36445086370627   -7.672577860786912   \n28.202764021864557   46.576066473386625  -23.57786585664787   \n4.791406351434897    14.587990922715562  26.976567420839185   \n15.207977873249247   11.567120067974315  0.9250832240343208   \n9.844176256922662    -5.128440576049854  -9.153193577937444   \n4.960081893390527    11.816620441440767  -11.383312179382301  \n-10.34987173664637   4.975746654416125   12.111895958462425   \n============\n-1.7473350438157476  0.6661133382101644    0.4753030892705096    \n0.70751243239004     0.2346960124959123    -1.6413320851873572   \n-0.1802079594533975  1.9258673586086559    1.6859962357278369    \n-0.8886333325370387  -0.5587231497854472   -0.3354083131446793   \n1.6914266849196404   1.2094072510596536    -1.0287046077205986   \n0.07659478866986266  -0.3524973448388958   1.174914797020026     \n0.795092715180085    -0.4999995621624181   0.03935551217412687   \n0.4251168232590199   -1.3152056179220695   -0.39994693644143814  \n0.08822942554575856  -0.48781702935020327  -0.49715567376508185  \n-0.967796534158223   -0.8218412563153529   0.5269779820666559    \nnd: breeze.stats.distributions.Gaussian = Gaussian(12.0, 20.0)\nm: breeze.linalg.DenseMatrix[Double] = \n-1.7473350438157476  0.6661133382101644    0.4753030892705096    \n0.70751243239004     0.2346960124959123    -1.6413320851873572   \n-0.1802079594533975  1.9258673586086559    1.6859962357278369    \n-0.8886333325370387  -0.5587231497854472   -0.3354083131446793   \n1.6914266849196404   1.2094072510596536    -1.0287046077205986   \n0.07659478866986266  -0.3524973448388958   1.174914797020026     \n0.795092715180085    -0.4999995621624181   0.03935551217412687   \n0.4251168232590199   -1.3152056179220695   -0.39994693644143814  \n0.08822942554575856  -0.48781702935020327  -0.49715567376508185  \n-0.967796534158223   -0.8218412563153529   0.5269779820666559    \n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 14
+    } ]
   }, {
     "metadata" : {
       "id" : "C4A3752987EE46F18747BCB4C34A4022"
@@ -382,7 +393,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 52
+      "execution_count" : 15
     } ]
   }, {
     "metadata" : {
@@ -403,7 +414,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 73
+      "execution_count" : 16
     } ]
   }, {
     "metadata" : {
@@ -417,14 +428,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "nd: breeze.stats.distributions.Gaussian = Gaussian(10.0, 1.0)\nX: breeze.linalg.DenseMatrix[Double] = \n9.764669131159627   9.28500301591061    8.956346794609928  10.717348874392329  \n9.268576142991856   10.6934488652767    9.38377044034161   8.856707393443772   \n9.90468891186542    10.767809011199333  7.888834533653101  9.973474205176775   \n10.253806212235116  9.696281372203591   9.921247766873682  9.504578030616202   \n"
+      "text" : "nd: breeze.stats.distributions.Gaussian = Gaussian(10.0, 1.0)\nX: breeze.linalg.DenseMatrix[Double] = \n9.561630763785184   10.980421541054888  9.204271291742224   11.45403570872054   \n10.427240626554788  10.085823158048587  9.764278287286732   10.692538627470345  \n12.907315943969037  10.068274213853705  10.077239585517445  8.666413305076498   \n9.966460923226068   9.061197875378323   9.238468891708246   9.814723597561938   \n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 76
+      "execution_count" : 17
     } ]
   }, {
     "metadata" : {
@@ -438,14 +449,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "Stats:\ndeterminant: 59.55982098832586\ntrace: 37.85153056070563\nmin element: 7.888834533653101\nmax element: 10.767809011199333\nFrobenius Norm: 38.82099395136666\neigenvalues: DenseVector(38.70767507560935, 1.4219902080485667, -0.6749621428545479, -1.6031725800977699)\ninverse matrix:\n-0.6804264509362117   -0.8745955402448818  0.5537693552273275    1.0011386128852418     \n-0.13415104487905632  0.4190199801620603   0.14173130426731043   -0.38791278284722774   \n0.19912767025839462   0.39506856339832697  -0.5509366500462      -0.014558764282152414  \n0.6630628180364178    0.10367892714202503  -0.16692284982356664  -0.5639102244057939    \n"
+      "text" : "Stats:\ndeterminant: 4.8079247913038685\ntrace: 39.539417104913156\nmin element: 8.666413305076498\nmax element: 12.907315943969037\nFrobenius Norm: 40.69116436689367\neigenvalues: DenseVector(40.48004254270399, -0.5073103560543464, -0.5073103560543464, 0.07399527431784637)\ninverse matrix:\n2.1073634664733416   -8.246072830320946  0.4408043067173635    6.135011644463308   \n-0.8315949364063346  5.113553890937865   0.11710853441260749   -4.703817168927171  \n-3.61297114583042    12.135004328043253  -0.5482413864586508   -8.519813596989803  \n2.028647263549986    -7.769920390121321  -0.03968440915117011  6.234296522962025   \n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 78
+      "execution_count" : 18
     } ]
   }, {
     "metadata" : {
@@ -484,7 +495,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 25
+      "execution_count" : 19
     } ]
   }, {
     "metadata" : {
@@ -498,14 +509,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@65efa115\ndf: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
+      "text" : "sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@4e0682ca\ndf: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 26
+      "execution_count" : 20
     } ]
   }, {
     "metadata" : {
@@ -523,14 +534,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res270: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
+      "text" : "res26: org.apache.spark.sql.DataFrame = [PassengerId: int, Survived: int, Pclass: int, Name: string, Sex: string, Age: double, SibSp: int, Parch: int, Ticket: string, Fare: double, Cabin: string, Embarked: string]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona71a8267b0e685290f433f7bb86e3f16&quot;,&quot;partitionIndexId&quot;:&quot;anonba99d317035acebe79c3f330f7a18e15&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;PassengerId&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Survived&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Pclass&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Age&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;SibSp&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Parch&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Ticket&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Fare&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Cabin&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Embarked&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona64dd2a7e716659f2b881536c24fba6d&quot;,&quot;partitionIndexId&quot;:&quot;anondca4f8792232ad3503583683a445b7fd&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;PassengerId&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Survived&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Pclass&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Name&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Age&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;SibSp&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Parch&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Ticket&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Fare&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Cabin&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;Embarked&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 147
+      "execution_count" : 21
     } ]
   }, {
     "metadata" : {
@@ -550,14 +561,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "+------+-----+\n|   Sex|count|\n+------+-----+\n|female|  314|\n|  male|  577|\n+------+-----+\n\n+------+-----+\n|Pclass|count|\n+------+-----+\n|     1|  216|\n|     2|  184|\n|     3|  491|\n+------+-----+\n\n+-----------------+--------+--------+\n|      Average Age|min(Age)|max(Age)|\n+-----------------+--------+--------+\n|29.69911764705882|    0.42|    80.0|\n+-----------------+--------+--------+\n\n+--------+-----+-----------------+\n|Survived|count|                %|\n+--------+-----+-----------------+\n|       0|  549|61.61616161616161|\n|       1|  342|38.38383838383838|\n+--------+-----+-----------------+\n\nimport org.apache.spark.sql.functions.{min, max, mean, sum, count}\ntotalPassengers: Long = 891\nsurvived: org.apache.spark.sql.DataFrame = [Survived: int, count: bigint]\n"
+      "text" : "+------+-----+\n|   Sex|count|\n+------+-----+\n|female|  314|\n|  male|  577|\n+------+-----+\n\n+------+-----+\n|Pclass|count|\n+------+-----+\n|     1|  216|\n|     2|  184|\n|     3|  491|\n+------+-----+\n\n+-----------------+--------+--------+\n|      Average Age|min(Age)|max(Age)|\n+-----------------+--------+--------+\n|29.69911764705882|    0.42|    80.0|\n+-----------------+--------+--------+\n\n+--------+-----+-----------------+\n|Survived|count|                %|\n+--------+-----+-----------------+\n|       0|  549|61.61616161616161|\n|       1|  342|38.38383838383838|\n+--------+-----+-----------------+\n\nimport org.apache.spark.sql.functions.{min, max, mean}\ntotalPassengers: Long = 891\nsurvived: org.apache.spark.sql.DataFrame = [Survived: int, count: bigint]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 68
+      "execution_count" : 22
     } ]
   }, {
     "metadata" : {
@@ -584,7 +595,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 1
+      "execution_count" : 23
     } ]
   }, {
     "metadata" : {
@@ -605,7 +616,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 6
+      "execution_count" : 24
     } ]
   }, {
     "metadata" : {
@@ -632,7 +643,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 25
     } ]
   }, {
     "metadata" : {
@@ -648,7 +659,7 @@
       "id" : "68DA8C02FAA8436389AF389C963E9F70"
     },
     "cell_type" : "code",
-    "source" : "// Answer for q3\nval survivedByAgeDecade = df.select(df(\"Survived\"), \n                                    ((df(\"Age\") / 10).cast(IntegerType)).alias(\"decade\"))\nsurvivedByAgeDecade.filter(survivedByAgeDecade(\"decade\") >= 0).\n                groupBy(\"decade\")\n                .agg((sum(\"Survived\") / count(\"Survived\")).alias(\"Survived part\"),\n                      count(\"Survived\").alias(\"passengers num\"))\n.sort(\"decade\")\n.show()",
+    "source" : "// Answer for q3\nval survivedByAgeDecade = df.select(df(\"Survived\"), \n                                    ((df(\"Age\") / 10).cast(IntegerType)).alias(\"decade\"))\nsurvivedByAgeDecade.filter(survivedByAgeDecade(\"decade\").isNotNull).\n                groupBy(\"decade\")\n                .agg((sum(\"Survived\") / count(\"Survived\")).alias(\"Survived part\"),\n                      count(\"Survived\").alias(\"passengers num\"))\n.sort(\"decade\")\n.show()",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -659,7 +670,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 9
+      "execution_count" : 26
     } ]
   }, {
     "metadata" : {
@@ -667,6 +678,114 @@
     },
     "cell_type" : "markdown",
     "source" : "Here we can see that youngest passengers had more chances to survive"
+  }, {
+    "metadata" : {
+      "id" : "FE9A0F683D944C808050C10A11BB2A82"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem 3.** Find all features with missing values. Suggest ways of handling features with missing values  and specify their advantages nad disadvantages. Apply these methods to a given data set."
+  }, {
+    "metadata" : {
+      "id" : "4B0A27ED693146E48EE70B63C7298F8D"
+    },
+    "cell_type" : "markdown",
+    "source" : "**A.** Missing values can be replaced by the mean, the median or the most frequent value. The mean is not a robust tool since it is largely influenced by outliers and is better suited for normaly distributed features. The median is a more robust estimator for data with high magnitude variables and is generally used for skewed distributions. Fost frequent value is better suited for categorical features."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1846503845-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "EF231B82BD59470A8C875B7D1A1B8D5E"
+    },
+    "cell_type" : "code",
+    "source" : "df.columns.filter(col => df.filter(df(col).isNull).count > 0)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res37: Array[String] = Array(Age)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonacd0a85792a9950563fc3ec38e70c25d&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;Age&quot;}],&quot;genId&quot;:&quot;1846503845&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul1846503845\"><li>\n                <a href=\"#tab1846503845-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab1846503845-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab1846503845\"><div class=\"tab-pane\" id=\"tab1846503845-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon26e85ab903dde899e579f9ed5cc04691&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;Age&quot;}],&quot;genId&quot;:&quot;1376224553&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"string value\"],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon65d0afc842b0599e145666da5e40307d&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anoncd56b7cf707d1eb0352258ca9a77f195&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab1846503845-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon55a924cfc33093cc1ab2d69883d137d3&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;Age&quot;}],&quot;genId&quot;:&quot;906762836&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon06dc48887818b747b45850768c28347a&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon393786459be2e27229e940c373fd0780&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 27
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1525546590-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "6CAD8FAB3018458895E351D611137589"
+    },
+    "cell_type" : "code",
+    "source" : "// using mean value\nval meanAge = df.select(mean(\"Age\")).first.getDouble(0)\ndf.select(\"Age\").na.fill(meanAge).limit(10)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "meanAge: Double = 29.69911764705882\nres106: org.apache.spark.sql.DataFrame = [Age: double]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon28e1a7728a33e6004eb0bf5bd90a8c0e&quot;,&quot;partitionIndexId&quot;:&quot;anon5d1f7540cb520ac0323c7b8ac5c32daa&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;Age&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 64
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5B9B32720CCD4528A31190453107A499"
+    },
+    "cell_type" : "code",
+    "source" : "// using median value\nimport org.apache.spark.SparkContext._\n\ndef getMedian(rdd: RDD[Double]): Double = {\n  val sorted = rdd.sortBy(identity).zipWithIndex().map {\n    case (v, idx) => (idx, v)\n  }\n\n  val count = sorted.count()\n\n  if (count % 2 == 0) {\n    val l = count / 2 - 1\n    val r = l + 1\n    (sorted.lookup(l).head + sorted.lookup(r).head).toDouble / 2\n  } else sorted.lookup(count / 2).head.toDouble\n}\nval ageRDD = df.filter(df(\"Age\").isNotNull).select(\"Age\").map(row => row.getDouble(0))\nval medianAge = getMedian(ageRDD)\n",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.SparkContext._\ngetMedian: (rdd: org.apache.spark.rdd.RDD[Double])Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 106
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab2027866255-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "E50969FE79FF4EFF8F8EB88E5B75EB40"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res182: Double = 28.0\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "28.0"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 107
+    } ]
   } ],
   "nbformat" : 4
 }
