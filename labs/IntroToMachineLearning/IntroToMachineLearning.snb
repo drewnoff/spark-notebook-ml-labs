@@ -1,0 +1,91 @@
+{
+  "metadata" : {
+    "name" : "IntroToMachineLearning",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "3A6248493F5C495B867FA71A58FEC94F"
+    },
+    "cell_type" : "markdown",
+    "source" : "# Introduction To Machine Learning"
+  }, {
+    "metadata" : {
+      "id" : "32A815C17E4249188EA22AFA9CF90214"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this lab we are going to learn how to teach machine learning models, how to correctly set up an experiment, how to tune model hyperparameters and how to compare **?and mix?** models. Also we'are going to get familiar with **spark.ml** package as soon as all of the work we'are going to get done using this package."
+  }, {
+    "metadata" : {
+      "id" : "C488382661284963A79044CFA727F681"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Data"
+  }, {
+    "metadata" : {
+      "id" : "0BDB9C4C25BB4CA7BEDB3038F07B2A38"
+    },
+    "cell_type" : "markdown",
+    "source" : "We'are going to solve binary classification problem by building the algorithm which determines whether a person makes over 50K a year. Following features are available:\n* age\n* workclass\n* fnlwgt\n* education\n* education-num\n* marital-status\n* occupation\n* relationship\n* race\n* sex\n* capital-gain\n* capital-loss\n* hours-per-week\n\nMore on this data one can read in [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "A9551E61D5504FD18623E6BFFFAF3D00"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Evaluation Metrics"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "DCFF52B919794706872976E2469AA9E2"
+    },
+    "cell_type" : "markdown",
+    "source" : "Model training and model quality assessment is performed on independent sets of examples. As a rule, the available examples are divided into two subsets: training (train) and control (test). The choice of the proportions of the split is a compromise. Indeed, the large size of the training leads to better quality of algorithms, but more noisy estimation of the model on the control. Conversely, the large size of the test sample leads to a less noisy assessment of the quality, however, models are less accurate.\n\nMany classification models produce estimation of belonging to the class $\\tilde{h}(x) \\in R$ (for example, the probability of belonging to the class 1). They then make a decision about the class of the object by comparing the estimates with a certain threshold $\\theta$:\n\n$h(x) = +1$,  if $\\tilde{h}(x) \\geq \\theta$, $h(x) = -1$, if $\\tilde{h}(x) < \\theta$\n\nIn this case, we can consider metrics that are able to work with estimates of belonging to a class.\nIn this lab, we will work with [AUC-ROC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve) metric. Detailed understanding of the operating principle of AUC-ROC metric is not required to perform the lab."
+  }, {
+    "metadata" : {
+      "id" : "BDF36C8F8D9F4F74860C175A21AF0E1A"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Model Hyperparameter Tuning"
+  }, {
+    "metadata" : {
+      "id" : "800C540A45CB4675843AA906E2298A32"
+    },
+    "cell_type" : "markdown",
+    "source" : "In machine learning problems it is necessary to distinguish the parameters of the model and hyperparameters (structural parameters). The model parameters are adjusted during the training (e.g., weights in the linear model or the structure of the decision tree), while hyperparameters are set in advance (for example, the regularization in linear model or maximum depth of the decision tree). Each model usually has many hyperparameters, and there is no universal set of hyperparameters optimal working in all tasks, for each task one should choose a different set of hyperparameters. _Grid search_ is commonly used to optimize model hyperparameters: for each parameter several values are selected and combination of parameter values where the model shows the best quality (in terms of the metric that is being optimized) is selected. However, in this case, it is necessary to correctly assess the constructed model, namely to do the split into training and test sample. There are several ways how it can be implemented:\n\n - Split the available samples into training and test samples. In this case, the comparison of a large number of models in the search of parameters leads to a situation when the best model on test data does not maintain its quality on new data. We can say that there is overfitting on the test data.\n - To eliminate the problem described above, it is possible to split data into 3 disjoint sub-samples: `train`, `validation` and `test`. The `validation` set is used for models comparison, and `test` set is used for the final quality assessment and comparison of families of models with selected parameters.\n - Another way to compare models is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics). There are different schemes of cross-validation:\n  - Leave-one-out cross-validation\n  - K-fold cross-validation\n  - Repeated random sub-sampling validation\n  \nCross-validation is computationally expensive operation, especially if you are doing a grid search with a very large number of combinations. So there are a number of compromises:\n - the grid can be made more sparse, touching fewer values for each parameter, however, we must not forget that in such case one can skip a good combination of parameters;\n - cross-validation can be done with a smaller number of partitions or folds, but in this case the quality assessment of cross-validation becomes more noisy and increases the risk to choose a suboptimal set of parameters due to the random nature of the split;\n - the parameters can be optimized sequentially (greedy) — one after another, and not to iterate over all combinations; this strategy does not always lead to the optimal set;\n - enumerate only small number of randomly selected combinations of values of hyperparameters."
+  }, {
+    "metadata" : {
+      "id" : "176CBB014380486884BAB81253623CB6"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Assignment"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "7670237CB8864671804D33997E5F6D8C"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}
