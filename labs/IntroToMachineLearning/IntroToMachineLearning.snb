@@ -78,14 +78,153 @@
     "source" : "## Assignment"
   }, {
     "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true,
       "id" : "7670237CB8864671804D33997E5F6D8C"
     },
+    "cell_type" : "markdown",
+    "source" : "To load data from csv file direct to Spark's Dataframe we will use [spark-csv](http://spark-packages.org/package/databricks/spark-csv) package.\nTo add spark-csv package to spark notebook one could add \"com.databricks:spark-csv_2.10:1.4.0\" (or \"com.databricks:spark-csv_2.11:1.4.0\" for Scala 2.11) dependency into customDeps conf section. Alternatively one could specify this dependency in `--packages` command line option while submiting spark application to a cluster (`spark-submit`) or launching spark shell (`spark-shell`). "
+  }, {
+    "metadata" : {
+      "id" : "2E49BBD752884AD886EF8FFC08E1D25E"
+    },
+    "cell_type" : "markdown",
+    "source" : "Load `data.adult.csv` dataset. Print several rows from the dataset."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4D18003B8DC84CBF8EAFA6970E4AA769"
+    },
     "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
+    "source" : "import org.apache.spark.sql.SQLContext\n\nval sqlContext = new SQLContext(sc)\n\nval data = sqlContext.read\n    .format(\"com.databricks.spark.csv\")\n    .option(\"header\", \"true\")\n    .option(\"inferSchema\", \"true\")\n    .load(\"notebooks/labs/IntroToMachineLearning/data.adult.csv\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@1683eb5\ndata: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab435871698-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "9D07BA02CB614CC38B1603540EF32079"
+    },
+    "cell_type" : "code",
+    "source" : "data.limit(10)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res3: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon10f35f6f231eff95e51e49fe9790455c&quot;,&quot;partitionIndexId&quot;:&quot;anona3796fd8e32c8c400dc6b3917bbb944b&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "11B94A3F144049018B5BABC89417BD4B"
+    },
+    "cell_type" : "markdown",
+    "source" : "Sometimes there are missing values in the data. Sometimes, in the description of the dataset one can found the description of format of missing values. Particularly in the given dataset  missing values are identified by '?' sign."
+  }, {
+    "metadata" : {
+      "id" : "3500871452614122B76057D99EFA48DE"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem** Find all the features with missing values. Remove from the dataset all objects with missing values."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab2090666617-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "82552EADAFF9425789C7A2B5D5338388"
+    },
+    "cell_type" : "code",
+    "source" : "val missingValsFeatures = data.columns.filter(col => data.filter(data(col) === \"?\").count > 0)\n\nprintln(\"Features with missing values: \" + missingValsFeatures.mkString(\", \"))\n\nval cleanData = missingValsFeatures.foldLeft(data)((df, col) => df.filter(df(col) !== \"?\"))\ncleanData.limit(10)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "Features with missing values: workclass, occupation\nmissingValsFeatures: Array[String] = Array(workclass, occupation)\ncleanData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\nres7: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon4e761c27a0ade55e3a831dc00711742c&quot;,&quot;partitionIndexId&quot;:&quot;anonf508dd54c30eb285bdffd7c4d9906523&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "A875FA272809418584F241E02F1BEDC2"
+    },
+    "cell_type" : "markdown",
+    "source" : "Some preprocessing steps are usually required after loading and cleaning dataset. In this case, these steps will include the following:\n\n - Select the target variable (the one we want to predict) and convert it to binary format, give the name \"label\" to a new variable.\n - Note that not all features are numeric. At first we will work only with numeric features. So let's select them separately in the feature vector \"features\"."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C6FF18068B774C3E9EA129CDD69BAB1B"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.mllib.linalg.Vectors\nimport org.apache.spark.sql.functions.when",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.mllib.linalg.Vectors\nimport org.apache.spark.sql.functions.when\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8CDCEA1DA0BC48E1B226ACF9BAD16359"
+    },
+    "cell_type" : "code",
+    "source" : "val assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\"))\n  .setOutputCol(\"features\")\n\nval vecData = assembler.transform{\n                cleanData.withColumn(\"label\", \n                                     when(cleanData(\">50K,<=50K\") === \"<=50K\", 0)\n                                     .otherwise(1))\n              }.select(\"label\", \"features\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_b35eaac5d43e\nvecData: org.apache.spark.sql.DataFrame = [label: int, features: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 10
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "29B3D2204CF84C7E83888327E3465DC6"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Training classifiers on numeric features\n\nIn this section we will need to work only with numeric features and a target variable.\nAt the beginning let's have a look at grid search in action.\nWe will consider 3 algorithms:\n - [LogisticRegression](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.LogisticRegression)\n - [DecisionTreeClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.DecisionTreeClassifier)\n - [RandomForestClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.RandomForestClassifier)"
   } ],
   "nbformat" : 4
 }
