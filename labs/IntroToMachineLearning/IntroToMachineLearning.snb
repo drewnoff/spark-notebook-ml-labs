@@ -206,25 +206,198 @@
       "id" : "8CDCEA1DA0BC48E1B226ACF9BAD16359"
     },
     "cell_type" : "code",
-    "source" : "val assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\"))\n  .setOutputCol(\"features\")\n\nval vecData = assembler.transform{\n                cleanData.withColumn(\"label\", \n                                     when(cleanData(\">50K,<=50K\") === \"<=50K\", 0)\n                                     .otherwise(1))\n              }.select(\"label\", \"features\")",
+    "source" : "val assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\"))\n  .setOutputCol(\"features\")\n\nval vecData = assembler.transform{\n                cleanData.withColumn(\"label_raw\", \n                                     when(cleanData(\">50K,<=50K\") === \"<=50K\", 0.0)\n                                     .otherwise(1.0))\n              }.select(\"label_raw\", \"features\")",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_b35eaac5d43e\nvecData: org.apache.spark.sql.DataFrame = [label: int, features: vector]\n"
+      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_cb89bf5bbe34\nvecData: org.apache.spark.sql.DataFrame = [label_raw: double, features: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 10
+      "execution_count" : 59
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "2F105244FC78401CBD1F31B15A9C4874"
+    },
+    "cell_type" : "markdown",
+    "source" : "TODO add description of following magic"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "0B1C26CAE88D402EB95D8915BA52C07B"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.StringIndexer\n\nval indexer = new StringIndexer()\n  .setInputCol(\"label_raw\")\n  .setOutputCol(\"label\")\n  .fit(vecData)\n\nval vecIdxData = indexer.transform(vecData).select(\"features\", \"label\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.feature.StringIndexer\nindexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_fddafbc56123\nvecIdxData: org.apache.spark.sql.DataFrame = [features: vector, label: double]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 61
     } ]
   }, {
     "metadata" : {
       "id" : "29B3D2204CF84C7E83888327E3465DC6"
     },
     "cell_type" : "markdown",
-    "source" : "## Training classifiers on numeric features\n\nIn this section we will need to work only with numeric features and a target variable.\nAt the beginning let's have a look at grid search in action.\nWe will consider 3 algorithms:\n - [LogisticRegression](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.LogisticRegression)\n - [DecisionTreeClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.DecisionTreeClassifier)\n - [RandomForestClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.RandomForestClassifier)"
+    "source" : "## Training classifiers on numeric features\n\nIn this section we will need to work only with numeric features and a target variable.\nAt the beginning let's have a look at grid search in action.\nWe will consider 3 algorithms:\n - [LogisticRegression](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.LogisticRegression)\n - [DecisionTreeClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.DecisionTreeClassifier)\n - [RandomForestClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.RandomForestClassifier)\n \nTo start with, let's choose one parameter to optimize for each algorithm:\n - LogisticRegression — regularization parameter (*regParam*)\n - DecisonTreeClassifier — maximum depth of the tree (*maxDepth*)\n - RandomForestClassifier — maximum number of bins used for discretizing continuous features (*maxBins*)\n \nThe remaining parameters we will leave at their default values. \nTo implement grid search procedure one can use\n[CrossValidator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.CrossValidator) class\ncombining with [ParamGridBuilder](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.ParamGridBuilder) class. \nAlso we need to specify appropriate evaluator for this task, in our case we should use [BinaryClassificationEvaluator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.evaluation.BinaryClassificationEvaluator)\n(note that its default metric is areaUnderROC, so we don't neet to specify metric via `setMetricName` method call).\nSet up 5-fold cross validation scheme.\n\n**Problem** Try to find the optimal values of these hyperparameters for each algorithm. Plot the average cross-validation metrics for a given value of hyperparameter for each algorithm (hint: use `avgMetrics` field of resulting `CrossValidatorModel`)."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "546CD15E7F9748B3AED3EE4C1CCAF84D"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.classification.{LogisticRegression, DecisionTreeClassifier, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.classification.{LogisticRegression, DecisionTreeClassifier, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 45
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E053D2741AC646E4B179827D7D5A5E94"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\nval tree = new DecisionTreeClassifier()\nval rf = new RandomForestClassifier()\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(1e-1, 1e-2, 1e-3, 1e-4, 1e-5))\n  .build()\n\nval treeParamGrid = new ParamGridBuilder()\n  .addGrid(tree.maxDepth, Array(5, 10, 20, 25, 30))\n  .build()\n\nval rfParamGrid = new ParamGridBuilder()\n  .addGrid(rf.maxBins, Array(16, 32, 64, 128, 256))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval treeCV = new CrossValidator()\n  .setEstimator(tree)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(treeParamGrid)\n  .setNumFolds(5)\n\nval rfCV = new CrossValidator()\n  .setEstimator(rf)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(rfParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(vecIdxData)\nval treeCVModel = treeCV.fit(vecIdxData)\nval rfCVModel = rfCV.fit(vecIdxData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_40c680de393e\ntree: org.apache.spark.ml.classification.DecisionTreeClassifier = dtc_f264457807fa\nrf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_523974fcfceb\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_40c680de393e-regParam: 0.1\n}, {\n\tlogreg_40c680de393e-regParam: 0.01\n}, {\n\tlogreg_40c680de393e-regParam: 0.001\n}, {\n\tlogreg_40c680de393e-regParam: 1.0E-4\n}, {\n\tlogreg_40c680de393e-regParam: 1.0E-5\n})\ntreeParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tdtc_f264457807fa-maxDepth: 5\n}, {\n\tdtc_f264457807fa-maxDepth: 10\n}, {\n\tdtc_f264457807fa-maxDepth: 20\n}, {\n\tdtc_f264457807fa-maxDepth: 25\n}, {\n\tdtc_f264457807fa-maxDepth: 30\n})\nrfParamGrid: Array[org.apache.spark..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 98
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "26B5F6AC9DB44E05B44BD38C3EA9F7D2"
+    },
+    "cell_type" : "code",
+    "source" : "case class LRAvgMetric(regParam: Double, avgMetric: Double)\ncase class TreeAvgMetric(maxDepth: Double, avgMetric: Double)\ncase class RFAvgMetric(maxBins: Double, avgMetric: Double)\n\nval lrAvgMetrics = lrCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(lr.regParam))\n                            .zip(lrCVModel.avgMetrics)\n                            .map(p => LRAvgMetric(p._1, p._2))\nval treeAvgMetrics = treeCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(tree.maxDepth))\n                            .zip(treeCVModel.avgMetrics)\n                            .map(p => TreeAvgMetric(p._1, p._2))\nval rfAvgMetrics = rfCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(rf.maxBins))\n                            .zip(rfCVModel.avgMetrics)\n                            .map(p => RFAvgMetric(p._1, p._2))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "defined class LRAvgMetric\ndefined class TreeAvgMetric\ndefined class RFAvgMetric\nlrAvgMetrics: Array[LRAvgMetric] = Array(LRAvgMetric(0.1,0.7852875124843536), LRAvgMetric(0.01,0.795344302072983), LRAvgMetric(0.001,0.7969298356277117), LRAvgMetric(1.0E-4,0.7966207927757241), LRAvgMetric(1.0E-5,0.7965791958395751))\ntreeAvgMetrics: Array[TreeAvgMetric] = Array(TreeAvgMetric(5.0,0.41176499148651047), TreeAvgMetric(10.0,0.530571725844926), TreeAvgMetric(20.0,0.6263032570262157), TreeAvgMetric(25.0,0.6258948084014668), TreeAvgMetric(30.0,0.6249428711637058))\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(16.0,0.8004135537913268), RFAvgMetric(32.0,0.8047945957499629), RFAvgMetric(64.0,0.8084418765444344), RFAvgMetric(128.0,0.8099982134171134), RFAvgMetric(256.0,0.8095619220686014))\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 110
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab21386710-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "7941740C963341BE83D2BECC67FCC8F0"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(lrAvgMetrics,\n              \"\"\"{ data: { x: 'regParam', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'regParam'\n                        }\n                   } \n                  }\"\"\")\n",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res176: notebook.front.widgets.CustomC3Chart[Array[LRAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon1fff4806e52305784bbcc2577e8fb94a&quot;,&quot;dataInit&quot;:[{&quot;regParam&quot;:0.1,&quot;avgMetric&quot;:0.7852875124843536},{&quot;regParam&quot;:0.01,&quot;avgMetric&quot;:0.795344302072983},{&quot;regParam&quot;:0.001,&quot;avgMetric&quot;:0.7969298356277117},{&quot;regParam&quot;:0.00010,&quot;avgMetric&quot;:0.7966207927757241},{&quot;regParam&quot;:0.000010,&quot;avgMetric&quot;:0.7965791958395751}],&quot;genId&quot;:&quot;77490440&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'regParam', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'regParam'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"regParam\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone6ee80bb724cf4de149395b17c4b7b91&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb0cb9e1deab9cc309db37ac7b7c4ff87&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 111
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "69E8B82F27094D848ECB25B93EC854E3"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(treeAvgMetrics,\n              \"\"\"{ data: { x: 'maxDepth', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'maxDepth'\n                        }\n                   } \n                  }\"\"\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res161: notebook.front.widgets.CustomC3Chart[Array[TreeAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon6f717ff54f882b670be0dc1360065032&quot;,&quot;dataInit&quot;:[{&quot;maxDepth&quot;:5.0,&quot;avgMetric&quot;:0.41176499148651047},{&quot;maxDepth&quot;:10.0,&quot;avgMetric&quot;:0.530571725844926},{&quot;maxDepth&quot;:20.0,&quot;avgMetric&quot;:0.6263032570262157},{&quot;maxDepth&quot;:25.0,&quot;avgMetric&quot;:0.6258948084014668},{&quot;maxDepth&quot;:30.0,&quot;avgMetric&quot;:0.6249428711637058}],&quot;genId&quot;:&quot;1572088454&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxDepth', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxDepth'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxDepth\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon0d7ccf7f5697bdfbe27697a06095a61c&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonf3251dfb99e1093d4dc0d9de931025b2&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 101
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5938413478224DE697F2883205056B4D"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(rfAvgMetrics,\n              \"\"\"{ data: { x: 'maxBins', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'maxBins'\n                        }\n                   } \n                  }\"\"\")\n",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res163: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon41cef45687f644600ce47930a5ae67aa&quot;,&quot;dataInit&quot;:[{&quot;maxBins&quot;:16.0,&quot;avgMetric&quot;:0.8004135537913268},{&quot;maxBins&quot;:32.0,&quot;avgMetric&quot;:0.8047945957499629},{&quot;maxBins&quot;:64.0,&quot;avgMetric&quot;:0.8084418765444344},{&quot;maxBins&quot;:128.0,&quot;avgMetric&quot;:0.8099982134171134},{&quot;maxBins&quot;:256.0,&quot;avgMetric&quot;:0.8095619220686014}],&quot;genId&quot;:&quot;313006752&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxBins', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxBins'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxBins\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon3f306ce4f711572ced5c1bbb107bc0f3&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon67bea1adc289777e4ee78b84329ed7d0&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 102
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "B4AE5532F97441518191CD802D2B9BF2"
+    },
+    "cell_type" : "markdown",
+    "source" : "What can you say about the resulting graphs?"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "372C648E996342A182DF501DCC9461B1"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
   } ],
   "nbformat" : 4
 }
