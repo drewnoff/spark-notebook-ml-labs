@@ -100,7 +100,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@6fdebd98\ndata: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@4cbbf3ab\ndata: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -129,7 +129,7 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon6eca5056d14772033125a223218ff221&quot;,&quot;partitionIndexId&quot;:&quot;anonc3c6a27c09b7651e3c8828fd9d7fccec&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon4e0dbbed254b5ed06ceaa28dd7aee50e&quot;,&quot;partitionIndexId&quot;:&quot;anon543a0f1f34d3270d4e2350d0e5803b22&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
       "execution_count" : 2
@@ -166,7 +166,7 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonab2a5c1d0f23b2fad42391dde2e493e4&quot;,&quot;partitionIndexId&quot;:&quot;anone1514f21d54b8f50412848338035e714&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonb749f4d8e242b39d5b4de339de593900&quot;,&quot;partitionIndexId&quot;:&quot;anon3962319fdcbc4cd976b371e0a4dc2fe9&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
       "execution_count" : 3
@@ -848,7 +848,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString, VectorIndexer, OneHotEncoder, VectorAssembler, StandardScaler}\nimport org.apache.spark.ml.classification.LogisticRegression\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_7f0eb3de0af5\nfeatureIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_ba967262c50f\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_daea057b1508\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_ba5dc8e4fb92\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_1a7271643c37\nlr: org.apache.spark.ml.classification.LogisticRegression = logreg_7d3cc55292e0\nlabelConverter: org.apache.spark.ml.feature.IndexToString = idxToStr_0abe24df3a69\npipeline: o..."
+      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString, VectorIndexer, OneHotEncoder, VectorAssembler, StandardScaler}\nimport org.apache.spark.ml.classification.LogisticRegression\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_8feb19883e3f\nfeatureIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_714c1884f97b\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_db79a90cc4a9\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_75271e1a0a0e\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_61d6cca95a72\nlr: org.apache.spark.ml.classification.LogisticRegression = logreg_b5981cd91196\nlabelConverter: org.apache.spark.ml.feature.IndexToString = idxToStr_dbf3a154b5fd\npipeline: o..."
     }, {
       "metadata" : { },
       "data" : {
@@ -869,7 +869,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_7d3cc55292e0-regParam: 0.005\n}, {\n\tlogreg_7d3cc55292e0-regParam: 0.002\n}, {\n\tlogreg_7d3cc55292e0-regParam: 0.001\n}, {\n\tlogreg_7d3cc55292e0-regParam: 5.0E-4\n}, {\n\tlogreg_7d3cc55292e0-regParam: 1.0E-4\n}, {\n\tlogreg_7d3cc55292e0-regParam: 5.0E-5\n}, {\n\tlogreg_7d3cc55292e0-regParam: 1.0E-5\n})\ncv: org.apache.spark.ml.tuning.CrossValidator = cv_ffabb350a166\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_ffabb350a166\n"
+      "text" : "import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_b5981cd91196-regParam: 0.005\n}, {\n\tlogreg_b5981cd91196-regParam: 0.002\n}, {\n\tlogreg_b5981cd91196-regParam: 0.001\n}, {\n\tlogreg_b5981cd91196-regParam: 5.0E-4\n}, {\n\tlogreg_b5981cd91196-regParam: 1.0E-4\n}, {\n\tlogreg_b5981cd91196-regParam: 5.0E-5\n}, {\n\tlogreg_b5981cd91196-regParam: 1.0E-5\n})\ncv: org.apache.spark.ml.tuning.CrossValidator = cv_673e17c08171\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_673e17c08171\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -894,15 +894,94 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res17: Double = 0.8188199134964171\n"
+      "text" : "res9: Double = 0.8188199134964158\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0.8188199134964171"
+        "text/html" : "0.8188199134964158"
       },
       "output_type" : "execute_result",
-      "execution_count" : 1
+      "execution_count" : 6
     } ]
+  }, {
+    "metadata" : {
+      "id" : "65E33CCD434941A8B1E306CD217CD6D0"
+    },
+    "cell_type" : "markdown",
+    "source" : "Now let's extend our pipeline by adding one-hot encoding step for each categorical feature."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E67323D24AA740B7AD2D4473CA2008EB"
+    },
+    "cell_type" : "code",
+    "source" : "val categCols = Array(\"workclass\", \"education\", \"marital-status\", \"occupation\", \"relationship\", \"race\", \"sex\")\n\nval featureIndexers: Array[org.apache.spark.ml.PipelineStage] = categCols.map(\n  cname => new StringIndexer()\n    .setInputCol(cname)\n    .setOutputCol(s\"${cname}_index\")\n)\n\nval oneHotEncoders = categCols.map(\n    cname => new OneHotEncoder()\n     .setInputCol(s\"${cname}_index\")\n     .setOutputCol(s\"${cname}_vec\")\n)\n\nval assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\") ++\n                categCols.map(cname => s\"${cname}_vec\"))\n  .setOutputCol(\"features\")\n\nval pipeline = new Pipeline()\n  .setStages(Array(labelIndexer) ++\n             featureIndexers ++\n             oneHotEncoders ++\n             Array(assembler, \n                   scaler,\n                   lr,\n                   labelConverter))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "categCols: Array[String] = Array(workclass, education, marital-status, occupation, relationship, race, sex)\nfeatureIndexers: Array[org.apache.spark.ml.PipelineStage] = Array(strIdx_b9ff3fc2f34c, strIdx_c6f01d1703ac, strIdx_cc37c7e4208b, strIdx_8b55bd00cbc3, strIdx_15e63a382a94, strIdx_3b2b00bb0030, strIdx_7fd2eb4a2db0)\noneHotEncoders: Array[org.apache.spark.ml.feature.OneHotEncoder] = Array(oneHot_3c2134d084f5, oneHot_7637eb3a7d22, oneHot_bb8ab7959231, oneHot_5f7877ef4d08, oneHot_aed71556c602, oneHot_8133699dbbef, oneHot_ba6abe6ff070)\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_b1609e18c924\npipeline: org.apache.spark.ml.Pipeline = pipeline_0e02424180ee\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 7
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "76940745B2FD449D851874AE87D0914C"
+    },
+    "cell_type" : "code",
+    "source" : "val cv = new CrossValidator()\n  .setEstimator(pipeline)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval cvModel = cv.fit(cleanData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "cv: org.apache.spark.ml.tuning.CrossValidator = cv_1ad1dad812ff\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_1ad1dad812ff\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1329570354-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "356508B224D44A6985FC4F4ACC821957"
+    },
+    "cell_type" : "code",
+    "source" : "cvModel.avgMetrics.max",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res13: Double = 0.9010361016081744\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.9010361016081744"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 9
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "41736CEDE6ED409ABE0F8F4AB5DB87E8"
+    },
+    "cell_type" : "markdown",
+    "source" : "We have obtained a significant boost in quality of classification."
   } ],
   "nbformat" : 4
 }
