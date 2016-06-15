@@ -100,14 +100,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@4cbbf3ab\ndata: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@528a8807\ndata: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 1
+      "execution_count" : 12
     } ]
   }, {
     "metadata" : {
@@ -125,14 +125,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res3: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+      "text" : "res45: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon4e0dbbed254b5ed06ceaa28dd7aee50e&quot;,&quot;partitionIndexId&quot;:&quot;anon543a0f1f34d3270d4e2350d0e5803b22&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonf536f51b115d8c630369cda2d52c2941&quot;,&quot;partitionIndexId&quot;:&quot;anon30ae431b17b5ed01c1cb732b28058208&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 2
+      "execution_count" : 13
     } ]
   }, {
     "metadata" : {
@@ -162,14 +162,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "Features with missing values: workclass, occupation\nmissingValsFeatures: Array[String] = Array(workclass, occupation)\ncleanData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\nres5: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+      "text" : "Features with missing values: workclass, occupation\nmissingValsFeatures: Array[String] = Array(workclass, occupation)\ncleanData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\nres47: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonb749f4d8e242b39d5b4de339de593900&quot;,&quot;partitionIndexId&quot;:&quot;anon3962319fdcbc4cd976b371e0a4dc2fe9&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon63ea093bd1a8a5b8369d766a1b44c671&quot;,&quot;partitionIndexId&quot;:&quot;anon471f7b4571b9867e013ca3d1ffa22c3a&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 3
+      "execution_count" : 14
     } ]
   }, {
     "metadata" : {
@@ -196,7 +196,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 15
     } ]
   }, {
     "metadata" : {
@@ -210,14 +210,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_021246fbd73b\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_c6b21ea21850\nvecIdxData: org.apache.spark.sql.DataFrame = [label: double, features: vector]\n"
+      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_74ac2027368e\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_da8c63a32a55\nvecIdxData: org.apache.spark.sql.DataFrame = [label: double, features: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 16
     } ]
   }, {
     "metadata" : {
@@ -244,7 +244,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 6
+      "execution_count" : 17
     } ]
   }, {
     "metadata" : {
@@ -258,14 +258,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_30ad91b57fa6\ntree: org.apache.spark.ml.classification.DecisionTreeClassifier = dtc_cf4eabc33bc9\nrf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_291be8f60d6f\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_30ad91b57fa6-regParam: 0.005\n}, {\n\tlogreg_30ad91b57fa6-regParam: 0.002\n}, {\n\tlogreg_30ad91b57fa6-regParam: 0.001\n}, {\n\tlogreg_30ad91b57fa6-regParam: 5.0E-4\n}, {\n\tlogreg_30ad91b57fa6-regParam: 1.0E-4\n}, {\n\tlogreg_30ad91b57fa6-regParam: 5.0E-5\n}, {\n\tlogreg_30ad91b57fa6-regParam: 1.0E-5\n})\ntreeParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tdtc_cf4eabc33bc9-maxDepth: 5\n}, {\n\tdtc_cf4eabc33bc9-maxDepth: 10\n}, {\n\tdtc_cf4eabc33bc9-maxDepth: 20\n}, {\n\tdtc_cf4eabc33bc..."
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_9f971b2bad00\ntree: org.apache.spark.ml.classification.DecisionTreeClassifier = dtc_5ed3fa18a5cd\nrf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_dbcb4625047a\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_9f971b2bad00-regParam: 0.005\n}, {\n\tlogreg_9f971b2bad00-regParam: 0.002\n}, {\n\tlogreg_9f971b2bad00-regParam: 0.001\n}, {\n\tlogreg_9f971b2bad00-regParam: 5.0E-4\n}, {\n\tlogreg_9f971b2bad00-regParam: 1.0E-4\n}, {\n\tlogreg_9f971b2bad00-regParam: 5.0E-5\n}, {\n\tlogreg_9f971b2bad00-regParam: 1.0E-5\n})\ntreeParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tdtc_5ed3fa18a5cd-maxDepth: 5\n}, {\n\tdtc_5ed3fa18a5cd-maxDepth: 10\n}, {\n\tdtc_5ed3fa18a5cd-maxDepth: 20\n}, {\n\tdtc_5ed3fa18a5c..."
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 18
     } ]
   }, {
     "metadata" : {
@@ -279,14 +279,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "defined class LRAvgMetric\ndefined class TreeAvgMetric\ndefined class RFAvgMetric\nlrAvgMetrics: Array[LRAvgMetric] = Array(LRAvgMetric(0.005,0.7965059769394539), LRAvgMetric(0.002,0.7969363092449266), LRAvgMetric(0.001,0.7969298356277114), LRAvgMetric(5.0E-4,0.7968089174966678), LRAvgMetric(1.0E-4,0.7966207927757228), LRAvgMetric(5.0E-5,0.7965996554856315), LRAvgMetric(1.0E-5,0.7965791958395753))\ntreeAvgMetrics: Array[TreeAvgMetric] = Array(TreeAvgMetric(5.0,0.41176499148651047), TreeAvgMetric(10.0,0.530571725844926), TreeAvgMetric(20.0,0.6263032570262157), TreeAvgMetric(25.0,0.6258948084014668), TreeAvgMetric(30.0,0.6249428711637058))\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(16.0,0.8004135537913268), RFAvgMetric(32.0,0.8047945957499629), RFAvgMetric(64.0,0.8084418765444344), ..."
+      "text" : "defined class LRAvgMetric\ndefined class TreeAvgMetric\ndefined class RFAvgMetric\nlrAvgMetrics: Array[LRAvgMetric] = Array(LRAvgMetric(0.005,0.7965059769394554), LRAvgMetric(0.002,0.7969363092449264), LRAvgMetric(0.001,0.796929835627711), LRAvgMetric(5.0E-4,0.796808917496667), LRAvgMetric(1.0E-4,0.7966207927757235), LRAvgMetric(5.0E-5,0.7965996554856329), LRAvgMetric(1.0E-5,0.7965791958395751))\ntreeAvgMetrics: Array[TreeAvgMetric] = Array(TreeAvgMetric(5.0,0.41176499148651047), TreeAvgMetric(10.0,0.530571725844926), TreeAvgMetric(20.0,0.6263032570262157), TreeAvgMetric(25.0,0.6258948084014668), TreeAvgMetric(30.0,0.6249428711637058))\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(16.0,0.8004135537913268), RFAvgMetric(32.0,0.8047945957499629), RFAvgMetric(64.0,0.8084418765444344), RF..."
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 9
+      "execution_count" : 19
     } ]
   }, {
     "metadata" : {
@@ -304,14 +304,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res13: notebook.front.widgets.CustomC3Chart[Array[LRAvgMetric]] = <CustomC3Chart widget>\n"
+      "text" : "res54: notebook.front.widgets.CustomC3Chart[Array[LRAvgMetric]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon75fb14d0003a96b4399953707f5fef05&quot;,&quot;dataInit&quot;:[{&quot;regParam&quot;:0.005,&quot;avgMetric&quot;:0.7965059769394539},{&quot;regParam&quot;:0.002,&quot;avgMetric&quot;:0.7969363092449266},{&quot;regParam&quot;:0.001,&quot;avgMetric&quot;:0.7969298356277114},{&quot;regParam&quot;:0.00050,&quot;avgMetric&quot;:0.7968089174966678},{&quot;regParam&quot;:0.00010,&quot;avgMetric&quot;:0.7966207927757228},{&quot;regParam&quot;:0.000050,&quot;avgMetric&quot;:0.7965996554856315},{&quot;regParam&quot;:0.000010,&quot;avgMetric&quot;:0.7965791958395753}],&quot;genId&quot;:&quot;571772653&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'regParam', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'regParam'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"regParam\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon350ce5201441a638bbb15bf335cb6430&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon1e0e49807b0ad7ce096b9dd39707ac9b&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon471ef7a060f3dbacb363a6971abe48dd&quot;,&quot;dataInit&quot;:[{&quot;regParam&quot;:0.005,&quot;avgMetric&quot;:0.7965059769394554},{&quot;regParam&quot;:0.002,&quot;avgMetric&quot;:0.7969363092449264},{&quot;regParam&quot;:0.001,&quot;avgMetric&quot;:0.796929835627711},{&quot;regParam&quot;:0.00050,&quot;avgMetric&quot;:0.796808917496667},{&quot;regParam&quot;:0.00010,&quot;avgMetric&quot;:0.7966207927757235},{&quot;regParam&quot;:0.000050,&quot;avgMetric&quot;:0.7965996554856329},{&quot;regParam&quot;:0.000010,&quot;avgMetric&quot;:0.7965791958395751}],&quot;genId&quot;:&quot;1703103998&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'regParam', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'regParam'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"regParam\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon7605850d28c7a6f292bb3dcbb3b1d288&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon1fac25cbdecefa5743b904e329d749d2&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 10
+      "execution_count" : 20
     } ]
   }, {
     "metadata" : {
@@ -325,14 +325,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res28: notebook.front.widgets.CustomC3Chart[Array[TreeAvgMetric]] = <CustomC3Chart widget>\n"
+      "text" : "res56: notebook.front.widgets.CustomC3Chart[Array[TreeAvgMetric]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon7fdc3086123e66523e6a299cfd150328&quot;,&quot;dataInit&quot;:[{&quot;maxDepth&quot;:5.0,&quot;avgMetric&quot;:0.41176499148651047},{&quot;maxDepth&quot;:10.0,&quot;avgMetric&quot;:0.530571725844926},{&quot;maxDepth&quot;:20.0,&quot;avgMetric&quot;:0.6263032570262157},{&quot;maxDepth&quot;:25.0,&quot;avgMetric&quot;:0.6258948084014668},{&quot;maxDepth&quot;:30.0,&quot;avgMetric&quot;:0.6249428711637058}],&quot;genId&quot;:&quot;532075012&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxDepth', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxDepth'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxDepth\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon8e1a13c314c0079b1f86d7d2020c6e20&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone7d0efe63b5faddb14e701d99f59c8a6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond27ace75db984dbad78bf3c75800ac19&quot;,&quot;dataInit&quot;:[{&quot;maxDepth&quot;:5.0,&quot;avgMetric&quot;:0.41176499148651047},{&quot;maxDepth&quot;:10.0,&quot;avgMetric&quot;:0.530571725844926},{&quot;maxDepth&quot;:20.0,&quot;avgMetric&quot;:0.6263032570262157},{&quot;maxDepth&quot;:25.0,&quot;avgMetric&quot;:0.6258948084014668},{&quot;maxDepth&quot;:30.0,&quot;avgMetric&quot;:0.6249428711637058}],&quot;genId&quot;:&quot;350941963&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxDepth', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxDepth'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxDepth\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb770f02f564559deedd6acd7c5433746&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonef08e9ba93131b012e8b878d4a5933db&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 19
+      "execution_count" : 21
     } ]
   }, {
     "metadata" : {
@@ -346,14 +346,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res20: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
+      "text" : "res58: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anone7133924615e6083664d2bb51c73a6c8&quot;,&quot;dataInit&quot;:[{&quot;maxBins&quot;:16.0,&quot;avgMetric&quot;:0.8004135537913268},{&quot;maxBins&quot;:32.0,&quot;avgMetric&quot;:0.8047945957499629},{&quot;maxBins&quot;:64.0,&quot;avgMetric&quot;:0.8084418765444344},{&quot;maxBins&quot;:128.0,&quot;avgMetric&quot;:0.8099982134171132},{&quot;maxBins&quot;:256.0,&quot;avgMetric&quot;:0.8095619220686014}],&quot;genId&quot;:&quot;907621439&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxBins', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxBins'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxBins\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon246aad718f203e60c74372513d9b9e17&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonfe4fc66e13508195418800240dda8d3d&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon32212b4ea2c9bac0e485892287fbed2d&quot;,&quot;dataInit&quot;:[{&quot;maxBins&quot;:16.0,&quot;avgMetric&quot;:0.8004135537913268},{&quot;maxBins&quot;:32.0,&quot;avgMetric&quot;:0.8047945957499629},{&quot;maxBins&quot;:64.0,&quot;avgMetric&quot;:0.8084418765444344},{&quot;maxBins&quot;:128.0,&quot;avgMetric&quot;:0.8099982134171134},{&quot;maxBins&quot;:256.0,&quot;avgMetric&quot;:0.8095619220686014}],&quot;genId&quot;:&quot;894664876&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxBins', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxBins'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxBins\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonfda77b81b4de45514fd7993521759b73&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb2a2e005765ede60d583a0a89b8a5207&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 15
+      "execution_count" : 22
     } ]
   }, {
     "metadata" : {
@@ -382,14 +382,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "rf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_2c9714c352e1\nrfParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\trfc_2c9714c352e1-numTrees: 20\n}, {\n\trfc_2c9714c352e1-numTrees: 40\n}, {\n\trfc_2c9714c352e1-numTrees: 80\n}, {\n\trfc_2c9714c352e1-numTrees: 120\n}, {\n\trfc_2c9714c352e1-numTrees: 160\n}, {\n\trfc_2c9714c352e1-numTrees: 200\n}, {\n\trfc_2c9714c352e1-numTrees: 250\n})\nrfCV: org.apache.spark.ml.tuning.CrossValidator = cv_613c7d4ffad9\nrfCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_613c7d4ffad9\n"
+      "text" : "rf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_e0e9e70eaf93\nrfParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\trfc_e0e9e70eaf93-numTrees: 20\n}, {\n\trfc_e0e9e70eaf93-numTrees: 40\n}, {\n\trfc_e0e9e70eaf93-numTrees: 80\n}, {\n\trfc_e0e9e70eaf93-numTrees: 120\n}, {\n\trfc_e0e9e70eaf93-numTrees: 160\n}, {\n\trfc_e0e9e70eaf93-numTrees: 200\n}, {\n\trfc_e0e9e70eaf93-numTrees: 250\n})\nrfCV: org.apache.spark.ml.tuning.CrossValidator = cv_e932a86e0937\nrfCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_e932a86e0937\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 16
+      "execution_count" : 23
     } ]
   }, {
     "metadata" : {
@@ -403,14 +403,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "defined class RFAvgMetric\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(20.0,0.8099982134171134), RFAvgMetric(40.0,0.811501422360162), RFAvgMetric(80.0,0.8123633350366459), RFAvgMetric(120.0,0.8129349516085416), RFAvgMetric(160.0,0.8133463794945599), RFAvgMetric(200.0,0.8128973746325328), RFAvgMetric(250.0,0.8133296213014655))\n"
+      "text" : "defined class RFAvgMetric\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(20.0,0.8099982134171134), RFAvgMetric(40.0,0.8115014223601622), RFAvgMetric(80.0,0.8123633350366459), RFAvgMetric(120.0,0.812934951608542), RFAvgMetric(160.0,0.8133463794945599), RFAvgMetric(200.0,0.812897374632533), RFAvgMetric(250.0,0.8133296213014655))\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 17
+      "execution_count" : 24
     } ]
   }, {
     "metadata" : {
@@ -424,14 +424,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res24: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
+      "text" : "res62: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon1d19656a91642e84c918377053ac7cfb&quot;,&quot;dataInit&quot;:[{&quot;numTrees&quot;:20.0,&quot;avgMetric&quot;:0.8099982134171134},{&quot;numTrees&quot;:40.0,&quot;avgMetric&quot;:0.811501422360162},{&quot;numTrees&quot;:80.0,&quot;avgMetric&quot;:0.8123633350366459},{&quot;numTrees&quot;:120.0,&quot;avgMetric&quot;:0.8129349516085416},{&quot;numTrees&quot;:160.0,&quot;avgMetric&quot;:0.8133463794945599},{&quot;numTrees&quot;:200.0,&quot;avgMetric&quot;:0.8128973746325328},{&quot;numTrees&quot;:250.0,&quot;avgMetric&quot;:0.8133296213014655}],&quot;genId&quot;:&quot;1339311488&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'numTrees', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'numTrees'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"numTrees\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon5919ddff5fc776fb5545f5760cc0837f&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anondf76baefed66ea3a77b0ea65c8bc101b&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon099d9f1796b88f1ef4a088db7ba95cf0&quot;,&quot;dataInit&quot;:[{&quot;numTrees&quot;:20.0,&quot;avgMetric&quot;:0.8099982134171134},{&quot;numTrees&quot;:40.0,&quot;avgMetric&quot;:0.8115014223601622},{&quot;numTrees&quot;:80.0,&quot;avgMetric&quot;:0.8123633350366459},{&quot;numTrees&quot;:120.0,&quot;avgMetric&quot;:0.812934951608542},{&quot;numTrees&quot;:160.0,&quot;avgMetric&quot;:0.8133463794945599},{&quot;numTrees&quot;:200.0,&quot;avgMetric&quot;:0.812897374632533},{&quot;numTrees&quot;:250.0,&quot;avgMetric&quot;:0.8133296213014655}],&quot;genId&quot;:&quot;2029918013&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'numTrees', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'numTrees'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"numTrees\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9e43399a84192fa9297bbc09733a1485&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon4d07f24dd04db5d0d5ded0fb7706cad6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 18
+      "execution_count" : 25
     } ]
   }, {
     "metadata" : {
@@ -463,14 +463,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "ageRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[6372] at map at <console>:38\nfnlwgtRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[6381] at map at <console>:39\ncgainRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[6390] at map at <console>:40\nageHist: (Array[Double], Array[Long]) = (Array(17.0, 24.3, 31.6, 38.9, 46.2, 53.5, 60.8, 68.1, 75.4, 82.7, 90.0),Array(2466, 2776, 2966, 3066, 1931, 1203, 667, 183, 62, 27))\nfnlwgtHist: (Array[Double], Array[Long]) = (Array(19302.0, 92572.15, 165842.3, 239112.45, 312382.6, 385652.75, 458922.9, 532193.05, 605463.2, 678733.35, 752003.5, 825273.65, 898543.8, 971813.95, 1045084.1, 1118354.25, 1191624.4, 1264894.55, 1338164.7, 1411434.85, 1484705.0),Array(2389, 4292, 4922, 1941, 1069, 459, 149, 66, 27, 17, 4, 0, 2, 4, 0, 1, ..."
+      "text" : "ageRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[134008] at map at <console>:38\nfnlwgtRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[134017] at map at <console>:39\ncgainRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[134026] at map at <console>:40\nageHist: (Array[Double], Array[Long]) = (Array(17.0, 24.3, 31.6, 38.9, 46.2, 53.5, 60.8, 68.1, 75.4, 82.7, 90.0),Array(2466, 2776, 2966, 3066, 1931, 1203, 667, 183, 62, 27))\nfnlwgtHist: (Array[Double], Array[Long]) = (Array(19302.0, 92572.15, 165842.3, 239112.45, 312382.6, 385652.75, 458922.9, 532193.05, 605463.2, 678733.35, 752003.5, 825273.65, 898543.8, 971813.95, 1045084.1, 1118354.25, 1191624.4, 1264894.55, 1338164.7, 1411434.85, 1484705.0),Array(2389, 4292, 4922, 1941, 1069, 459, 149, 66, 27, 17, 4, 0, 2, 4, ..."
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 19
+      "execution_count" : 26
     } ]
   }, {
     "metadata" : {
@@ -485,14 +485,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res27: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>\n"
+      "text" : "res65: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonc7958d3a69e2555467b4057223da88cd&quot;,&quot;dataInit&quot;:[{&quot;ageBucket&quot;:17.0,&quot;age&quot;:2466},{&quot;ageBucket&quot;:24.3,&quot;age&quot;:2776},{&quot;ageBucket&quot;:31.6,&quot;age&quot;:2966},{&quot;ageBucket&quot;:38.9,&quot;age&quot;:3066},{&quot;ageBucket&quot;:46.2,&quot;age&quot;:1931},{&quot;ageBucket&quot;:53.5,&quot;age&quot;:1203},{&quot;ageBucket&quot;:60.8,&quot;age&quot;:667},{&quot;ageBucket&quot;:68.1,&quot;age&quot;:183},{&quot;ageBucket&quot;:75.4,&quot;age&quot;:62},{&quot;ageBucket&quot;:82.7,&quot;age&quot;:27}],&quot;genId&quot;:&quot;263560734&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'ageBucket', \\n                       type: 'bar'},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"ageBucket\",\"age\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb6d3c4fef5b58682401b3e02940a4a46&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon1f7e4f93d687964639afe598dd322ab2&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon7aab96b1b42765ce284496f0ea24a5a6&quot;,&quot;dataInit&quot;:[{&quot;ageBucket&quot;:17.0,&quot;age&quot;:2466},{&quot;ageBucket&quot;:24.3,&quot;age&quot;:2776},{&quot;ageBucket&quot;:31.6,&quot;age&quot;:2966},{&quot;ageBucket&quot;:38.9,&quot;age&quot;:3066},{&quot;ageBucket&quot;:46.2,&quot;age&quot;:1931},{&quot;ageBucket&quot;:53.5,&quot;age&quot;:1203},{&quot;ageBucket&quot;:60.8,&quot;age&quot;:667},{&quot;ageBucket&quot;:68.1,&quot;age&quot;:183},{&quot;ageBucket&quot;:75.4,&quot;age&quot;:62},{&quot;ageBucket&quot;:82.7,&quot;age&quot;:27}],&quot;genId&quot;:&quot;828317707&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'ageBucket', \\n                       type: 'bar'},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"ageBucket\",\"age\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon503b6c6ba9283e3bf55b4b74efc19acd&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon4daffc2837898f7d4ae70e562ad683b6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 20
+      "execution_count" : 27
     } ]
   }, {
     "metadata" : {
@@ -506,14 +506,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res29: notebook.front.widgets.CustomC3Chart[Array[FnlwgtHistPoint]] = <CustomC3Chart widget>\n"
+      "text" : "res67: notebook.front.widgets.CustomC3Chart[Array[FnlwgtHistPoint]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon156097e99b17023c65945df09c4d57a3&quot;,&quot;dataInit&quot;:[{&quot;fnlwgtBucket&quot;:19302.0,&quot;fnlwgt&quot;:2389},{&quot;fnlwgtBucket&quot;:92572.15,&quot;fnlwgt&quot;:4292},{&quot;fnlwgtBucket&quot;:165842.3,&quot;fnlwgt&quot;:4922},{&quot;fnlwgtBucket&quot;:239112.45,&quot;fnlwgt&quot;:1941},{&quot;fnlwgtBucket&quot;:312382.6,&quot;fnlwgt&quot;:1069},{&quot;fnlwgtBucket&quot;:385652.75,&quot;fnlwgt&quot;:459},{&quot;fnlwgtBucket&quot;:458922.9,&quot;fnlwgt&quot;:149},{&quot;fnlwgtBucket&quot;:532193.05,&quot;fnlwgt&quot;:66},{&quot;fnlwgtBucket&quot;:605463.2,&quot;fnlwgt&quot;:27},{&quot;fnlwgtBucket&quot;:678733.35,&quot;fnlwgt&quot;:17},{&quot;fnlwgtBucket&quot;:752003.5,&quot;fnlwgt&quot;:4},{&quot;fnlwgtBucket&quot;:825273.65,&quot;fnlwgt&quot;:0},{&quot;fnlwgtBucket&quot;:898543.8,&quot;fnlwgt&quot;:2},{&quot;fnlwgtBucket&quot;:971813.95,&quot;fnlwgt&quot;:4},{&quot;fnlwgtBucket&quot;:1045084.1,&quot;fnlwgt&quot;:0},{&quot;fnlwgtBucket&quot;:1118354.25,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1191624.4,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1264894.55,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1338164.7,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1411434.85,&quot;fnlwgt&quot;:2}],&quot;genId&quot;:&quot;101080080&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'fnlwgtBucket', \\n                       type: 'bar',\\n                       colors: {fnlwgt: 'green'}},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"fnlwgtBucket\",\"fnlwgt\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon04a5af49a2ac25971c6f96bec6f202a8&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon86eb4cbb06c2f42a431a75d108d5297b&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon36c317cb447b8baf92dc62d4277a7f76&quot;,&quot;dataInit&quot;:[{&quot;fnlwgtBucket&quot;:19302.0,&quot;fnlwgt&quot;:2389},{&quot;fnlwgtBucket&quot;:92572.15,&quot;fnlwgt&quot;:4292},{&quot;fnlwgtBucket&quot;:165842.3,&quot;fnlwgt&quot;:4922},{&quot;fnlwgtBucket&quot;:239112.45,&quot;fnlwgt&quot;:1941},{&quot;fnlwgtBucket&quot;:312382.6,&quot;fnlwgt&quot;:1069},{&quot;fnlwgtBucket&quot;:385652.75,&quot;fnlwgt&quot;:459},{&quot;fnlwgtBucket&quot;:458922.9,&quot;fnlwgt&quot;:149},{&quot;fnlwgtBucket&quot;:532193.05,&quot;fnlwgt&quot;:66},{&quot;fnlwgtBucket&quot;:605463.2,&quot;fnlwgt&quot;:27},{&quot;fnlwgtBucket&quot;:678733.35,&quot;fnlwgt&quot;:17},{&quot;fnlwgtBucket&quot;:752003.5,&quot;fnlwgt&quot;:4},{&quot;fnlwgtBucket&quot;:825273.65,&quot;fnlwgt&quot;:0},{&quot;fnlwgtBucket&quot;:898543.8,&quot;fnlwgt&quot;:2},{&quot;fnlwgtBucket&quot;:971813.95,&quot;fnlwgt&quot;:4},{&quot;fnlwgtBucket&quot;:1045084.1,&quot;fnlwgt&quot;:0},{&quot;fnlwgtBucket&quot;:1118354.25,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1191624.4,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1264894.55,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1338164.7,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1411434.85,&quot;fnlwgt&quot;:2}],&quot;genId&quot;:&quot;1565603218&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'fnlwgtBucket', \\n                       type: 'bar',\\n                       colors: {fnlwgt: 'green'}},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"fnlwgtBucket\",\"fnlwgt\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonf5d4bd40d25eebf81689487d55222d3d&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9a80aa1bd817c0cf058d0e45e60dff11&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 21
+      "execution_count" : 28
     } ]
   }, {
     "metadata" : {
@@ -527,14 +527,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res31: notebook.front.widgets.CustomC3Chart[Array[CgainHistPoint]] = <CustomC3Chart widget>\n"
+      "text" : "res69: notebook.front.widgets.CustomC3Chart[Array[CgainHistPoint]] = <CustomC3Chart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon85423fd204011df0c39ae86bed870dea&quot;,&quot;dataInit&quot;:[{&quot;cgainBucket&quot;:0.0,&quot;cgain&quot;:14072},{&quot;cgainBucket&quot;:1999.98,&quot;cgain&quot;:311},{&quot;cgainBucket&quot;:3999.96,&quot;cgain&quot;:241},{&quot;cgainBucket&quot;:5999.94,&quot;cgain&quot;:320},{&quot;cgainBucket&quot;:7999.92,&quot;cgain&quot;:36},{&quot;cgainBucket&quot;:9999.9,&quot;cgain&quot;:33},{&quot;cgainBucket&quot;:11999.88,&quot;cgain&quot;:14},{&quot;cgainBucket&quot;:13999.86,&quot;cgain&quot;:208},{&quot;cgainBucket&quot;:15999.84,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:17999.82,&quot;cgain&quot;:1},{&quot;cgainBucket&quot;:19999.8,&quot;cgain&quot;:18},{&quot;cgainBucket&quot;:21999.78,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:23999.76,&quot;cgain&quot;:9},{&quot;cgainBucket&quot;:25999.74,&quot;cgain&quot;:16},{&quot;cgainBucket&quot;:27999.72,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:29999.7,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:31999.68,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:33999.66,&quot;cgain&quot;:2},{&quot;cgainBucket&quot;:35999.64,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:37999.62,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:39999.6,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:41999.58,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:43999.56,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:45999.54,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:47999.52,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:49999.5,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:51999.48,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:53999.46,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:55999.44,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:57999.42,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:59999.4,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:61999.38,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:63999.36,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:65999.34,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:67999.32,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:69999.3,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:71999.28,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:73999.26,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:75999.24,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:77999.22,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:79999.2,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:81999.18,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:83999.16,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:85999.14,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:87999.12,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:89999.1,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:91999.08,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:93999.06,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:95999.04,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:97999.02,&quot;cgain&quot;:66}],&quot;genId&quot;:&quot;1177017357&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'cgainBucket', \\n                       type: 'bar',\\n                       colors: {cgain: 'purple'}},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"cgainBucket\",\"cgain\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon2f54b13fc1c1b54d41639d840368b4ed&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon3955eebc0d9dc2d398172c15fc15fe0e&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anone884a184d9cfd7e56da6cf2161079d56&quot;,&quot;dataInit&quot;:[{&quot;cgainBucket&quot;:0.0,&quot;cgain&quot;:14072},{&quot;cgainBucket&quot;:1999.98,&quot;cgain&quot;:311},{&quot;cgainBucket&quot;:3999.96,&quot;cgain&quot;:241},{&quot;cgainBucket&quot;:5999.94,&quot;cgain&quot;:320},{&quot;cgainBucket&quot;:7999.92,&quot;cgain&quot;:36},{&quot;cgainBucket&quot;:9999.9,&quot;cgain&quot;:33},{&quot;cgainBucket&quot;:11999.88,&quot;cgain&quot;:14},{&quot;cgainBucket&quot;:13999.86,&quot;cgain&quot;:208},{&quot;cgainBucket&quot;:15999.84,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:17999.82,&quot;cgain&quot;:1},{&quot;cgainBucket&quot;:19999.8,&quot;cgain&quot;:18},{&quot;cgainBucket&quot;:21999.78,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:23999.76,&quot;cgain&quot;:9},{&quot;cgainBucket&quot;:25999.74,&quot;cgain&quot;:16},{&quot;cgainBucket&quot;:27999.72,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:29999.7,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:31999.68,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:33999.66,&quot;cgain&quot;:2},{&quot;cgainBucket&quot;:35999.64,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:37999.62,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:39999.6,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:41999.58,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:43999.56,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:45999.54,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:47999.52,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:49999.5,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:51999.48,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:53999.46,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:55999.44,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:57999.42,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:59999.4,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:61999.38,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:63999.36,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:65999.34,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:67999.32,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:69999.3,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:71999.28,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:73999.26,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:75999.24,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:77999.22,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:79999.2,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:81999.18,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:83999.16,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:85999.14,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:87999.12,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:89999.1,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:91999.08,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:93999.06,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:95999.04,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:97999.02,&quot;cgain&quot;:66}],&quot;genId&quot;:&quot;34958953&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'cgainBucket', \\n                       type: 'bar',\\n                       colors: {cgain: 'purple'}},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"cgainBucket\",\"cgain\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonec4a838184a8685348b31237ec93e59c&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon78e41eb5ea76f38e173b8bc618a42469&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 22
+      "execution_count" : 29
     } ]
   }, {
     "metadata" : {
@@ -572,14 +572,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.feature.StandardScaler\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_1ff3b7a0ed43\nscalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_1ff3b7a0ed43\nscaledData: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
+      "text" : "import org.apache.spark.ml.feature.StandardScaler\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_1b221a6d19d2\nscalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_1b221a6d19d2\nscaledData: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 7
+      "execution_count" : 30
     } ]
   }, {
     "metadata" : {
@@ -593,14 +593,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res11: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
+      "text" : "res72: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon95c679dd5ff047c3bbf27c552b37d9e4&quot;,&quot;partitionIndexId&quot;:&quot;anondf38f99b6bff039c94a0ef7e85fdbf08&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;label&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;vals&quot;:[&quot;&lt;=50K&quot;,&quot;&gt;50K&quot;],&quot;type&quot;:&quot;nominal&quot;,&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;}}},{&quot;name&quot;:&quot;features&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;attrs&quot;:{&quot;numeric&quot;:[{&quot;idx&quot;:0,&quot;name&quot;:&quot;fnlwgt&quot;},{&quot;idx&quot;:1,&quot;name&quot;:&quot;education-num&quot;},{&quot;idx&quot;:2,&quot;name&quot;:&quot;capital-gain&quot;},{&quot;idx&quot;:3,&quot;name&quot;:&quot;capital-loss&quot;},{&quot;idx&quot;:4,&quot;name&quot;:&quot;hours-per-week&quot;}]},&quot;num_attrs&quot;:5}}},{&quot;name&quot;:&quot;scaledFeatures&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon397ef40bded5f9e45e243b61e9fff834&quot;,&quot;partitionIndexId&quot;:&quot;anonfc8c6fe0d1329a931953b56748b0c034&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;label&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;vals&quot;:[&quot;&lt;=50K&quot;,&quot;&gt;50K&quot;],&quot;type&quot;:&quot;nominal&quot;,&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;}}},{&quot;name&quot;:&quot;features&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;attrs&quot;:{&quot;numeric&quot;:[{&quot;idx&quot;:0,&quot;name&quot;:&quot;fnlwgt&quot;},{&quot;idx&quot;:1,&quot;name&quot;:&quot;education-num&quot;},{&quot;idx&quot;:2,&quot;name&quot;:&quot;capital-gain&quot;},{&quot;idx&quot;:3,&quot;name&quot;:&quot;capital-loss&quot;},{&quot;idx&quot;:4,&quot;name&quot;:&quot;hours-per-week&quot;}]},&quot;num_attrs&quot;:5}}},{&quot;name&quot;:&quot;scaledFeatures&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 31
     } ]
   }, {
     "metadata" : {
@@ -614,14 +614,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_9034dc743851\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_9034dc743851-regParam: 0.005\n}, {\n\tlogreg_9034dc743851-regParam: 0.002\n}, {\n\tlogreg_9034dc743851-regParam: 0.001\n}, {\n\tlogreg_9034dc743851-regParam: 5.0E-4\n}, {\n\tlogreg_9034dc743851-regParam: 1.0E-4\n}, {\n\tlogreg_9034dc743851-regParam: 5.0E-5\n}, {\n\tlogreg_9034dc743851-regParam: 1.0E-5\n})\nlrCV: org.apache.spark.ml.tuning.CrossValidator = cv_23af5cc60802\nlrCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_23af5cc60802\n"
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_c590cc04ea2c\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_c590cc04ea2c-regParam: 0.005\n}, {\n\tlogreg_c590cc04ea2c-regParam: 0.002\n}, {\n\tlogreg_c590cc04ea2c-regParam: 0.001\n}, {\n\tlogreg_c590cc04ea2c-regParam: 5.0E-4\n}, {\n\tlogreg_c590cc04ea2c-regParam: 1.0E-4\n}, {\n\tlogreg_c590cc04ea2c-regParam: 5.0E-5\n}, {\n\tlogreg_c590cc04ea2c-regParam: 1.0E-5\n})\nlrCV: org.apache.spark.ml.tuning.CrossValidator = cv_bdbb219bd167\nlrCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_bdbb219bd167\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 13
+      "execution_count" : 32
     } ]
   }, {
     "metadata" : {
@@ -635,14 +635,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res19: Double = 0.796936652552211\n"
+      "text" : "res75: Double = 0.7969366525522104\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0.796936652552211"
+        "text/html" : "0.7969366525522104"
       },
       "output_type" : "execute_result",
-      "execution_count" : 14
+      "execution_count" : 33
     } ]
   }, {
     "metadata" : {
@@ -662,14 +662,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_8311dd674afd\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 0.005\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 0.002\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 0.001\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 5.0E-4\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 1.0E-4\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 5.0E-5\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.0,\n\tlogreg_8311dd674afd-regParam: 1.0E-5\n}, {\n\tlogreg_8311dd674afd-elasticNetParam: 0.2,\n\tlogreg_8..."
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_d208be8efefb\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 0.005\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 0.002\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 0.001\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 5.0E-4\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 1.0E-4\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 5.0E-5\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 1.0E-5\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.2,\n\tlogreg_d..."
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 15
+      "execution_count" : 34
     } ]
   }, {
     "metadata" : {
@@ -683,14 +683,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res22: Double = 0.797023885840847\n"
+      "text" : "res78: Double = 0.7970238858408468\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0.797023885840847"
+        "text/html" : "0.7970238858408468"
       },
       "output_type" : "execute_result",
-      "execution_count" : 16
+      "execution_count" : 35
     } ]
   }, {
     "metadata" : {
@@ -722,14 +722,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.feature.OneHotEncoder\nindexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_8d156b7f947e\nindexedData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string, occupationIndex: double]\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_809b06a55047\noheEncodeData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-w..."
+      "text" : "import org.apache.spark.ml.feature.OneHotEncoder\nindexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_87c12d392f1d\nindexedData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string, occupationIndex: double]\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_a57cb13b9cf0\noheEncodeData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-w..."
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon4e6be120ca17a40fedb900957f085281&quot;,&quot;partitionIndexId&quot;:&quot;anon4874f9409f99b02aad5e4ddeed83a1c1&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupationVec&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;attrs&quot;:{&quot;binary&quot;:[{&quot;idx&quot;:0,&quot;name&quot;:&quot;Prof-specialty&quot;},{&quot;idx&quot;:1,&quot;name&quot;:&quot;Craft-repair&quot;},{&quot;idx&quot;:2,&quot;name&quot;:&quot;Exec-managerial&quot;},{&quot;idx&quot;:3,&quot;name&quot;:&quot;Adm-clerical&quot;},{&quot;idx&quot;:4,&quot;name&quot;:&quot;Sales&quot;},{&quot;idx&quot;:5,&quot;name&quot;:&quot;Other-service&quot;},{&quot;idx&quot;:6,&quot;name&quot;:&quot;Machine-op-inspct&quot;},{&quot;idx&quot;:7,&quot;name&quot;:&quot;Transport-moving&quot;},{&quot;idx&quot;:8,&quot;name&quot;:&quot;Handlers-cleaners&quot;},{&quot;idx&quot;:9,&quot;name&quot;:&quot;Farming-fishing&quot;},{&quot;idx&quot;:10,&quot;name&quot;:&quot;Tech-support&quot;},{&quot;idx&quot;:11,&quot;name&quot;:&quot;Protective-serv&quot;},{&quot;idx&quot;:12,&quot;name&quot;:&quot;Priv-house-serv&quot;}]},&quot;num_attrs&quot;:13}}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona845f10c38a2aa1d539b7fa3f1c1f5eb&quot;,&quot;partitionIndexId&quot;:&quot;anonf9cc856a9dc4e33e601a42046f250735&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupationVec&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;attrs&quot;:{&quot;binary&quot;:[{&quot;idx&quot;:0,&quot;name&quot;:&quot;Prof-specialty&quot;},{&quot;idx&quot;:1,&quot;name&quot;:&quot;Craft-repair&quot;},{&quot;idx&quot;:2,&quot;name&quot;:&quot;Exec-managerial&quot;},{&quot;idx&quot;:3,&quot;name&quot;:&quot;Adm-clerical&quot;},{&quot;idx&quot;:4,&quot;name&quot;:&quot;Sales&quot;},{&quot;idx&quot;:5,&quot;name&quot;:&quot;Other-service&quot;},{&quot;idx&quot;:6,&quot;name&quot;:&quot;Machine-op-inspct&quot;},{&quot;idx&quot;:7,&quot;name&quot;:&quot;Transport-moving&quot;},{&quot;idx&quot;:8,&quot;name&quot;:&quot;Handlers-cleaners&quot;},{&quot;idx&quot;:9,&quot;name&quot;:&quot;Farming-fishing&quot;},{&quot;idx&quot;:10,&quot;name&quot;:&quot;Tech-support&quot;},{&quot;idx&quot;:11,&quot;name&quot;:&quot;Protective-serv&quot;},{&quot;idx&quot;:12,&quot;name&quot;:&quot;Priv-house-serv&quot;}]},&quot;num_attrs&quot;:13}}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 9
+      "execution_count" : 36
     } ]
   }, {
     "metadata" : {
@@ -743,14 +743,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_1ea74a31acc1\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_2e7ce8f5486f\nvecIdxData: org.apache.spark.sql.DataFrame = [label: double, features: vector]\n"
+      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_d91b57cd47dc\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_f78720bf1da1\nvecIdxData: org.apache.spark.sql.DataFrame = [label: double, features: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 23
+      "execution_count" : 37
     } ]
   }, {
     "metadata" : {
@@ -764,14 +764,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "scaler: org.apache.spark.ml.feature.StandardScaler = stdScal_4816d94ef28d\nscalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_4816d94ef28d\nscaledData: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
+      "text" : "scaler: org.apache.spark.ml.feature.StandardScaler = stdScal_b0eccf6ae0a0\nscalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_b0eccf6ae0a0\nscaledData: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 26
+      "execution_count" : 38
     } ]
   }, {
     "metadata" : {
@@ -785,14 +785,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_fca473ca6a7d\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_fca473ca6a7d-regParam: 0.005\n}, {\n\tlogreg_fca473ca6a7d-regParam: 0.002\n}, {\n\tlogreg_fca473ca6a7d-regParam: 0.001\n}, {\n\tlogreg_fca473ca6a7d-regParam: 5.0E-4\n}, {\n\tlogreg_fca473ca6a7d-regParam: 1.0E-4\n}, {\n\tlogreg_fca473ca6a7d-regParam: 5.0E-5\n}, {\n\tlogreg_fca473ca6a7d-regParam: 1.0E-5\n})\nlrCV: org.apache.spark.ml.tuning.CrossValidator = cv_03e72e38caa2\nlrCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_03e72e38caa2\n"
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_62491ddebad1\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_62491ddebad1-regParam: 0.005\n}, {\n\tlogreg_62491ddebad1-regParam: 0.002\n}, {\n\tlogreg_62491ddebad1-regParam: 0.001\n}, {\n\tlogreg_62491ddebad1-regParam: 5.0E-4\n}, {\n\tlogreg_62491ddebad1-regParam: 1.0E-4\n}, {\n\tlogreg_62491ddebad1-regParam: 5.0E-5\n}, {\n\tlogreg_62491ddebad1-regParam: 1.0E-5\n})\nlrCV: org.apache.spark.ml.tuning.CrossValidator = cv_5281642b0b6c\nlrCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_5281642b0b6c\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 27
+      "execution_count" : 39
     } ]
   }, {
     "metadata" : {
@@ -806,14 +806,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res39: Double = 0.8188199134964155\n"
+      "text" : "res85: Double = 0.8188199134964154\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0.8188199134964155"
+        "text/html" : "0.8188199134964154"
       },
       "output_type" : "execute_result",
-      "execution_count" : 28
+      "execution_count" : 40
     } ]
   }, {
     "metadata" : {
@@ -848,14 +848,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString, VectorIndexer, OneHotEncoder, VectorAssembler, StandardScaler}\nimport org.apache.spark.ml.classification.LogisticRegression\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_8feb19883e3f\nfeatureIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_714c1884f97b\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_db79a90cc4a9\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_75271e1a0a0e\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_61d6cca95a72\nlr: org.apache.spark.ml.classification.LogisticRegression = logreg_b5981cd91196\nlabelConverter: org.apache.spark.ml.feature.IndexToString = idxToStr_dbf3a154b5fd\npipeline: o..."
+      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString, VectorIndexer, OneHotEncoder, VectorAssembler, StandardScaler}\nimport org.apache.spark.ml.classification.LogisticRegression\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_f9c2ba018757\nfeatureIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_9c659b41dc06\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_bdb89a4e18ad\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_2efb7659606e\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_448a60c460c9\nlr: org.apache.spark.ml.classification.LogisticRegression = logreg_67ff9cf50468\nlabelConverter: org.apache.spark.ml.feature.IndexToString = idxToStr_26e821063886\npipeline: o..."
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 41
     } ]
   }, {
     "metadata" : {
@@ -869,14 +869,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_b5981cd91196-regParam: 0.005\n}, {\n\tlogreg_b5981cd91196-regParam: 0.002\n}, {\n\tlogreg_b5981cd91196-regParam: 0.001\n}, {\n\tlogreg_b5981cd91196-regParam: 5.0E-4\n}, {\n\tlogreg_b5981cd91196-regParam: 1.0E-4\n}, {\n\tlogreg_b5981cd91196-regParam: 5.0E-5\n}, {\n\tlogreg_b5981cd91196-regParam: 1.0E-5\n})\ncv: org.apache.spark.ml.tuning.CrossValidator = cv_673e17c08171\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_673e17c08171\n"
+      "text" : "import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_67ff9cf50468-regParam: 0.005\n}, {\n\tlogreg_67ff9cf50468-regParam: 0.002\n}, {\n\tlogreg_67ff9cf50468-regParam: 0.001\n}, {\n\tlogreg_67ff9cf50468-regParam: 5.0E-4\n}, {\n\tlogreg_67ff9cf50468-regParam: 1.0E-4\n}, {\n\tlogreg_67ff9cf50468-regParam: 5.0E-5\n}, {\n\tlogreg_67ff9cf50468-regParam: 1.0E-5\n})\ncv: org.apache.spark.ml.tuning.CrossValidator = cv_597b32d4a778\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_597b32d4a778\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 42
     } ]
   }, {
     "metadata" : {
@@ -894,14 +894,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res9: Double = 0.8188199134964158\n"
+      "text" : "res89: Double = 0.8188199134964158\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "0.8188199134964158"
       },
       "output_type" : "execute_result",
-      "execution_count" : 6
+      "execution_count" : 43
     } ]
   }, {
     "metadata" : {
@@ -921,14 +921,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "categCols: Array[String] = Array(workclass, education, marital-status, occupation, relationship, race, sex)\nfeatureIndexers: Array[org.apache.spark.ml.PipelineStage] = Array(strIdx_b9ff3fc2f34c, strIdx_c6f01d1703ac, strIdx_cc37c7e4208b, strIdx_8b55bd00cbc3, strIdx_15e63a382a94, strIdx_3b2b00bb0030, strIdx_7fd2eb4a2db0)\noneHotEncoders: Array[org.apache.spark.ml.feature.OneHotEncoder] = Array(oneHot_3c2134d084f5, oneHot_7637eb3a7d22, oneHot_bb8ab7959231, oneHot_5f7877ef4d08, oneHot_aed71556c602, oneHot_8133699dbbef, oneHot_ba6abe6ff070)\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_b1609e18c924\npipeline: org.apache.spark.ml.Pipeline = pipeline_0e02424180ee\n"
+      "text" : "categCols: Array[String] = Array(workclass, education, marital-status, occupation, relationship, race, sex)\nfeatureIndexers: Array[org.apache.spark.ml.PipelineStage] = Array(strIdx_211e20807a1f, strIdx_06b4a8f30ff1, strIdx_ca53dfdb288b, strIdx_482b4f9b33d4, strIdx_30ff20a90ecd, strIdx_ed41f6f76959, strIdx_23dd68afa952)\noneHotEncoders: Array[org.apache.spark.ml.feature.OneHotEncoder] = Array(oneHot_3bc2d9695456, oneHot_c0935e56c4dd, oneHot_108a87562af0, oneHot_a1e4e0743bbf, oneHot_dc36f305044a, oneHot_02013e9737ca, oneHot_9e4246bfde95)\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_9d494de199fe\npipeline: org.apache.spark.ml.Pipeline = pipeline_250c628cf7eb\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 7
+      "execution_count" : 44
     } ]
   }, {
     "metadata" : {
@@ -942,14 +942,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "cv: org.apache.spark.ml.tuning.CrossValidator = cv_1ad1dad812ff\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_1ad1dad812ff\n"
+      "text" : "cv: org.apache.spark.ml.tuning.CrossValidator = cv_9ade7c7a7673\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_9ade7c7a7673\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 45
     } ]
   }, {
     "metadata" : {
@@ -967,14 +967,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res13: Double = 0.9010361016081744\n"
+      "text" : "res93: Double = 0.9010213957983959\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0.9010361016081744"
+        "text/html" : "0.9010213957983959"
       },
       "output_type" : "execute_result",
-      "execution_count" : 9
+      "execution_count" : 46
     } ]
   }, {
     "metadata" : {
@@ -982,6 +982,22 @@
     },
     "cell_type" : "markdown",
     "source" : "We have obtained a significant boost in quality of classification."
+  }, {
+    "metadata" : {
+      "id" : "CC0A87CBC2C94BE78EBBC3C31BEE310B"
+    },
+    "cell_type" : "markdown",
+    "source" : "You can continue to modify and expand the pipeline by adding new steps of data transformation.\nFor example, one can try to add [QuantileDiscretizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.QuantileDiscretizer)\ntransformation applied to some continuous feature such as `fnlwgt` and add `numBuckets` parameters grid \nto grid search."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "4DF8126BCCA546EE8C9CC37781B710FC"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
   } ],
   "nbformat" : 4
 }
