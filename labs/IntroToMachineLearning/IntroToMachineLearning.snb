@@ -988,6 +988,12 @@
     },
     "cell_type" : "markdown",
     "source" : "You can continue to modify and expand the pipeline by adding new steps of data transformation.\nFor example, one can try to add [QuantileDiscretizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.QuantileDiscretizer)\ntransformation applied to some numeric feature such as `fnlwgt` and add `numBuckets` parameter values\nto pipeline parameters grid and see how it will affect cross validation score."
+  }, {
+    "metadata" : {
+      "id" : "0A81E9D0A58C44FA86851F1F944771BE"
+    },
+    "cell_type" : "markdown",
+    "source" : "We've learned how to teach machine learning models, perform hyperparameters tuning and compare models using cross-validation. We've learned how to use spark.ml package and it's powerful pipeline conception."
   } ],
   "nbformat" : 4
 }
