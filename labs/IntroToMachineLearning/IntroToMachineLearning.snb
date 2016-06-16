@@ -987,17 +987,7 @@
       "id" : "CC0A87CBC2C94BE78EBBC3C31BEE310B"
     },
     "cell_type" : "markdown",
-    "source" : "You can continue to modify and expand the pipeline by adding new steps of data transformation.\nFor example, one can try to add [QuantileDiscretizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.QuantileDiscretizer)\ntransformation applied to some continuous feature such as `fnlwgt` and add `numBuckets` parameters grid \nto grid search."
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true,
-      "id" : "4DF8126BCCA546EE8C9CC37781B710FC"
-    },
-    "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
+    "source" : "You can continue to modify and expand the pipeline by adding new steps of data transformation.\nFor example, one can try to add [QuantileDiscretizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.QuantileDiscretizer)\ntransformation applied to some numeric feature such as `fnlwgt` and add `numBuckets` parameter values\nto pipeline parameters grid and see how it will affect cross validation score."
   } ],
   "nbformat" : 4
 }
