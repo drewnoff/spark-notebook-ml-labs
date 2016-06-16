@@ -1,0 +1,993 @@
+{
+  "metadata" : {
+    "name" : "IntroToMachineLearning",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "3A6248493F5C495B867FA71A58FEC94F"
+    },
+    "cell_type" : "markdown",
+    "source" : "# Introduction To Machine Learning"
+  }, {
+    "metadata" : {
+      "id" : "32A815C17E4249188EA22AFA9CF90214"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this lab we are going to learn how to teach machine learning models, how to correctly set up an experiment, how to tune model hyperparameters and how to compare models. Also we'are going to get familiar with **spark.ml** package as soon as all of the work we'are going to get done using this package."
+  }, {
+    "metadata" : {
+      "id" : "C488382661284963A79044CFA727F681"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Data"
+  }, {
+    "metadata" : {
+      "id" : "0BDB9C4C25BB4CA7BEDB3038F07B2A38"
+    },
+    "cell_type" : "markdown",
+    "source" : "We'are going to solve binary classification problem by building the algorithm which determines whether a person makes over 50K a year. Following features are available:\n* age\n* workclass\n* fnlwgt\n* education\n* education-num\n* marital-status\n* occupation\n* relationship\n* race\n* sex\n* capital-gain\n* capital-loss\n* hours-per-week\n\nMore on this data one can read in [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "A9551E61D5504FD18623E6BFFFAF3D00"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Evaluation Metrics"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "DCFF52B919794706872976E2469AA9E2"
+    },
+    "cell_type" : "markdown",
+    "source" : "Model training and model quality assessment is performed on independent sets of examples. As a rule, the available examples are divided into two subsets: training (train) and control (test). The choice of the proportions of the split is a compromise. Indeed, the large size of the training leads to better quality of algorithms, but more noisy estimation of the model on the control. Conversely, the large size of the test sample leads to a less noisy assessment of the quality, however, models are less accurate.\n\nMany classification models produce estimation of belonging to the class $\\tilde{h}(x) \\in R$ (for example, the probability of belonging to the class 1). They then make a decision about the class of the object by comparing the estimates with a certain threshold $\\theta$:\n\n$h(x) = +1$,  if $\\tilde{h}(x) \\geq \\theta$, $h(x) = -1$, if $\\tilde{h}(x) < \\theta$\n\nIn this case, we can consider metrics that are able to work with estimates of belonging to a class.\nIn this lab, we will work with [AUC-ROC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve) metric. Detailed understanding of the operating principle of AUC-ROC metric is not required to perform the lab."
+  }, {
+    "metadata" : {
+      "id" : "BDF36C8F8D9F4F74860C175A21AF0E1A"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Model Hyperparameter Tuning"
+  }, {
+    "metadata" : {
+      "id" : "800C540A45CB4675843AA906E2298A32"
+    },
+    "cell_type" : "markdown",
+    "source" : "In machine learning problems it is necessary to distinguish the parameters of the model and hyperparameters (structural parameters). The model parameters are adjusted during the training (e.g., weights in the linear model or the structure of the decision tree), while hyperparameters are set in advance (for example, the regularization in linear model or maximum depth of the decision tree). Each model usually has many hyperparameters, and there is no universal set of hyperparameters optimal working in all tasks, for each task one should choose a different set of hyperparameters. _Grid search_ is commonly used to optimize model hyperparameters: for each parameter several values are selected and combination of parameter values where the model shows the best quality (in terms of the metric that is being optimized) is selected. However, in this case, it is necessary to correctly assess the constructed model, namely to do the split into training and test sample. There are several ways how it can be implemented:\n\n - Split the available samples into training and test samples. In this case, the comparison of a large number of models in the search of parameters leads to a situation when the best model on test data does not maintain its quality on new data. We can say that there is overfitting on the test data.\n - To eliminate the problem described above, it is possible to split data into 3 disjoint sub-samples: `train`, `validation` and `test`. The `validation` set is used for models comparison, and `test` set is used for the final quality assessment and comparison of families of models with selected parameters.\n - Another way to compare models is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics). There are different schemes of cross-validation:\n  - Leave-one-out cross-validation\n  - K-fold cross-validation\n  - Repeated random sub-sampling validation\n  \nCross-validation is computationally expensive operation, especially if you are doing a grid search with a very large number of combinations. So there are a number of compromises:\n - the grid can be made more sparse, touching fewer values for each parameter, however, we must not forget that in such case one can skip a good combination of parameters;\n - cross-validation can be done with a smaller number of partitions or folds, but in this case the quality assessment of cross-validation becomes more noisy and increases the risk to choose a suboptimal set of parameters due to the random nature of the split;\n - the parameters can be optimized sequentially (greedy) — one after another, and not to iterate over all combinations; this strategy does not always lead to the optimal set;\n - enumerate only small number of randomly selected combinations of values of hyperparameters."
+  }, {
+    "metadata" : {
+      "id" : "176CBB014380486884BAB81253623CB6"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Assignment"
+  }, {
+    "metadata" : {
+      "id" : "7670237CB8864671804D33997E5F6D8C"
+    },
+    "cell_type" : "markdown",
+    "source" : "To load data from csv file direct to Spark's Dataframe we will use [spark-csv](http://spark-packages.org/package/databricks/spark-csv) package.\nTo add spark-csv package to spark notebook one could add \"com.databricks:spark-csv_2.10:1.4.0\" (or \"com.databricks:spark-csv_2.11:1.4.0\" for Scala 2.11) dependency into customDeps conf section. Alternatively one could specify this dependency in `--packages` command line option while submiting spark application to a cluster (`spark-submit`) or launching spark shell (`spark-shell`). "
+  }, {
+    "metadata" : {
+      "id" : "2E49BBD752884AD886EF8FFC08E1D25E"
+    },
+    "cell_type" : "markdown",
+    "source" : "Load `data.adult.csv` dataset. Print several rows from the dataset."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4D18003B8DC84CBF8EAFA6970E4AA769"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.SQLContext\n\nval sqlContext = new SQLContext(sc)\n\nval data = sqlContext.read\n    .format(\"com.databricks.spark.csv\")\n    .option(\"header\", \"true\")\n    .option(\"inferSchema\", \"true\")\n    .load(\"notebooks/labs/IntroToMachineLearning/data.adult.csv\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@528a8807\ndata: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 12
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab435871698-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "9D07BA02CB614CC38B1603540EF32079"
+    },
+    "cell_type" : "code",
+    "source" : "data.limit(10)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res45: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonf536f51b115d8c630369cda2d52c2941&quot;,&quot;partitionIndexId&quot;:&quot;anon30ae431b17b5ed01c1cb732b28058208&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 13
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "11B94A3F144049018B5BABC89417BD4B"
+    },
+    "cell_type" : "markdown",
+    "source" : "Sometimes there are missing values in the data. Sometimes, in the description of the dataset one can found the description of format of missing values. Particularly in the given dataset  missing values are identified by '?' sign."
+  }, {
+    "metadata" : {
+      "id" : "3500871452614122B76057D99EFA48DE"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem** Find all the features with missing values. Remove from the dataset all objects with missing values."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab2090666617-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "82552EADAFF9425789C7A2B5D5338388"
+    },
+    "cell_type" : "code",
+    "source" : "val missingValsFeatures = data.columns.filter(col => data.filter(data(col) === \"?\").count > 0)\n\nprintln(\"Features with missing values: \" + missingValsFeatures.mkString(\", \"))\n\nval cleanData = missingValsFeatures.foldLeft(data)((df, col) => df.filter(df(col) !== \"?\"))\ncleanData.limit(10)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "Features with missing values: workclass, occupation\nmissingValsFeatures: Array[String] = Array(workclass, occupation)\ncleanData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\nres47: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon63ea093bd1a8a5b8369d766a1b44c671&quot;,&quot;partitionIndexId&quot;:&quot;anon471f7b4571b9867e013ca3d1ffa22c3a&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;workclass&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;fnlwgt&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;education-num&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;marital-status&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;relationship&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;race&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sex&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-gain&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;capital-loss&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;hours-per-week&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 14
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "A875FA272809418584F241E02F1BEDC2"
+    },
+    "cell_type" : "markdown",
+    "source" : "Some preprocessing steps are usually required after loading and cleaning dataset. In this case, these steps will include the following:\n\n - Select the target variable (the one we want to predict, string column of labels) and map it to an ML column of label indices using [StringIndexer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.StringIndexer), give the name \"label\" to a new variable.\n - Note that not all features are numeric. At first we will work only with numeric features. So let's select them separately in the feature vector \"features\"."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C6FF18068B774C3E9EA129CDD69BAB1B"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.feature.StringIndexer",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.feature.StringIndexer\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 15
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8CDCEA1DA0BC48E1B226ACF9BAD16359"
+    },
+    "cell_type" : "code",
+    "source" : "val assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\"))\n  .setOutputCol(\"features\")\n\nval labelIndexer = new StringIndexer()\n  .setInputCol(\">50K,<=50K\")\n  .setOutputCol(\"label\")\n  .fit(cleanData)\n\nval vecIdxData = assembler.transform{\n                labelIndexer.transform(cleanData)\n              }.select(\"label\", \"features\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_74ac2027368e\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_da8c63a32a55\nvecIdxData: org.apache.spark.sql.DataFrame = [label: double, features: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 16
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "29B3D2204CF84C7E83888327E3465DC6"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Training classifiers on numeric features\n\nIn this section we will need to work only with numeric features and a target variable.\nAt the beginning let's have a look at grid search in action.\nWe will consider 3 algorithms:\n - [LogisticRegression](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.LogisticRegression)\n - [DecisionTreeClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.DecisionTreeClassifier)\n - [RandomForestClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.RandomForestClassifier)\n \nTo start with, let's choose one parameter to optimize for each algorithm:\n - LogisticRegression — regularization parameter (*regParam*)\n - DecisonTreeClassifier — maximum depth of the tree (*maxDepth*)\n - RandomForestClassifier — maximum number of bins used for discretizing continuous features (*maxBins*)\n \nThe remaining parameters we will leave at their default values. \nTo implement grid search procedure one can use\n[CrossValidator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.CrossValidator) class\ncombining with [ParamGridBuilder](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.ParamGridBuilder) class. \nAlso we need to specify appropriate evaluator for this task, in our case we should use [BinaryClassificationEvaluator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.evaluation.BinaryClassificationEvaluator)\n(note that its default metric is areaUnderROC, so we don't neet to specify metric via `setMetricName` method call).\nSet up 5-fold cross validation scheme.\n\n**Problem** Try to find the optimal values of these hyperparameters for each algorithm. Plot the average cross-validation metrics for a given value of hyperparameter for each algorithm (hint: use `avgMetrics` field of resulting `CrossValidatorModel`)."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "546CD15E7F9748B3AED3EE4C1CCAF84D"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.classification.{LogisticRegression, DecisionTreeClassifier, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.classification.{LogisticRegression, DecisionTreeClassifier, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 17
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E053D2741AC646E4B179827D7D5A5E94"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\nval tree = new DecisionTreeClassifier()\nval rf = new RandomForestClassifier()\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(5e-3, 2e-3, 1e-3, 5e-4, 1e-4, 5e-5, 1e-5))\n  .build()\n\nval treeParamGrid = new ParamGridBuilder()\n  .addGrid(tree.maxDepth, Array(5, 10, 20, 25, 30))\n  .build()\n\nval rfParamGrid = new ParamGridBuilder()\n  .addGrid(rf.maxBins, Array(16, 32, 64, 128, 256))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval treeCV = new CrossValidator()\n  .setEstimator(tree)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(treeParamGrid)\n  .setNumFolds(5)\n\nval rfCV = new CrossValidator()\n  .setEstimator(rf)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(rfParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(vecIdxData)\nval treeCVModel = treeCV.fit(vecIdxData)\nval rfCVModel = rfCV.fit(vecIdxData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_9f971b2bad00\ntree: org.apache.spark.ml.classification.DecisionTreeClassifier = dtc_5ed3fa18a5cd\nrf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_dbcb4625047a\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_9f971b2bad00-regParam: 0.005\n}, {\n\tlogreg_9f971b2bad00-regParam: 0.002\n}, {\n\tlogreg_9f971b2bad00-regParam: 0.001\n}, {\n\tlogreg_9f971b2bad00-regParam: 5.0E-4\n}, {\n\tlogreg_9f971b2bad00-regParam: 1.0E-4\n}, {\n\tlogreg_9f971b2bad00-regParam: 5.0E-5\n}, {\n\tlogreg_9f971b2bad00-regParam: 1.0E-5\n})\ntreeParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tdtc_5ed3fa18a5cd-maxDepth: 5\n}, {\n\tdtc_5ed3fa18a5cd-maxDepth: 10\n}, {\n\tdtc_5ed3fa18a5cd-maxDepth: 20\n}, {\n\tdtc_5ed3fa18a5c..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 18
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "26B5F6AC9DB44E05B44BD38C3EA9F7D2"
+    },
+    "cell_type" : "code",
+    "source" : "case class LRAvgMetric(regParam: Double, avgMetric: Double)\ncase class TreeAvgMetric(maxDepth: Double, avgMetric: Double)\ncase class RFAvgMetric(maxBins: Double, avgMetric: Double)\n\nval lrAvgMetrics = lrCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(lr.regParam))\n                            .zip(lrCVModel.avgMetrics)\n                            .map(p => LRAvgMetric(p._1, p._2))\nval treeAvgMetrics = treeCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(tree.maxDepth))\n                            .zip(treeCVModel.avgMetrics)\n                            .map(p => TreeAvgMetric(p._1, p._2))\nval rfAvgMetrics = rfCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(rf.maxBins))\n                            .zip(rfCVModel.avgMetrics)\n                            .map(p => RFAvgMetric(p._1, p._2))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "defined class LRAvgMetric\ndefined class TreeAvgMetric\ndefined class RFAvgMetric\nlrAvgMetrics: Array[LRAvgMetric] = Array(LRAvgMetric(0.005,0.7965059769394554), LRAvgMetric(0.002,0.7969363092449264), LRAvgMetric(0.001,0.796929835627711), LRAvgMetric(5.0E-4,0.796808917496667), LRAvgMetric(1.0E-4,0.7966207927757235), LRAvgMetric(5.0E-5,0.7965996554856329), LRAvgMetric(1.0E-5,0.7965791958395751))\ntreeAvgMetrics: Array[TreeAvgMetric] = Array(TreeAvgMetric(5.0,0.41176499148651047), TreeAvgMetric(10.0,0.530571725844926), TreeAvgMetric(20.0,0.6263032570262157), TreeAvgMetric(25.0,0.6258948084014668), TreeAvgMetric(30.0,0.6249428711637058))\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(16.0,0.8004135537913268), RFAvgMetric(32.0,0.8047945957499629), RFAvgMetric(64.0,0.8084418765444344), RF..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 19
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab21386710-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "7941740C963341BE83D2BECC67FCC8F0"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(lrAvgMetrics,\n              \"\"\"{ data: { x: 'regParam', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'regParam'\n                        }\n                   } \n                  }\"\"\")\n",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res54: notebook.front.widgets.CustomC3Chart[Array[LRAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon471ef7a060f3dbacb363a6971abe48dd&quot;,&quot;dataInit&quot;:[{&quot;regParam&quot;:0.005,&quot;avgMetric&quot;:0.7965059769394554},{&quot;regParam&quot;:0.002,&quot;avgMetric&quot;:0.7969363092449264},{&quot;regParam&quot;:0.001,&quot;avgMetric&quot;:0.796929835627711},{&quot;regParam&quot;:0.00050,&quot;avgMetric&quot;:0.796808917496667},{&quot;regParam&quot;:0.00010,&quot;avgMetric&quot;:0.7966207927757235},{&quot;regParam&quot;:0.000050,&quot;avgMetric&quot;:0.7965996554856329},{&quot;regParam&quot;:0.000010,&quot;avgMetric&quot;:0.7965791958395751}],&quot;genId&quot;:&quot;1703103998&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'regParam', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'regParam'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"regParam\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon7605850d28c7a6f292bb3dcbb3b1d288&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon1fac25cbdecefa5743b904e329d749d2&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 20
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "69E8B82F27094D848ECB25B93EC854E3"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(treeAvgMetrics,\n              \"\"\"{ data: { x: 'maxDepth', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'maxDepth'\n                        }\n                   } \n                  }\"\"\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res56: notebook.front.widgets.CustomC3Chart[Array[TreeAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond27ace75db984dbad78bf3c75800ac19&quot;,&quot;dataInit&quot;:[{&quot;maxDepth&quot;:5.0,&quot;avgMetric&quot;:0.41176499148651047},{&quot;maxDepth&quot;:10.0,&quot;avgMetric&quot;:0.530571725844926},{&quot;maxDepth&quot;:20.0,&quot;avgMetric&quot;:0.6263032570262157},{&quot;maxDepth&quot;:25.0,&quot;avgMetric&quot;:0.6258948084014668},{&quot;maxDepth&quot;:30.0,&quot;avgMetric&quot;:0.6249428711637058}],&quot;genId&quot;:&quot;350941963&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxDepth', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxDepth'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxDepth\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb770f02f564559deedd6acd7c5433746&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonef08e9ba93131b012e8b878d4a5933db&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 21
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5938413478224DE697F2883205056B4D"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(rfAvgMetrics,\n              \"\"\"{ data: { x: 'maxBins', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'maxBins'\n                        }\n                   } \n                  }\"\"\")\n",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res58: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon32212b4ea2c9bac0e485892287fbed2d&quot;,&quot;dataInit&quot;:[{&quot;maxBins&quot;:16.0,&quot;avgMetric&quot;:0.8004135537913268},{&quot;maxBins&quot;:32.0,&quot;avgMetric&quot;:0.8047945957499629},{&quot;maxBins&quot;:64.0,&quot;avgMetric&quot;:0.8084418765444344},{&quot;maxBins&quot;:128.0,&quot;avgMetric&quot;:0.8099982134171134},{&quot;maxBins&quot;:256.0,&quot;avgMetric&quot;:0.8095619220686014}],&quot;genId&quot;:&quot;894664876&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'maxBins', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'maxBins'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"maxBins\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonfda77b81b4de45514fd7993521759b73&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb2a2e005765ede60d583a0a89b8a5207&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 22
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "B4AE5532F97441518191CD802D2B9BF2"
+    },
+    "cell_type" : "markdown",
+    "source" : "What can you say about the resulting graphs?"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "372C648E996342A182DF501DCC9461B1"
+    },
+    "cell_type" : "markdown",
+    "source" : "Also let's choose the number of trees in RandomForestClassifier algorithm. In general, RandomForest is not overfitting while increasing the number of trees, so with increase of the number of trees its quality will not become worse. Therefore, we will select the number of trees at which cross-validation score  stabilizes."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2653EDA7AF284C3683983BCFA92D8E68"
+    },
+    "cell_type" : "code",
+    "source" : "val rf = new RandomForestClassifier()\n  .setMaxBins(128)\nval rfParamGrid = new ParamGridBuilder()\n  .addGrid(rf.numTrees, Array(20, 40, 80, 120, 160, 200, 250))\n  .build()\n\nval rfCV = new CrossValidator()\n  .setEstimator(rf)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(rfParamGrid)\n  .setNumFolds(5)\n\nval rfCVModel = rfCV.fit(vecIdxData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "rf: org.apache.spark.ml.classification.RandomForestClassifier = rfc_e0e9e70eaf93\nrfParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\trfc_e0e9e70eaf93-numTrees: 20\n}, {\n\trfc_e0e9e70eaf93-numTrees: 40\n}, {\n\trfc_e0e9e70eaf93-numTrees: 80\n}, {\n\trfc_e0e9e70eaf93-numTrees: 120\n}, {\n\trfc_e0e9e70eaf93-numTrees: 160\n}, {\n\trfc_e0e9e70eaf93-numTrees: 200\n}, {\n\trfc_e0e9e70eaf93-numTrees: 250\n})\nrfCV: org.apache.spark.ml.tuning.CrossValidator = cv_e932a86e0937\nrfCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_e932a86e0937\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 23
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "01F84DDE53414BDF8E8A971F9056EE0C"
+    },
+    "cell_type" : "code",
+    "source" : "case class RFAvgMetric(numTrees: Double, avgMetric: Double)\nval rfAvgMetrics = rfCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(rf.numTrees))\n                            .zip(rfCVModel.avgMetrics)\n                            .map(p => RFAvgMetric(p._1, p._2))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "defined class RFAvgMetric\nrfAvgMetrics: Array[RFAvgMetric] = Array(RFAvgMetric(20.0,0.8099982134171134), RFAvgMetric(40.0,0.8115014223601622), RFAvgMetric(80.0,0.8123633350366459), RFAvgMetric(120.0,0.812934951608542), RFAvgMetric(160.0,0.8133463794945599), RFAvgMetric(200.0,0.812897374632533), RFAvgMetric(250.0,0.8133296213014655))\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 24
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E036FF4691BC49209E2CEDDB95D8C142"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(rfAvgMetrics,\n              \"\"\"{ data: { x: 'numTrees', \n                         },\n                   axis: {\n                      y: {\n                        label: 'AUC-ROC'\n                      },\n                      x: {\n                        label: 'numTrees'\n                        }\n                   } \n                  }\"\"\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res62: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon099d9f1796b88f1ef4a088db7ba95cf0&quot;,&quot;dataInit&quot;:[{&quot;numTrees&quot;:20.0,&quot;avgMetric&quot;:0.8099982134171134},{&quot;numTrees&quot;:40.0,&quot;avgMetric&quot;:0.8115014223601622},{&quot;numTrees&quot;:80.0,&quot;avgMetric&quot;:0.8123633350366459},{&quot;numTrees&quot;:120.0,&quot;avgMetric&quot;:0.812934951608542},{&quot;numTrees&quot;:160.0,&quot;avgMetric&quot;:0.8133463794945599},{&quot;numTrees&quot;:200.0,&quot;avgMetric&quot;:0.812897374632533},{&quot;numTrees&quot;:250.0,&quot;avgMetric&quot;:0.8133296213014655}],&quot;genId&quot;:&quot;2029918013&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = { data: { x: 'numTrees', \\n                         },\\n                   axis: {\\n                      y: {\\n                        label: 'AUC-ROC'\\n                      },\\n                      x: {\\n                        label: 'numTrees'\\n                        }\\n                   } \\n                  };\",\"headers\":[\"numTrees\",\"avgMetric\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9e43399a84192fa9297bbc09733a1485&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon4d07f24dd04db5d0d5ded0fb7706cad6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 25
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "2F6460A7E13D4AC98690C912B7BF7091"
+    },
+    "cell_type" : "markdown",
+    "source" : "One can see that there is a stabilization of the quality at about 160 trees in random forest."
+  }, {
+    "metadata" : {
+      "id" : "6827AA2CA2374060B75A807078815698"
+    },
+    "cell_type" : "markdown",
+    "source" : "Some algorithms are sensitive to the scale of the features. Let's look at the features to make sure that raw features can have a pretty big difference in scale."
+  }, {
+    "metadata" : {
+      "id" : "CE1E71FE23A242E782F680E51FFFFB24"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem** Build histograms for features *age*, *fnlwgt*, *capital-gain*."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "EEB88166976A4B8C896E04AAA737BB81"
+    },
+    "cell_type" : "code",
+    "source" : "val ageRdd = cleanData.select(\"age\").rdd.map(r => r.getAs[Integer](0).toDouble)\nval fnlwgtRdd = cleanData.select(\"fnlwgt\").rdd.map(r => r.getAs[Integer](0).toDouble)\nval cgainRdd = cleanData.select(\"capital-gain\").rdd.map(r => r.getAs[Integer](0).toDouble)\n\nval ageHist = ageRdd.histogram(10)\nval fnlwgtHist = fnlwgtRdd.histogram(20)\nval cgainHist = cgainRdd.histogram(50)\n\ncase class AgeHistPoint(ageBucket: Double, age: Long)\ncase class FnlwgtHistPoint(fnlwgtBucket: Double, fnlwgt: Long)\ncase class CgainHistPoint(cgainBucket: Double, cgain: Long)\n\nval ageHistData = ageHist._1.zip(ageHist._2).map(pp => AgeHistPoint(pp._1, pp._2))\nval fnlwgtHistData = fnlwgtHist._1.zip(fnlwgtHist._2).map(pp => FnlwgtHistPoint(pp._1, pp._2))\nval cgainHistData = cgainHist._1.zip(cgainHist._2).map(pp => CgainHistPoint(pp._1, pp._2))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "ageRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[134008] at map at <console>:38\nfnlwgtRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[134017] at map at <console>:39\ncgainRdd: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[134026] at map at <console>:40\nageHist: (Array[Double], Array[Long]) = (Array(17.0, 24.3, 31.6, 38.9, 46.2, 53.5, 60.8, 68.1, 75.4, 82.7, 90.0),Array(2466, 2776, 2966, 3066, 1931, 1203, 667, 183, 62, 27))\nfnlwgtHist: (Array[Double], Array[Long]) = (Array(19302.0, 92572.15, 165842.3, 239112.45, 312382.6, 385652.75, 458922.9, 532193.05, 605463.2, 678733.35, 752003.5, 825273.65, 898543.8, 971813.95, 1045084.1, 1118354.25, 1191624.4, 1264894.55, 1338164.7, 1411434.85, 1484705.0),Array(2389, 4292, 4922, 1941, 1069, 459, 149, 66, 27, 17, 4, 0, 2, 4, ..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 26
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "output_stream_collapsed" : true,
+      "collapsed" : false,
+      "id" : "0BD3246BC19348118C2E4BA87FB973DC"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(ageHistData,\n             chartOptions = \"\"\"\n             { data: { x: 'ageBucket', \n                       type: 'bar'},\n               bar: {\n                     width: {ratio: 0.9}\n                    },\n              axis: {\n                    y: {\n                      label: 'Count'\n                      }\n                   }\n             }\n             \"\"\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res65: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon7aab96b1b42765ce284496f0ea24a5a6&quot;,&quot;dataInit&quot;:[{&quot;ageBucket&quot;:17.0,&quot;age&quot;:2466},{&quot;ageBucket&quot;:24.3,&quot;age&quot;:2776},{&quot;ageBucket&quot;:31.6,&quot;age&quot;:2966},{&quot;ageBucket&quot;:38.9,&quot;age&quot;:3066},{&quot;ageBucket&quot;:46.2,&quot;age&quot;:1931},{&quot;ageBucket&quot;:53.5,&quot;age&quot;:1203},{&quot;ageBucket&quot;:60.8,&quot;age&quot;:667},{&quot;ageBucket&quot;:68.1,&quot;age&quot;:183},{&quot;ageBucket&quot;:75.4,&quot;age&quot;:62},{&quot;ageBucket&quot;:82.7,&quot;age&quot;:27}],&quot;genId&quot;:&quot;828317707&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'ageBucket', \\n                       type: 'bar'},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"ageBucket\",\"age\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon503b6c6ba9283e3bf55b4b74efc19acd&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon4daffc2837898f7d4ae70e562ad683b6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 27
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A924668E06874E2F8FE218A99FB188B2"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(fnlwgtHistData,\n             chartOptions = \"\"\"\n             { data: { x: 'fnlwgtBucket', \n                       type: 'bar',\n                       colors: {fnlwgt: 'green'}},\n               bar: {\n                     width: {ratio: 0.9}\n                    },\n              axis: {\n                    y: {\n                      label: 'Count'\n                      }\n                   }\n             }\n             \"\"\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res67: notebook.front.widgets.CustomC3Chart[Array[FnlwgtHistPoint]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon36c317cb447b8baf92dc62d4277a7f76&quot;,&quot;dataInit&quot;:[{&quot;fnlwgtBucket&quot;:19302.0,&quot;fnlwgt&quot;:2389},{&quot;fnlwgtBucket&quot;:92572.15,&quot;fnlwgt&quot;:4292},{&quot;fnlwgtBucket&quot;:165842.3,&quot;fnlwgt&quot;:4922},{&quot;fnlwgtBucket&quot;:239112.45,&quot;fnlwgt&quot;:1941},{&quot;fnlwgtBucket&quot;:312382.6,&quot;fnlwgt&quot;:1069},{&quot;fnlwgtBucket&quot;:385652.75,&quot;fnlwgt&quot;:459},{&quot;fnlwgtBucket&quot;:458922.9,&quot;fnlwgt&quot;:149},{&quot;fnlwgtBucket&quot;:532193.05,&quot;fnlwgt&quot;:66},{&quot;fnlwgtBucket&quot;:605463.2,&quot;fnlwgt&quot;:27},{&quot;fnlwgtBucket&quot;:678733.35,&quot;fnlwgt&quot;:17},{&quot;fnlwgtBucket&quot;:752003.5,&quot;fnlwgt&quot;:4},{&quot;fnlwgtBucket&quot;:825273.65,&quot;fnlwgt&quot;:0},{&quot;fnlwgtBucket&quot;:898543.8,&quot;fnlwgt&quot;:2},{&quot;fnlwgtBucket&quot;:971813.95,&quot;fnlwgt&quot;:4},{&quot;fnlwgtBucket&quot;:1045084.1,&quot;fnlwgt&quot;:0},{&quot;fnlwgtBucket&quot;:1118354.25,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1191624.4,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1264894.55,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1338164.7,&quot;fnlwgt&quot;:1},{&quot;fnlwgtBucket&quot;:1411434.85,&quot;fnlwgt&quot;:2}],&quot;genId&quot;:&quot;1565603218&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'fnlwgtBucket', \\n                       type: 'bar',\\n                       colors: {fnlwgt: 'green'}},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"fnlwgtBucket\",\"fnlwgt\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonf5d4bd40d25eebf81689487d55222d3d&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9a80aa1bd817c0cf058d0e45e60dff11&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 28
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7E51413B25BC4B728988AF6239461D8A"
+    },
+    "cell_type" : "code",
+    "source" : "CustomC3Chart(cgainHistData,\n             chartOptions = \"\"\"\n             { data: { x: 'cgainBucket', \n                       type: 'bar',\n                       colors: {cgain: 'purple'}},\n               bar: {\n                     width: {ratio: 0.9}\n                    },\n              axis: {\n                    y: {\n                      label: 'Count'\n                      }\n                   }\n             }\n             \"\"\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res69: notebook.front.widgets.CustomC3Chart[Array[CgainHistPoint]] = <CustomC3Chart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anone884a184d9cfd7e56da6cf2161079d56&quot;,&quot;dataInit&quot;:[{&quot;cgainBucket&quot;:0.0,&quot;cgain&quot;:14072},{&quot;cgainBucket&quot;:1999.98,&quot;cgain&quot;:311},{&quot;cgainBucket&quot;:3999.96,&quot;cgain&quot;:241},{&quot;cgainBucket&quot;:5999.94,&quot;cgain&quot;:320},{&quot;cgainBucket&quot;:7999.92,&quot;cgain&quot;:36},{&quot;cgainBucket&quot;:9999.9,&quot;cgain&quot;:33},{&quot;cgainBucket&quot;:11999.88,&quot;cgain&quot;:14},{&quot;cgainBucket&quot;:13999.86,&quot;cgain&quot;:208},{&quot;cgainBucket&quot;:15999.84,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:17999.82,&quot;cgain&quot;:1},{&quot;cgainBucket&quot;:19999.8,&quot;cgain&quot;:18},{&quot;cgainBucket&quot;:21999.78,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:23999.76,&quot;cgain&quot;:9},{&quot;cgainBucket&quot;:25999.74,&quot;cgain&quot;:16},{&quot;cgainBucket&quot;:27999.72,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:29999.7,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:31999.68,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:33999.66,&quot;cgain&quot;:2},{&quot;cgainBucket&quot;:35999.64,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:37999.62,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:39999.6,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:41999.58,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:43999.56,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:45999.54,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:47999.52,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:49999.5,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:51999.48,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:53999.46,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:55999.44,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:57999.42,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:59999.4,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:61999.38,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:63999.36,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:65999.34,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:67999.32,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:69999.3,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:71999.28,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:73999.26,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:75999.24,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:77999.22,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:79999.2,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:81999.18,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:83999.16,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:85999.14,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:87999.12,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:89999.1,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:91999.08,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:93999.06,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:95999.04,&quot;cgain&quot;:0},{&quot;cgainBucket&quot;:97999.02,&quot;cgain&quot;:66}],&quot;genId&quot;:&quot;34958953&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customC3Chart'], \n      function(playground, _magiccustomC3Chart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomC3Chart,\n    \"o\": {\"js\":\"var chartOptions = \\n             { data: { x: 'cgainBucket', \\n                       type: 'bar',\\n                       colors: {cgain: 'purple'}},\\n               bar: {\\n                     width: {ratio: 0.9}\\n                    },\\n              axis: {\\n                    y: {\\n                      label: 'Count'\\n                      }\\n                   }\\n             }\\n             ;\",\"headers\":[\"cgainBucket\",\"cgain\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonec4a838184a8685348b31237ec93e59c&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon78e41eb5ea76f38e173b8bc618a42469&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 29
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "281CF8C350B54E60A21BEB254BFE96D1"
+    },
+    "cell_type" : "markdown",
+    "source" : "Now when you see the histograms you can answer the following questions. What is special about each feature? Does it affect the quality of algorithms? How can we improve the quality of the algorithms?"
+  }, {
+    "metadata" : {
+      "id" : "0E7483B6B9C647B2A8966E719B84A36C"
+    },
+    "cell_type" : "markdown",
+    "source" : "One can improve the quality of algorithms by feature scaling. Feature scaling can be performed, for example, one of the following ways:\n - $x_{new} = \\dfrac{x - \\mu}{\\sigma}$, where $\\mu, \\sigma$ — sample mean and sample standard deviation\n - $x_{new} = \\dfrac{x - x_{min}}{x_{max} - x_{min}}$, where $[x_{min}, x_{max}]$ — the range of values\n \nSimilar scaling schemes implemented in the classes [StandardScaler](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.StandardScaler) and [MinMaxScaler](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.MinMaxScaler)."
+  }, {
+    "metadata" : {
+      "id" : "4DB99D37142E4BF68A95F0FFA5E9054E"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem** Scale all the numeric features using one of these methods and repeat hyperparameters tuning step."
+  }, {
+    "metadata" : {
+      "id" : "42E59D5A0F6E479380A3F3F364938EA7"
+    },
+    "cell_type" : "markdown",
+    "source" : "*for the sake of brevity, from now I will use only LogisticRegression model.*"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "73F0AAF6A24040888C5E6B23AF6F277F"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.StandardScaler\n\nval scaler = new StandardScaler()\n  .setInputCol(\"features\")\n  .setOutputCol(\"scaledFeatures\")\n  .setWithStd(true)\n  .setWithMean(true)\n\nval scalerModel = scaler.fit(vecIdxData)\nval scaledData = scalerModel.transform(vecIdxData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.feature.StandardScaler\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_1b221a6d19d2\nscalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_1b221a6d19d2\nscaledData: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 30
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "BF7B9FD446A04F11994CD1BCE4F7E722"
+    },
+    "cell_type" : "code",
+    "source" : "scaledData.limit(5)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res72: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon397ef40bded5f9e45e243b61e9fff834&quot;,&quot;partitionIndexId&quot;:&quot;anonfc8c6fe0d1329a931953b56748b0c034&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;label&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;vals&quot;:[&quot;&lt;=50K&quot;,&quot;&gt;50K&quot;],&quot;type&quot;:&quot;nominal&quot;,&quot;name&quot;:&quot;&gt;50K,&lt;=50K&quot;}}},{&quot;name&quot;:&quot;features&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;attrs&quot;:{&quot;numeric&quot;:[{&quot;idx&quot;:0,&quot;name&quot;:&quot;fnlwgt&quot;},{&quot;idx&quot;:1,&quot;name&quot;:&quot;education-num&quot;},{&quot;idx&quot;:2,&quot;name&quot;:&quot;capital-gain&quot;},{&quot;idx&quot;:3,&quot;name&quot;:&quot;capital-loss&quot;},{&quot;idx&quot;:4,&quot;name&quot;:&quot;hours-per-week&quot;}]},&quot;num_attrs&quot;:5}}},{&quot;name&quot;:&quot;scaledFeatures&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 31
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7E62822EECAC4B298B6384208FAFC1E2"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\n  .setFeaturesCol(\"scaledFeatures\")\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(5e-3, 2e-3, 1e-3, 5e-4, 1e-4, 5e-5, 1e-5))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(scaledData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_c590cc04ea2c\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_c590cc04ea2c-regParam: 0.005\n}, {\n\tlogreg_c590cc04ea2c-regParam: 0.002\n}, {\n\tlogreg_c590cc04ea2c-regParam: 0.001\n}, {\n\tlogreg_c590cc04ea2c-regParam: 5.0E-4\n}, {\n\tlogreg_c590cc04ea2c-regParam: 1.0E-4\n}, {\n\tlogreg_c590cc04ea2c-regParam: 5.0E-5\n}, {\n\tlogreg_c590cc04ea2c-regParam: 1.0E-5\n})\nlrCV: org.apache.spark.ml.tuning.CrossValidator = cv_bdbb219bd167\nlrCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_bdbb219bd167\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 32
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "DBC9659C06FC44978C0B18A8978A718F"
+    },
+    "cell_type" : "code",
+    "source" : "lrCVModel.avgMetrics.max",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res75: Double = 0.7969366525522104\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.7969366525522104"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 33
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "5C5C8FEE2CE84D40A6008ABC65E80F24"
+    },
+    "cell_type" : "markdown",
+    "source" : "You can also perform grid search on several hyperparameters and find the optimum combination for each algorithm. Here is just one example:\n - LogisticRegression — regularization parameter (*regParam*) and ElasticNet mixing parameter (*elasticNetParam*)\n - DecisonTreeClassifier — maximum depth of the tree (*maxDepth*) and criterion for information gain calculation (*impurity*)\n - RandomForestClassifier — criterion for information gain calculation (*impurity*) and fraction of the training data used for learning each decision tree (*subsamplingRate*)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C9C2590B9DD84559ADC9D14844509A00"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\n  .setFeaturesCol(\"scaledFeatures\")\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(5e-3, 2e-3, 1e-3, 5e-4, 1e-4, 5e-5, 1e-5))\n  .addGrid(lr.elasticNetParam, Array(0.0, 0.2, 0.4, 0.6, 0.8, 1.0))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(scaledData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_d208be8efefb\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 0.005\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 0.002\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 0.001\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 5.0E-4\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 1.0E-4\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 5.0E-5\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.0,\n\tlogreg_d208be8efefb-regParam: 1.0E-5\n}, {\n\tlogreg_d208be8efefb-elasticNetParam: 0.2,\n\tlogreg_d..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 34
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "98D17A6FD42542D9AC5041529AFFB35E"
+    },
+    "cell_type" : "code",
+    "source" : "lrCVModel.avgMetrics.max",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res78: Double = 0.7970238858408468\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.7970238858408468"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 35
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "6534CCE1D7464F5BA8894F1745D33259"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Adding categorical features "
+  }, {
+    "metadata" : {
+      "id" : "5EFADB0ECF7143F4A3FFE59E72737DD4"
+    },
+    "cell_type" : "markdown",
+    "source" : "Up to this point we did not use categorical features from the dataset. Let's see how additional categorical features will affect the quality of the classification. A common technique to convert categorical feature into numerical ones is one-hot encoding. This can be done using [StringIndexer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.StringIndexer) transformation followed by [OneHotEncoder](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.OneHotEncoder) transformation."
+  }, {
+    "metadata" : {
+      "id" : "22BE246D9A19464C924A3C9E3998DCA3"
+    },
+    "cell_type" : "markdown",
+    "source" : "*I'm going to start with encoding just one new feature `occupation` and after that generalize encoding step for all categorical features and combine all processing steps using [pipeline](http://spark.apache.org/docs/1.6.1/ml-guide.html#pipeline)*"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "CD7DB285C05841C98DF87E518701B540"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.OneHotEncoder\n\nval indexer = new StringIndexer()\n  .setInputCol(\"occupation\")\n  .setOutputCol(\"occupationIndex\")\n  .fit(cleanData)\nval indexedData = indexer.transform(cleanData)\n\nval encoder = new OneHotEncoder()\n  .setInputCol(\"occupationIndex\")\n  .setOutputCol(\"occupationVec\")\nval oheEncodeData = encoder.transform(indexedData)\n\noheEncodeData.select(\"occupation\", \"occupationVec\").limit(3)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.feature.OneHotEncoder\nindexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_87c12d392f1d\nindexedData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-week: int, >50K,<=50K: string, occupationIndex: double]\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_a57cb13b9cf0\noheEncodeData: org.apache.spark.sql.DataFrame = [age: int, workclass: string, fnlwgt: int, education: string, education-num: int, marital-status: string, occupation: string, relationship: string, race: string, sex: string, capital-gain: int, capital-loss: int, hours-per-w..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona845f10c38a2aa1d539b7fa3f1c1f5eb&quot;,&quot;partitionIndexId&quot;:&quot;anonf9cc856a9dc4e33e601a42046f250735&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;occupation&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;occupationVec&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{&quot;ml_attr&quot;:{&quot;attrs&quot;:{&quot;binary&quot;:[{&quot;idx&quot;:0,&quot;name&quot;:&quot;Prof-specialty&quot;},{&quot;idx&quot;:1,&quot;name&quot;:&quot;Craft-repair&quot;},{&quot;idx&quot;:2,&quot;name&quot;:&quot;Exec-managerial&quot;},{&quot;idx&quot;:3,&quot;name&quot;:&quot;Adm-clerical&quot;},{&quot;idx&quot;:4,&quot;name&quot;:&quot;Sales&quot;},{&quot;idx&quot;:5,&quot;name&quot;:&quot;Other-service&quot;},{&quot;idx&quot;:6,&quot;name&quot;:&quot;Machine-op-inspct&quot;},{&quot;idx&quot;:7,&quot;name&quot;:&quot;Transport-moving&quot;},{&quot;idx&quot;:8,&quot;name&quot;:&quot;Handlers-cleaners&quot;},{&quot;idx&quot;:9,&quot;name&quot;:&quot;Farming-fishing&quot;},{&quot;idx&quot;:10,&quot;name&quot;:&quot;Tech-support&quot;},{&quot;idx&quot;:11,&quot;name&quot;:&quot;Protective-serv&quot;},{&quot;idx&quot;:12,&quot;name&quot;:&quot;Priv-house-serv&quot;}]},&quot;num_attrs&quot;:13}}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 36
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "773426B4BC404847874C17A69DD3BEC3"
+    },
+    "cell_type" : "code",
+    "source" : "val assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\",\n                      \"occupationVec\"))\n  .setOutputCol(\"features\")\n\nval labelIndexer = new StringIndexer()\n  .setInputCol(\">50K,<=50K\")\n  .setOutputCol(\"label\")\n  .fit(cleanData)\n\nval vecIdxData = assembler.transform{\n                labelIndexer.transform(oheEncodeData)\n              }.select(\"label\", \"features\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "assembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_d91b57cd47dc\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_f78720bf1da1\nvecIdxData: org.apache.spark.sql.DataFrame = [label: double, features: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 37
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "3850DD8EFDB84C348FFB69C0B0CD4B6F"
+    },
+    "cell_type" : "code",
+    "source" : "val scaler = new StandardScaler()\n  .setInputCol(\"features\")\n  .setOutputCol(\"scaledFeatures\")\n  .setWithStd(true)\n  .setWithMean(false) // setWithMean(true) doesn't work with sparse features\n\nval scalerModel = scaler.fit(vecIdxData)\nval scaledData = scalerModel.transform(vecIdxData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "scaler: org.apache.spark.ml.feature.StandardScaler = stdScal_b0eccf6ae0a0\nscalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_b0eccf6ae0a0\nscaledData: org.apache.spark.sql.DataFrame = [label: double, features: vector, scaledFeatures: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 38
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "AB769B88250144ACA3CCC59909F4501F"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\n  .setFeaturesCol(\"scaledFeatures\")\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(5e-3, 2e-3, 1e-3, 5e-4, 1e-4, 5e-5, 1e-5))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(scaledData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "lr: org.apache.spark.ml.classification.LogisticRegression = logreg_62491ddebad1\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_62491ddebad1-regParam: 0.005\n}, {\n\tlogreg_62491ddebad1-regParam: 0.002\n}, {\n\tlogreg_62491ddebad1-regParam: 0.001\n}, {\n\tlogreg_62491ddebad1-regParam: 5.0E-4\n}, {\n\tlogreg_62491ddebad1-regParam: 1.0E-4\n}, {\n\tlogreg_62491ddebad1-regParam: 5.0E-5\n}, {\n\tlogreg_62491ddebad1-regParam: 1.0E-5\n})\nlrCV: org.apache.spark.ml.tuning.CrossValidator = cv_5281642b0b6c\nlrCVModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_5281642b0b6c\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 39
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "955610F1D3AB480493C6DA2E3631C5C8"
+    },
+    "cell_type" : "code",
+    "source" : "lrCVModel.avgMetrics.max",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res85: Double = 0.8188199134964154\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.8188199134964154"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 40
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "9044FD06BD3B47F296A7FDDA6AF9D248"
+    },
+    "cell_type" : "markdown",
+    "source" : "Adding one categorical yielded a significant increase in quality."
+  }, {
+    "metadata" : {
+      "id" : "B0058EECD34F4F13830DF83C6F47501D"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Pipelines"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "F794AFDB1BAE412A84EA64BEFA03B8C7"
+    },
+    "cell_type" : "markdown",
+    "source" : "Using [pipelines](http://spark.apache.org/docs/1.6.1/ml-guide.html#pipeline) one can combine all the processing steps into one pipeline and perform grid search against hyperparameters of all tunable steps included in the pipeline. Also it's easy to extend given pipeline with new steps. Let's see how we can combine all the steps made so far into one pipeline."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E6F733E4FED04D72B89ECC02F35652CD"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{StringIndexer,\n                                    IndexToString, \n                                    VectorIndexer,\n                                    OneHotEncoder,\n                                    VectorAssembler,\n                                    StandardScaler}\nimport org.apache.spark.ml.classification.LogisticRegression\n\nval labelIndexer = new StringIndexer()\n  .setInputCol(\">50K,<=50K\")\n  .setOutputCol(\"label\")\n  .fit(cleanData)\n\nval featureIndexer = new StringIndexer()\n  .setInputCol(\"occupation\")\n  .setOutputCol(\"occupationIndex\")\n  .fit(cleanData)\n\nval encoder = new OneHotEncoder()\n  .setInputCol(\"occupationIndex\")\n  .setOutputCol(\"occupationVec\")\n\nval assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\",\n                      \"occupationVec\"))\n  .setOutputCol(\"features\")\n\nval scaler = new StandardScaler()\n  .setInputCol(\"features\")\n  .setOutputCol(\"scaledFeatures\")\n  .setWithStd(true)\n  .setWithMean(false)\n\nval lr = new LogisticRegression()\n  .setFeaturesCol(\"scaledFeatures\")\n\n// Convert predicted labels back to original labels.\nval labelConverter = new IndexToString()\n  .setInputCol(\"prediction\")\n  .setOutputCol(\"predictedLabel\")\n  .setLabels(labelIndexer.labels)\n\n// Chain indexers, assembler, scaler and classifier and converter in a Pipeline\nval pipeline = new Pipeline()\n  .setStages(Array(labelIndexer, \n                   featureIndexer, \n                   encoder, \n                   assembler, \n                   scaler,\n                   lr,\n                   labelConverter))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString, VectorIndexer, OneHotEncoder, VectorAssembler, StandardScaler}\nimport org.apache.spark.ml.classification.LogisticRegression\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_f9c2ba018757\nfeatureIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_9c659b41dc06\nencoder: org.apache.spark.ml.feature.OneHotEncoder = oneHot_bdb89a4e18ad\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_2efb7659606e\nscaler: org.apache.spark.ml.feature.StandardScaler = stdScal_448a60c460c9\nlr: org.apache.spark.ml.classification.LogisticRegression = logreg_67ff9cf50468\nlabelConverter: org.apache.spark.ml.feature.IndexToString = idxToStr_26e821063886\npipeline: o..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 41
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C0FF0EC3509B47719B31207492B9D5E5"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder,\n                                   CrossValidator}\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(5e-3, 2e-3, 1e-3, 5e-4, 1e-4, 5e-5, 1e-5))\n  .build()\n\nval cv = new CrossValidator()\n  .setEstimator(pipeline)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval cvModel = cv.fit(cleanData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\nlrParamGrid: Array[org.apache.spark.ml.param.ParamMap] = \nArray({\n\tlogreg_67ff9cf50468-regParam: 0.005\n}, {\n\tlogreg_67ff9cf50468-regParam: 0.002\n}, {\n\tlogreg_67ff9cf50468-regParam: 0.001\n}, {\n\tlogreg_67ff9cf50468-regParam: 5.0E-4\n}, {\n\tlogreg_67ff9cf50468-regParam: 1.0E-4\n}, {\n\tlogreg_67ff9cf50468-regParam: 5.0E-5\n}, {\n\tlogreg_67ff9cf50468-regParam: 1.0E-5\n})\ncv: org.apache.spark.ml.tuning.CrossValidator = cv_597b32d4a778\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_597b32d4a778\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 42
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1933205597-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "774370C3B6974D6EA690D22B38EF25EE"
+    },
+    "cell_type" : "code",
+    "source" : "cvModel.avgMetrics.max",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res89: Double = 0.8188199134964158\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.8188199134964158"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 43
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "65E33CCD434941A8B1E306CD217CD6D0"
+    },
+    "cell_type" : "markdown",
+    "source" : "Now let's extend our pipeline by adding one-hot encoding step for each categorical feature."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E67323D24AA740B7AD2D4473CA2008EB"
+    },
+    "cell_type" : "code",
+    "source" : "val categCols = Array(\"workclass\", \"education\", \"marital-status\", \"occupation\", \"relationship\", \"race\", \"sex\")\n\nval featureIndexers: Array[org.apache.spark.ml.PipelineStage] = categCols.map(\n  cname => new StringIndexer()\n    .setInputCol(cname)\n    .setOutputCol(s\"${cname}_index\")\n)\n\nval oneHotEncoders = categCols.map(\n    cname => new OneHotEncoder()\n     .setInputCol(s\"${cname}_index\")\n     .setOutputCol(s\"${cname}_vec\")\n)\n\nval assembler = new VectorAssembler()\n  .setInputCols(Array(\"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\") ++\n                categCols.map(cname => s\"${cname}_vec\"))\n  .setOutputCol(\"features\")\n\nval pipeline = new Pipeline()\n  .setStages(Array(labelIndexer) ++\n             featureIndexers ++\n             oneHotEncoders ++\n             Array(assembler, \n                   scaler,\n                   lr,\n                   labelConverter))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "categCols: Array[String] = Array(workclass, education, marital-status, occupation, relationship, race, sex)\nfeatureIndexers: Array[org.apache.spark.ml.PipelineStage] = Array(strIdx_211e20807a1f, strIdx_06b4a8f30ff1, strIdx_ca53dfdb288b, strIdx_482b4f9b33d4, strIdx_30ff20a90ecd, strIdx_ed41f6f76959, strIdx_23dd68afa952)\noneHotEncoders: Array[org.apache.spark.ml.feature.OneHotEncoder] = Array(oneHot_3bc2d9695456, oneHot_c0935e56c4dd, oneHot_108a87562af0, oneHot_a1e4e0743bbf, oneHot_dc36f305044a, oneHot_02013e9737ca, oneHot_9e4246bfde95)\nassembler: org.apache.spark.ml.feature.VectorAssembler = vecAssembler_9d494de199fe\npipeline: org.apache.spark.ml.Pipeline = pipeline_250c628cf7eb\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 44
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "76940745B2FD449D851874AE87D0914C"
+    },
+    "cell_type" : "code",
+    "source" : "val cv = new CrossValidator()\n  .setEstimator(pipeline)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval cvModel = cv.fit(cleanData)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "cv: org.apache.spark.ml.tuning.CrossValidator = cv_9ade7c7a7673\ncvModel: org.apache.spark.ml.tuning.CrossValidatorModel = cv_9ade7c7a7673\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 45
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1329570354-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "356508B224D44A6985FC4F4ACC821957"
+    },
+    "cell_type" : "code",
+    "source" : "cvModel.avgMetrics.max",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res93: Double = 0.9010213957983959\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.9010213957983959"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 46
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "41736CEDE6ED409ABE0F8F4AB5DB87E8"
+    },
+    "cell_type" : "markdown",
+    "source" : "We have obtained a significant boost in quality of classification."
+  }, {
+    "metadata" : {
+      "id" : "CC0A87CBC2C94BE78EBBC3C31BEE310B"
+    },
+    "cell_type" : "markdown",
+    "source" : "You can continue to modify and expand the pipeline by adding new steps of data transformation.\nFor example, one can try to add [QuantileDiscretizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.QuantileDiscretizer)\ntransformation applied to some numeric feature such as `fnlwgt` and add `numBuckets` parameter values\nto pipeline parameters grid and see how it will affect cross validation score."
+  } ],
+  "nbformat" : 4
+}
