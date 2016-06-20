@@ -1,0 +1,109 @@
+{
+  "metadata" : {
+    "name" : "BagOfWordsMeetsBagsOfPopcorn",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "89D96E0BE5DB49F983ACCFA8DB52561D"
+    },
+    "cell_type" : "markdown",
+    "source" : "# Bag of Words Meets Bags of Popcorn"
+  }, {
+    "metadata" : {
+      "id" : "65DB30C3AEA742C4839566164BF1A058"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this lab we're going to work with IMDB Movies Reviews dataset from kaggle competition [Bag of Words Meets Bags of Popcorn](https://www.kaggle.com/c/word2vec-nlp-tutorial/data).\n\n<div style=\"text-align:center\">\n  <img src=\"http://i.imgur.com/QZgxFic.png\">\n</div>\n\nThe task is to determine whether the given movie review is positive or negative. This is one example of the problem of text [sentiment analysis](https://en.wikipedia.org/wiki/Sentiment_analysis). Here is one example of review from the dataset:\n\n    When I saw this film in the 1950s, I wanted to be a scientist too. There was something magical and useful in Science. I took a girl - friend along to see it a second time. I don't think she was as impressed as I was! This film was comical yet serious, at a time when synthetic fibres were rather new. Lessons from this film could be applied to issues relating to GM experimentation of today."
+  }, {
+    "metadata" : {
+      "id" : "60FEC683FB4B4F429C9F8894A70F4C30"
+    },
+    "cell_type" : "markdown",
+    "source" : "Load labeledTrainData.tsv dataset. To load data from csv file direct to Spark's Dataframe one can use [spark-csv](http://spark-packages.org/package/databricks/spark-csv) package.\nTo add spark-csv package to spark notebook one could add \"com.databricks:spark-csv_2.10:1.4.0\" (or \"com.databricks:spark-csv_2.11:1.4.0\" for Scala 2.11) dependency into customDeps conf section. Alternatively one could specify this dependency in `--packages` command line option while submiting spark application to a cluster (`spark-submit`) or launching spark shell (`spark-shell`).\nFor tsv format use appropriate value of `delimiter` option."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7E6CFDCD51034DF989F86638D5846457"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.SQLContext\n\nval sqlContext = new SQLContext(sc)\n\nval data = sqlContext.read\n    .format(\"com.databricks.spark.csv\")\n    .option(\"header\", \"true\")\n    .option(\"inferSchema\", \"true\")\n    .option(\"delimiter\", \"\\t\")\n    .load(\"notebooks/labs/BagOfWordsMeetsBagsOfPopcorn/labeledTrainData.tsv\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@1477a512\ndata: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "3492639D56FE4809AA62FE110B48158B"
+    },
+    "cell_type" : "code",
+    "source" : "println(data.limit(5).show)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "+-------+---------+--------------------+\n|     id|sentiment|              review|\n+-------+---------+--------------------+\n| 5814_8|        1|With all this stu...|\n| 7759_3|        0|The film starts w...|\n| 8196_8|        1|I dont know why p...|\n| 7166_2|        0|This movie could ...|\n|10633_1|        0|I watched this vi...|\n+-------+---------+--------------------+\n\n()\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 16
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "E6BB169B270649E48A1C9AA9703680EB"
+    },
+    "cell_type" : "markdown",
+    "source" : "For model quality assessment we will be using train validation split via [TrainValidationSplit](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.tuning.TrainValidationSplit) with 75% of the data is used for training and 25% for validation. Two important notes:\n - It is good to have a reproducible split on train and validation data ([fixed in 2.0.0 version](https://issues.apache.org/jira/browse/SPARK-14973)).\n - it is good to preserve the percentage of samples for each class in each split/fold especially in the case of a highly unbalanced classes (follow [the ticket](https://issues.apache.org/jira/browse/SPARK-8971)) ."
+  }, {
+    "metadata" : {
+      "id" : "6FD8193001054F9D8782B456B9EDFC9D"
+    },
+    "cell_type" : "markdown",
+    "source" : "One of the difficulties of this task is textual representation of the data because there is no universal method of feature extraction from the texts.\nIn the course of the lab we will get a few feature representations of the data which will be compared with each other."
+  }, {
+    "metadata" : {
+      "id" : "DF4A6A340D7C4008852399BFA2B9CFC5"
+    },
+    "cell_type" : "markdown",
+    "source" : "First we will try the simplest approach, namely [bag-of-words](https://en.wikipedia.org/wiki/Bag-of-words_model). With bag-of-words each text will be represented as a vector of numbers with the size equal to the size of the dictionary. On each position of the vector there will be a counter which represents how many times corresponding word was found in this text.\nBefore making features from our data we have to perform data cleaning and text preprocessing steps.\nThere is a good point about data cleaning and text preprocessing in corresponding [tutorial](https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words):\n\n    When considering how to clean the text, we should think about the data problem we are trying to solve. For many problems, it makes sense to remove punctuation. On the other hand, in this case, we are tackling a sentiment analysis problem, and it is possible that \"!!!\" or \":-(\" could carry sentiment, and should be treated as words.\n    \nRemoving [stop words](https://en.wikipedia.org/wiki/Stop_words) while constructing bag-of-words is also a good practice."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "B0CFB96010B34EBC85504C3B9D5C8A1A"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}
