@@ -46,7 +46,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@1477a512\ndata: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\n"
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@6519b164\ndata: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -74,7 +74,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 16
+      "execution_count" : 2
     } ]
   }, {
     "metadata" : {
@@ -93,13 +93,61 @@
       "id" : "DF4A6A340D7C4008852399BFA2B9CFC5"
     },
     "cell_type" : "markdown",
-    "source" : "First we will try the simplest approach, namely [bag-of-words](https://en.wikipedia.org/wiki/Bag-of-words_model). With bag-of-words each text will be represented as a vector of numbers with the size equal to the size of the dictionary. On each position of the vector there will be a counter which represents how many times corresponding word was found in this text.\nBefore making features from our data we have to perform data cleaning and text preprocessing steps.\nThere is a good point about data cleaning and text preprocessing in corresponding [tutorial](https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words):\n\n    When considering how to clean the text, we should think about the data problem we are trying to solve. For many problems, it makes sense to remove punctuation. On the other hand, in this case, we are tackling a sentiment analysis problem, and it is possible that \"!!!\" or \":-(\" could carry sentiment, and should be treated as words.\n    \nRemoving [stop words](https://en.wikipedia.org/wiki/Stop_words) while constructing bag-of-words is also a good practice."
+    "source" : "First we will try the simplest approach, namely [bag-of-words](https://en.wikipedia.org/wiki/Bag-of-words_model). With bag-of-words each text will be represented as a vector of numbers with the size equal to the size of the dictionary. On each position of the vector there will be a counter which represents how many times corresponding word was found in this text. This representation one can obtain using [CountVectorizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.CountVectorizer).\n\nBut before making features from our data we have to perform data cleaning and text preprocessing steps.\nThere is a good point about data cleaning and text preprocessing in corresponding [tutorial](https://www.kaggle.com/c/word2vec-nlp-tutorial/details/part-1-for-beginners-bag-of-words):\n\n    When considering how to clean the text, we should think about the data problem we are trying to solve. For many problems, it makes sense to remove punctuation. On the other hand, in this case, we are tackling a sentiment analysis problem, and it is possible that \"!!!\" or \":-(\" could carry sentiment, and should be treated as words.\n    \nRemoving [stop words](https://en.wikipedia.org/wiki/Stop_words) while constructing bag-of-words is also fa good practice.\n\nAll these steps can be implemented using sequence of the following feature transformers:\n[RegexTokenizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.RegexTokenizer)\nfollowed by [StopWordsRemover](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.StopWordsRemover)\nfollowed by [CountVectorizer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.CountVectorizer)."
+  }, {
+    "metadata" : {
+      "id" : "D8FBF41064EA48CDA468475BA81E7CEB"
+    },
+    "cell_type" : "markdown",
+    "source" : "`RegexTokenizer` performs splitting/tokenization based on regular expression matching. To perform tokenization rather than splitting one neet to set parameter `gaps` to `false`.\n\n`StopWordsRemover` comes with provided list of stop words. Alternatively one can provide its own stop words list."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "07865C6B32334E7989BA2221E1A3A36D"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{RegexTokenizer, StopWordsRemover, CountVectorizer}\n\nval regexTokenizer = new RegexTokenizer()\n  .setInputCol(\"review\")\n  .setOutputCol(\"tokens\")\n  .setPattern(\"(\\\\w+|[!?]|:-?\\\\)|:-?\\\\()\")\n  .setGaps(false)\nval regexTokenized = regexTokenizer.transform(data)\n\nval remover = new StopWordsRemover()\n  .setInputCol(\"tokens\")\n  .setOutputCol(\"filteredTokens\")\n\nval countVec = new CountVectorizer()\n  .setInputCol(\"filteredTokens\")\n  .setOutputCol(\"features\")\n  .setMinDF(2)\n\n// Chain tokenizer, stop words remover and CountVectorizer in a Pipeline\nval pipeline = new Pipeline()\n  .setStages(Array(regexTokenizer, \n                   remover, \n                   countVec))\n\nval plModel = pipeline.fit(data)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{RegexTokenizer, StopWordsRemover, CountVectorizer}\nregexTokenizer: org.apache.spark.ml.feature.RegexTokenizer = regexTok_7fedfa02de39\nregexTokenized: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string, tokens: array<string>]\nremover: org.apache.spark.ml.feature.StopWordsRemover = stopWords_ed51b10e4ea2\ncountVec: org.apache.spark.ml.feature.CountVectorizer = cntVec_6cbae0798d7b\npipeline: org.apache.spark.ml.Pipeline = pipeline_5bb0def4a7ac\nplModel: org.apache.spark.ml.PipelineModel = pipeline_5bb0def4a7ac\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 16
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4403C8ACCAD9414E8B8A388A0BC594B9"
+    },
+    "cell_type" : "code",
+    "source" : "val bagOfWords = plModel.transform(data).select(\"id\", \"sentiment\", \"features\")\n\nbagOfWords.limit(3)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "bagOfWords: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\nres36: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anone4ed2df2d34dae9ea97e02a335c406ac&quot;,&quot;partitionIndexId&quot;:&quot;anon7b1b4ad4f3951efc1d84c0d01642031c&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;id&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sentiment&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;features&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 23
+    } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : true,
-      "id" : "B0CFB96010B34EBC85504C3B9D5C8A1A"
+      "id" : "55018FD2FA5C4E0C8FF0E95ED8247441"
     },
     "cell_type" : "code",
     "source" : "",
