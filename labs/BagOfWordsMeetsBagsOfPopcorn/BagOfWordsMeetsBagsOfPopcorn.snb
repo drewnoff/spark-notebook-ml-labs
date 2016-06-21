@@ -46,7 +46,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@6519b164\ndata: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\n"
+      "text" : "import org.apache.spark.sql.SQLContext\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@796de52\ndata: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -81,7 +81,28 @@
       "id" : "E6BB169B270649E48A1C9AA9703680EB"
     },
     "cell_type" : "markdown",
-    "source" : "For model quality assessment we will be using train validation split via [TrainValidationSplit](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.tuning.TrainValidationSplit) with 75% of the data is used for training and 25% for validation. Two important notes:\n - It is good to have a reproducible split on train and validation data ([fixed in 2.0.0 version](https://issues.apache.org/jira/browse/SPARK-14973)).\n - it is good to preserve the percentage of samples for each class in each split/fold especially in the case of a highly unbalanced classes (follow [the ticket](https://issues.apache.org/jira/browse/SPARK-8971)) ."
+    "source" : "For model quality assessment we will be using train test split with 75% of the data is used for training and 25% for testing. Two important notes:\n - It is good to have a reproducible split on train and test data (hint: use seed param).\n - it is good to preserve the percentage of samples for each class in each split/fold especially in the case of a highly unbalanced classes (follow [the ticket](https://issues.apache.org/jira/browse/SPARK-8971))."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "99230B53BEC64921BED57959C191EFB5"
+    },
+    "cell_type" : "code",
+    "source" : "// Split the data into training and test sets (25% held out for testing)\nval Array(trainingData, testData) = data.randomSplit(Array(0.75, 0.25))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "trainingData: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\ntestData: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
+    } ]
   }, {
     "metadata" : {
       "id" : "6FD8193001054F9D8782B456B9EDFC9D"
@@ -108,18 +129,18 @@
       "id" : "07865C6B32334E7989BA2221E1A3A36D"
     },
     "cell_type" : "code",
-    "source" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{RegexTokenizer, StopWordsRemover, CountVectorizer}\n\nval regexTokenizer = new RegexTokenizer()\n  .setInputCol(\"review\")\n  .setOutputCol(\"tokens\")\n  .setPattern(\"(\\\\w+|[!?]|:-?\\\\)|:-?\\\\()\")\n  .setGaps(false)\nval regexTokenized = regexTokenizer.transform(data)\n\nval remover = new StopWordsRemover()\n  .setInputCol(\"tokens\")\n  .setOutputCol(\"filteredTokens\")\n\nval countVec = new CountVectorizer()\n  .setInputCol(\"filteredTokens\")\n  .setOutputCol(\"features\")\n  .setMinDF(2)\n\n// Chain tokenizer, stop words remover and CountVectorizer in a Pipeline\nval pipeline = new Pipeline()\n  .setStages(Array(regexTokenizer, \n                   remover, \n                   countVec))\n\nval plModel = pipeline.fit(data)",
+    "source" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{RegexTokenizer, StopWordsRemover, CountVectorizer}\n\nval regexTokenizer = new RegexTokenizer()\n  .setInputCol(\"review\")\n  .setOutputCol(\"tokens\")\n  .setPattern(\"(\\\\w+|[!?]|:-?\\\\)|:-?\\\\()\")\n  .setGaps(false)\n\nval remover = new StopWordsRemover()\n  .setInputCol(\"tokens\")\n  .setOutputCol(\"filteredTokens\")\n\nval countVec = new CountVectorizer()\n  .setInputCol(\"filteredTokens\")\n  .setOutputCol(\"features\")\n\n\n// Chain tokenizer, stop words remover and CountVectorizer in a Pipeline\nval pipeline = new Pipeline()\n  .setStages(Array(regexTokenizer, \n                   remover, \n                   countVec))\n\nval plModel = pipeline.fit(data)",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{RegexTokenizer, StopWordsRemover, CountVectorizer}\nregexTokenizer: org.apache.spark.ml.feature.RegexTokenizer = regexTok_7fedfa02de39\nregexTokenized: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, review: string, tokens: array<string>]\nremover: org.apache.spark.ml.feature.StopWordsRemover = stopWords_ed51b10e4ea2\ncountVec: org.apache.spark.ml.feature.CountVectorizer = cntVec_6cbae0798d7b\npipeline: org.apache.spark.ml.Pipeline = pipeline_5bb0def4a7ac\nplModel: org.apache.spark.ml.PipelineModel = pipeline_5bb0def4a7ac\n"
+      "text" : "import org.apache.spark.ml.Pipeline\nimport org.apache.spark.ml.feature.{RegexTokenizer, StopWordsRemover, CountVectorizer}\nregexTokenizer: org.apache.spark.ml.feature.RegexTokenizer = regexTok_f33b06fbdcfa\nremover: org.apache.spark.ml.feature.StopWordsRemover = stopWords_f0fba5fe2e0f\ncountVec: org.apache.spark.ml.feature.CountVectorizer = cntVec_4cc1d0edc99d\npipeline: org.apache.spark.ml.Pipeline = pipeline_e4da29937aa5\nplModel: org.apache.spark.ml.PipelineModel = pipeline_e4da29937aa5\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 16
+      "execution_count" : 24
     } ]
   }, {
     "metadata" : {
@@ -129,29 +150,115 @@
       "id" : "4403C8ACCAD9414E8B8A388A0BC594B9"
     },
     "cell_type" : "code",
-    "source" : "val bagOfWords = plModel.transform(data).select(\"id\", \"sentiment\", \"features\")\n\nbagOfWords.limit(3)",
+    "source" : "val trainBagOfWords = plModel.transform(trainingData).select(\"id\", \"sentiment\", \"features\")\nval testBagOfWords = plModel.transform(testData).select(\"id\", \"sentiment\", \"features\")\n\ntrainBagOfWords.limit(5)",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "bagOfWords: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\nres36: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\n"
+      "text" : "trainBagOfWords: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\ntestBagOfWords: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\nres44: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anone4ed2df2d34dae9ea97e02a335c406ac&quot;,&quot;partitionIndexId&quot;:&quot;anon7b1b4ad4f3951efc1d84c0d01642031c&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;id&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sentiment&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;features&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonc98f06118549c7afeca68fb07687e0b1&quot;,&quot;partitionIndexId&quot;:&quot;anonde56098ddd7f85260d2758c958a08e31&quot;,&quot;numPartitions&quot;:1,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;id&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;sentiment&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;features&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;udt&quot;,&quot;class&quot;:&quot;org.apache.spark.mllib.linalg.VectorUDT&quot;,&quot;pyClass&quot;:&quot;pyspark.mllib.linalg.VectorUDT&quot;,&quot;sqlType&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;type&quot;,&quot;type&quot;:&quot;byte&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;size&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;indices&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;integer&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;values&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 23
+      "execution_count" : 26
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "55018FD2FA5C4E0C8FF0E95ED8247441"
+    },
+    "cell_type" : "markdown",
+    "source" : "Now after we've obtained some representation of our text,  the next step is to train the classification algorithms and to compare them with each other. This requires understanding what are the metrics should be used to compare algorithms. To begin, we can consider, for example, the following metrics:\n\n- accuracy: $$ Accuracy = \\frac{1}{l}\\sum_{i=1}^l[y_i = \\hat{y}_i]$$ where $y_i$ — the true object class $x_i$, $\\hat{y}_i$ — he predicted class of the object.\n- precision: $$Precision = \\frac{TP}{TP + FP}$$\n- recall: $$Recall = \\frac{TP}{TP + FN}$$\n\nwhere *TP*, *FP*, *FN* and *TN* — the elements of a confusion matrix:\n\n| | y = 1 | y = 0 |\n|------|------|\n|   a(x) = 1  | TP| FP |\n|   a(x) = 0  | FN | TN |\n\nPlease note that accuracy and recall are calculated relative to a fixed class."
+  }, {
+    "metadata" : {
+      "id" : "AD5EDFC145DC4B588A1574ACD52BFF30"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem** What are disadvantages of using `accuracy` metric for this problem?\n\nTrain Logistic Regression and Random Forest with 500 trees on bag-of-words and evaluate each of above metrics on test data using `BinaryClassificationEvaluator` with appropriate `metricName` param value. Compare training times of the algorithms."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "971A67278BEC49B187FDFAD15BA44D8F"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ui.notebook.front.widgets.SparkInfo\nimport scala.concurrent.duration._\nnew SparkInfo(sparkContext, checkInterval=1.second, execNumber=Some(1000))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ui.notebook.front.widgets.SparkInfo\nimport scala.concurrent.duration._\nres25: org.apache.spark.ui.notebook.front.widgets.SparkInfo = <SparkInfo widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div data-bind=\"with: value\">\n      <script data-this=\"{&quot;valueId&quot;:&quot;anon9635947e1754961aacd20736c3fa5e72&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/ req(\n              ['observable', 'knockout', 'knockout-bootstrap'],\n              function (O, ko) {\n                v_v_v = O.makeObservable(valueId);\n                v_v_v.subscribe(function (x) { console.dir(x); });\n                ko.applyBindings(\n                  {\n                    value: v_v_v\n                  },\n                  this\n                );\n              }\n            );\n      /*]]>*/</script><ul class=\"unstyled\">\n      <li>\n        <strong>Total Duration:</strong>\n        <span data-bind=\"text: duration\"></span>\n      </li>\n      <li>\n        <strong>Scheduling Mode:</strong>\n        <span data-bind=\"text: mode\"></span>\n      </li>\n      <li>\n        <strong>Active Stages:</strong>\n        <span data-bind=\"text: activeNb\"></span>\n      </li>\n      <li>\n        <strong>Completed Stages:</strong>\n        <span data-bind=\"text: completedNb\"></span>\n      </li>\n      <li>\n        <strong>Failed Stages:</strong>\n        <span data-bind=\"text: failedNb\"></span>\n      </li>\n    </ul>\n      <hr/>\n      <h4>Active Stages</h4>\n      <div data-bind=\"foreach: activeStages\">\n        <h5 data-bind=\"attr: { title: details }\">\n          <span data-bind=\"text: name\"></span>\n        </h5>\n        <ul>\n          <li>Total:\n            <span data-bind=\"text: total\" style=\"color: blue\"></span>\n          </li>\n          <li>Failed:\n            <span data-bind=\"text: failed\" style=\"color: red\"></span>\n          </li>\n          <li>Progress:\n            <span data-bind=\"text: progress\"></span>\n            %</li>\n        </ul>\n        <div data-bind=\"progress: progress\"></div>\n      </div>\n      <hr/>\n      <h4>Completed Stages</h4>\n      <div data-bind=\"foreach: completedStages\">\n        <h5 data-bind=\"attr: { title: details }\">\n          <span data-bind=\"text: name\"></span>\n        </h5>\n        <ul>\n          <li>Total:\n            <span data-bind=\"text: total\" style=\"color: blue\"></span>\n          </li>\n          <li>Failed:\n            <span data-bind=\"text: failed\" style=\"color: red\"></span>\n          </li>\n        </ul>\n      </div>\n      <hr/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 14
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true,
-      "id" : "55018FD2FA5C4E0C8FF0E95ED8247441"
+      "collapsed" : false,
+      "id" : "417DD06930FC40C8A061B6D116E5553B"
     },
     "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
+    "source" : "import org.apache.spark.ml.classification.{LogisticRegression, RandomForestClassifier}\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.TrainValidationSplit\n\n\nval labelIndexer = new StringIndexer()\n  .setInputCol(\"sentiment\")\n  .setOutputCol(\"label\")\n  .fit(data)\n\n// Convert predicted labels back to original labels.\nval labelConverter = new IndexToString()\n  .setInputCol(\"prediction\")\n  .setOutputCol(\"predictedSentiment\")\n  .setLabels(labelIndexer.labels)\n\n\n// Chain indexer, logistic regression and converter in a Pipeline\nval lr = new LogisticRegression()\nval lrPipeline = new Pipeline()\n  .setStages(Array(labelIndexer, lr, labelConverter))\n\nval lrModel = lrPipeline.fit(trainBagOfWords)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.ml.classification.{LogisticRegression, RandomForestClassifier}\nimport org.apache.spark.ml.feature.{StringIndexer, IndexToString}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.TrainValidationSplit\nlabelIndexer: org.apache.spark.ml.feature.StringIndexerModel = strIdx_059f32bef9bc\nlabelConverter: org.apache.spark.ml.feature.IndexToString = idxToStr_dc1e6d62c360\nlr: org.apache.spark.ml.classification.LogisticRegression = logreg_75ff10a4dc55\nlrPipeline: org.apache.spark.ml.Pipeline = pipeline_3ffaf48f8ef6\nlrModel: org.apache.spark.ml.PipelineModel = pipeline_3ffaf48f8ef6\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 27
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "3200F4D40093464785E926A56EBACA07"
+    },
+    "cell_type" : "code",
+    "source" : "// Make predictions.\nval lrPredictions = lrModel.transform(testBagOfWords)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "lrPredictions: org.apache.spark.sql.DataFrame = [id: string, sentiment: int, features: vector, label: double, rawPrediction: vector, probability: vector, prediction: double, predictedSentiment: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 28
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6E57B66B1B23496983D00075B8E43A9B"
+    },
+    "cell_type" : "code",
+    "source" : "lrPredictions.limit(10).show",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "+--------+---------+--------------------+-----+--------------------+--------------------+----------+------------------+\n|      id|sentiment|            features|label|       rawPrediction|         probability|prediction|predictedSentiment|\n+--------+---------+--------------------+-----+--------------------+--------------------+----------+------------------+\n| 10012_1|        0|(51732,[0,2,6,7,8...|  1.0|[-39.866481989399...|[4.85519703324789...|       1.0|                 0|\n| 10018_3|        0|(51732,[1,24,86,1...|  1.0|[-18.573562651607...|[8.58231058980359...|       1.0|                 0|\n|  1001_4|        0|(51732,[1,2,3,4,1...|  1.0|[-13.996252706206...|[8.34649850421313...|       1.0|                 0|\n| 10023_9|        1|(51732,[0,2,8,12,...|  0.0|[19.6115756323492...|[0.99999999696050...|       0.0|                 1|\n| 10024_9|        1|(51732,[0,1,2,4,6...|  0.0|[-14.691721121642...|[4.16357513630025...|       1.0|                 0|\n| 10025_9|        1|(51732,[2,7,11,13...|  0.0|[53.5450568903202...|[1.0,5.5677183693...|       0.0|                 1|\n| 10039_1|        0|(51732,[0,1,2,3,6...|  1.0|[-10.431766497821...|[2.94800740630730...|       1.0|                 0|\n|10054_10|        1|(51732,[0,3,5,22,...|  0.0|[27.3349267008367...|[0.99999999999865...|       0.0|                 1|\n| 1005_10|        1|(51732,[0,1,2,4,8...|  0.0|[-31.756963098984...|[1.61482760190877...|       1.0|                 0|\n|10062_10|        1|(51732,[0,3,6,18,...|  0.0|[14.6148654361720...|[0.99999955038127...|       0.0|                 1|\n+--------+---------+--------------------+-----+--------------------+--------------------+----------+------------------+\n\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 31
+    } ]
   } ],
   "nbformat" : 4
 }
