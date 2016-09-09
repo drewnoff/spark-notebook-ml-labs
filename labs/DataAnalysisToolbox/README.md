@@ -728,6 +728,7 @@ CustomC3Chart(plotData,
 > x: breeze.linalg.DenseVector[Double] = DenseVector(0.0, 0.30303030303030304, 0.6060606060606061, 0.9090909090909092, 1.2121212121212122, 1.5151515151515151, 1.8181818181818183, 2.121212121212121, 2.4242424242424243, 2.7272727272727275, 3.0303030303030303, 3.3333333333333335, 3.6363636363636367, 3.9393939393939394, 4.242424242424242, 4.545454545454546, 4.848484848484849, 5.151515151515151, 5.454545454545455, 5.757575757575758, 6.0606060606060606, 6.363636363636364, 6.666666666666667, 6.96969696969697, 7.272727272727273, 7.575757575757576, 7.878787878787879, 8.181818181818182, 8.484848484848484, 8.787878787878789, 9.090909090909092, 9.393939393939394, 9.696969696969697, 10.0, 10.303030303030303, 10.606060606060606, 10.90909090909091, 11.212121212121213, 11.515151515151516, 11.818181818181...
 ></pre>
 
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/DataAnalysisToolbox/images/plotFunction.png?raw=true' alt='plot' height='252' width='978'></img>
 
 
 ** Problem 2. ** Plot histogram of ages for each passenger class (use data from Titanic dataset).
@@ -766,7 +767,7 @@ CustomC3Chart(ageHistData,
 > res47: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>
 ></pre>
 
-
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/DataAnalysisToolbox/images/ageHist.png?raw=true' alt='hist' height='252' width='978'></img>
 
 
 ```scala
@@ -835,7 +836,7 @@ CustomC3Chart(ageHistData,
 > res51: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>
 ></pre>
 
-
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/DataAnalysisToolbox/images/ageHistPerClass.png?raw=true' alt='ageHistPerClassStacked' height='252' width='978'></img>
 
 
 ```scala
@@ -859,3 +860,5 @@ CustomC3Chart(ageHistData,
 ><pre>
 > res53: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>
 ></pre>
+
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/DataAnalysisToolbox/images/ageHistPerClassStacked.png?raw=true' alt='ageHistPerClassStacked' height='252' width='978'></img>
