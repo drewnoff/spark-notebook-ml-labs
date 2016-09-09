@@ -316,7 +316,7 @@ CustomC3Chart(lrAvgMetrics,
 > res54: notebook.front.widgets.CustomC3Chart[Array[LRAvgMetric]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/lrAvgMetrics.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/lrAvgMetrics.png?raw=true' alt='plot' height='252' width='978'></img>
 
 
 ```scala
@@ -339,7 +339,7 @@ CustomC3Chart(treeAvgMetrics,
 > res56: notebook.front.widgets.CustomC3Chart[Array[TreeAvgMetric]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/treeAvgMetrics.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/treeAvgMetrics.png?raw=true' alt='plot' height='252' width='978'></img>
 
 
 ```scala
@@ -363,7 +363,7 @@ CustomC3Chart(rfAvgMetrics,
 > res58: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/rfAvgMetrics.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/rfAvgMetrics.png?raw=true' alt='plot' height='252' width='978'></img>
 
 What can you say about the resulting graphs?
 Also let's choose the number of trees in RandomForestClassifier algorithm. In general, RandomForest is not overfitting while increasing the number of trees, so with increase of the number of trees its quality will not become worse. Therefore, we will select the number of trees at which cross-validation score  stabilizes.
@@ -447,7 +447,7 @@ CustomC3Chart(rfAvgMetrics,
 > res62: notebook.front.widgets.CustomC3Chart[Array[RFAvgMetric]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/rfAvgMetrics2.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/rfAvgMetrics2.png?raw=true' alt='plot' height='252' width='978'></img>
 
 One can see that there is a stabilization of the quality at about 160 trees in random forest.
 Some algorithms are sensitive to the scale of the features. Let's look at the features to make sure that raw features can have a pretty big difference in scale.
@@ -504,7 +504,7 @@ CustomC3Chart(ageHistData,
 > res65: notebook.front.widgets.CustomC3Chart[Array[AgeHistPoint]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/ageHistData.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/ageHistData.png?raw=true' alt='plot' height='252' width='978'></img>
 
 
 
@@ -531,7 +531,7 @@ CustomC3Chart(fnlwgtHistData,
 > res67: notebook.front.widgets.CustomC3Chart[Array[FnlwgtHistPoint]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/fnlwgtHistData.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/fnlwgtHistData.png?raw=true' alt='plot' height='252' width='978'></img>
 
 
 
@@ -558,7 +558,7 @@ CustomC3Chart(cgainHistData,
 > res69: notebook.front.widgets.CustomC3Chart[Array[CgainHistPoint]] = <CustomC3Chart widget>
 ></pre>
 
-<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/public/labs/IntroToMachineLearning/images/cgainHistData.png?raw=true' alt='plot' height='252' width='978'></img>
+<img src='https://github.com/drewnoff/spark-notebook-ml-labs/blob/master/labs/IntroToMachineLearning/images/cgainHistData.png?raw=true' alt='plot' height='252' width='978'></img>
 
 
 Now when you see the histograms you can answer the following questions. What is special about each feature? Does it affect the quality of algorithms? How can we improve the quality of the algorithms?
