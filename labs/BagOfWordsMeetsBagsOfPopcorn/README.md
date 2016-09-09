@@ -513,6 +513,7 @@ CustomC3Chart(recallPrecisionPoints,
 > res26: notebook.front.widgets.CustomC3Chart[Array[RecallPrecisionPoint]] = <CustomC3Chart widget>
 ></pre>
 
+<img src='https://raw.githubusercontent.com/drewnoff/spark-notebook-ml-labs/public/labs/BagOfWordsMeetsBagsOfPopcorn/images/recallPrecision.png' alt='plot' height='252' width='978'></img>
 
 
 
@@ -546,7 +547,7 @@ CustomC3Chart(rocPoints,
 > res28: notebook.front.widgets.CustomC3Chart[Array[ROCPoint]] = <CustomC3Chart widget>
 ></pre>
 
-
+<img src='https://raw.githubusercontent.com/drewnoff/spark-notebook-ml-labs/public/labs/BagOfWordsMeetsBagsOfPopcorn/images/roc.png' alt='plot' height='252' width='978'></img>
 
 
 ```scala
