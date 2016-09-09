@@ -5,3 +5,8 @@ In these labs we are going to get familiar with tools for data analysis and mach
 * [spark dataframes](http://spark.apache.org/docs/latest/sql-programming-guide)
 * [spark.ml](http://spark.apache.org/docs/latest/ml-guide.html)
 * spark-notebook visualization capabilities
+
+Available labs:
+* [Data Analysis Toolbox](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DataAnalysisToolbox)
+* [Introduction To Machine Learning](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/IntroToMachineLearning)
+* [Bag of Words Meets Bags of Popcorn](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/BagOfWordsMeetsBagsOfPopcorn)
