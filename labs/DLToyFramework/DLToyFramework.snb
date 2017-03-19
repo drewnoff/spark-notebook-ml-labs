@@ -1,0 +1,164 @@
+{
+  "metadata" : {
+    "id" : "ea6e0418-480d-4802-9895-1bb2505a26c7",
+    "name" : "DLToyFramework",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "sparkNotebook" : null,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : [ "org.bytedeco % javacpp % 1.3.2", "org.nd4j % nd4j-native-platform % 0.7.2", "org.nd4j %% nd4s % 0.7.2" ],
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : {
+      "spark.app.name" : "Notebook",
+      "spark.master" : "local[*]",
+      "spark.executor.memory" : "1G"
+    },
+    "customVars" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A4067CCA55FB4DC69A025D7126F21D6D"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5,
+      "time" : "Took: 1 second 362 milliseconds, at 2017-3-19 12:14"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D14ECAF500734E6FB5AB8E3D5327D54A"
+    },
+    "cell_type" : "code",
+    "source" : "def sigmoid(x: INDArray): INDArray = {\n  Transforms.pow(Transforms.exp(-x) + 1, -1)\n}\n  ",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sigmoid: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 15,
+      "time" : "Took: 821 milliseconds, at 2017-3-19 12:26"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "667B2170D45D46EA8D6B1BE376833B94"
+    },
+    "cell_type" : "code",
+    "source" : "def sigmoidGrad(f: INDArray): INDArray = {\n  f * (-f + 1)\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sigmoidGrad: (f: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 66,
+      "time" : "Took: 449 milliseconds, at 2017-3-19 16:20"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B8C8D8BCDBA545BB959CE1B467CB2DE4"
+    },
+    "cell_type" : "code",
+    "source" : "def sigmoidTest(): Unit = {\n  val x = Array(Array(1, 2), Array(-1, -2)).toNDArray\n  val f = sigmoid(x)\n  val g = sigmoidGrad(f)\n  val sigmoidVals = Array(Array(0.73105858, 0.88079708),\n                          Array(0.26894142, 0.11920292)).toNDArray\n  val gradVals = Array(Array(0.19661193, 0.10499359),\n                       Array(0.19661193, 0.10499359)).toNDArray\n  assert((f - Transforms.abs(sigmoidVals)).max(1) < 1e-6)\n  assert((g - Transforms.abs(gradVals)).max(1) < 1e-6)\n  println(\"sigmoid tests passed\")\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sigmoidTest: ()Unit\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 74,
+      "time" : "Took: 478 milliseconds, at 2017-3-19 16:22"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2AA4AF0D847C40C58B9EDFF54EFA5EC8"
+    },
+    "cell_type" : "code",
+    "source" : "sigmoidTest",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sigmoid tests passed\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 75,
+      "time" : "Took: 628 milliseconds, at 2017-3-19 16:22"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab398103806-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "43939DB9240040B39B6E446D110E7840"
+    },
+    "cell_type" : "code",
+    "source" : "sigmoidGrad(sigmoid(Array(0.0).toNDArray))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res127: org.nd4j.linalg.api.ndarray.INDArray = 0.25\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0.25"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 79,
+      "time" : "Took: 758 milliseconds, at 2017-3-19 16:27"
+    } ]
+  } ],
+  "nbformat" : 4
+}
