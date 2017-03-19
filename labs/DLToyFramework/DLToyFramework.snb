@@ -42,8 +42,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 5,
-      "time" : "Took: 1 second 362 milliseconds, at 2017-3-19 12:14"
+      "execution_count" : 1,
+      "time" : "Took: 2 seconds, at 2017-3-19 22:2"
     } ]
   }, {
     "metadata" : {
@@ -64,8 +64,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 15,
-      "time" : "Took: 821 milliseconds, at 2017-3-19 12:26"
+      "execution_count" : 2,
+      "time" : "Took: 707 milliseconds, at 2017-3-19 22:2"
     } ]
   }, {
     "metadata" : {
@@ -86,8 +86,30 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 66,
-      "time" : "Took: 449 milliseconds, at 2017-3-19 16:20"
+      "execution_count" : 3,
+      "time" : "Took: 714 milliseconds, at 2017-3-19 22:2"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8733FF598AE84B38930E39267862D942"
+    },
+    "cell_type" : "code",
+    "source" : "/*\n * Compute the softmax function for each row of the input x.\n */\ndef softmax(x: INDArray): INDArray = {\n  val exps = Transforms.exp(x.addColumnVector(-x.max(1)))\n  exps.divColumnVector(exps.sum(1))\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "softmax: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 45,
+      "time" : "Took: 544 milliseconds, at 2017-3-19 22:45"
     } ]
   }, {
     "metadata" : {
@@ -108,8 +130,30 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 74,
-      "time" : "Took: 478 milliseconds, at 2017-3-19 16:22"
+      "execution_count" : 5,
+      "time" : "Took: 582 milliseconds, at 2017-3-19 22:2"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7E20DF81D2884E02BEAF4005233C805E"
+    },
+    "cell_type" : "code",
+    "source" : "def softmaxTest(): Unit = {\n  val x = Array(Array(1001, 1002), \n                Array(3, 4)).toNDArray\n  val logits = softmax(x)\n  val expectedLogits = Array(Array(0.26894142, 0.73105858),\n                             Array(0.26894142, 0.73105858)).toNDArray\n  assert((logits - Transforms.abs(expectedLogits)).max(1) < 1e-6)\n  assert(\n    (softmax(Array(1, 1).toNDArray) - Transforms.abs(Array(0.5, 0.5).toNDArray)).max(1) < 1e-6\n  )\n  println(\"softmax tests passed\")\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "softmaxTest: ()Unit\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 49,
+      "time" : "Took: 536 milliseconds, at 2017-3-19 22:51"
     } ]
   }, {
     "metadata" : {
@@ -119,19 +163,41 @@
       "id" : "2AA4AF0D847C40C58B9EDFF54EFA5EC8"
     },
     "cell_type" : "code",
-    "source" : "sigmoidTest",
+    "source" : "sigmoidTest\nsoftmaxTest\n",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "sigmoid tests passed\n"
+      "text" : "sigmoid tests passed\nsoftmax tests passed\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 75,
-      "time" : "Took: 628 milliseconds, at 2017-3-19 16:22"
+      "execution_count" : 52,
+      "time" : "Took: 739 milliseconds, at 2017-3-19 22:51"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F9458A208C37460D840285730C4C47D6"
+    },
+    "cell_type" : "code",
+    "source" : "x",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res206: org.nd4j.linalg.api.ndarray.INDArray = \n[[1,001.00, 1,002.00],\n [3.00, 4.00]]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "[[1,001.00, 1,002.00],\n [3.00, 4.00]]"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 43,
+      "time" : "Took: 644 milliseconds, at 2017-3-19 22:42"
     } ]
   }, {
     "metadata" : {
@@ -139,25 +205,25 @@
       "input_collapsed" : false,
       "collapsed" : false,
       "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab398103806-0\"\n}",
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1728939616-0\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
       },
-      "id" : "43939DB9240040B39B6E446D110E7840"
+      "id" : "6879ED615E634CE8865D21E3307D482E"
     },
     "cell_type" : "code",
-    "source" : "sigmoidGrad(sigmoid(Array(0.0).toNDArray))",
+    "source" : "x.divColumnVector(x.sum(1))",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res127: org.nd4j.linalg.api.ndarray.INDArray = 0.25\n"
+      "text" : "res208: org.nd4j.linalg.api.ndarray.INDArray = \n[[0.50, 0.50],\n [0.43, 0.57]]\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0.25"
+        "text/html" : "[[0.50, 0.50],\n [0.43, 0.57]]"
       },
       "output_type" : "execute_result",
-      "execution_count" : 79,
-      "time" : "Took: 758 milliseconds, at 2017-3-19 16:27"
+      "execution_count" : 44,
+      "time" : "Took: 541 milliseconds, at 2017-3-19 22:43"
     } ]
   } ],
   "nbformat" : 4
