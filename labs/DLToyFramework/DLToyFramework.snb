@@ -31,19 +31,41 @@
       "id" : "A4067CCA55FB4DC69A025D7126F21D6D"
     },
     "cell_type" : "code",
-    "source" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms",
+    "source" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\n\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\n"
+      "text" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 1,
-      "time" : "Took: 2 seconds, at 2017-3-19 22:2"
+      "execution_count" : 43,
+      "time" : "Took: 1 second 70 milliseconds, at 2017-3-20 23:56"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "85797E2F81AB4BD58042C4F90E36F2B8"
+    },
+    "cell_type" : "code",
+    "source" : "val RNG = new CpuNativeRandom(181)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "RNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@45948f84\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 23,
+      "time" : "Took: 1 second 452 milliseconds, at 2017-3-20 22:55"
     } ]
   }, {
     "metadata" : {
@@ -64,8 +86,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 2,
-      "time" : "Took: 707 milliseconds, at 2017-3-19 22:2"
+      "execution_count" : 4,
+      "time" : "Took: 1 second 65 milliseconds, at 2017-3-20 21:44"
     } ]
   }, {
     "metadata" : {
@@ -86,8 +108,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 3,
-      "time" : "Took: 714 milliseconds, at 2017-3-19 22:2"
+      "execution_count" : 5,
+      "time" : "Took: 1 second 99 milliseconds, at 2017-3-20 21:44"
     } ]
   }, {
     "metadata" : {
@@ -108,8 +130,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 45,
-      "time" : "Took: 544 milliseconds, at 2017-3-19 22:45"
+      "execution_count" : 6,
+      "time" : "Took: 1 second 255 milliseconds, at 2017-3-20 21:44"
     } ]
   }, {
     "metadata" : {
@@ -130,8 +152,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 5,
-      "time" : "Took: 582 milliseconds, at 2017-3-19 22:2"
+      "execution_count" : 7,
+      "time" : "Took: 1 second 311 milliseconds, at 2017-3-20 21:44"
     } ]
   }, {
     "metadata" : {
@@ -152,8 +174,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 49,
-      "time" : "Took: 536 milliseconds, at 2017-3-19 22:51"
+      "execution_count" : 8,
+      "time" : "Took: 1 second 725 milliseconds, at 2017-3-20 21:44"
     } ]
   }, {
     "metadata" : {
@@ -163,7 +185,7 @@
       "id" : "2AA4AF0D847C40C58B9EDFF54EFA5EC8"
     },
     "cell_type" : "code",
-    "source" : "sigmoidTest\nsoftmaxTest\n",
+    "source" : "sigmoidTest\nsoftmaxTest",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -174,57 +196,85 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 52,
-      "time" : "Took: 739 milliseconds, at 2017-3-19 22:51"
+      "execution_count" : 9,
+      "time" : "Took: 2 seconds 270 milliseconds, at 2017-3-20 21:44"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : false,
-      "id" : "F9458A208C37460D840285730C4C47D6"
+      "id" : "8A710585A72E4F39A083A1C8ACE5F2CB"
     },
     "cell_type" : "code",
-    "source" : "x",
+    "source" : "trait NetLayer {\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray\n  def backProp(outputsGrad: INDArray): Unit\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res206: org.nd4j.linalg.api.ndarray.INDArray = \n[[1,001.00, 1,002.00],\n [3.00, 4.00]]\n"
+      "text" : "defined trait NetLayer\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "[[1,001.00, 1,002.00],\n [3.00, 4.00]]"
+        "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 43,
-      "time" : "Took: 644 milliseconds, at 2017-3-19 22:42"
+      "execution_count" : 39,
+      "time" : "Took: 584 milliseconds, at 2017-3-20 23:43"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : false,
-      "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab1728939616-0\"\n}",
-        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
-      },
-      "id" : "6879ED615E634CE8865D21E3307D482E"
+      "id" : "94BCEC29D1FF47F08E02B3016F5E0113"
     },
     "cell_type" : "code",
-    "source" : "x.divColumnVector(x.sum(1))",
+    "source" : "import org.nd4s.Implicits._\n\nclass Dense(inputDim: Int, outputDim: Int, val learningRate: Double) extends NetLayer {\n  private val W = Nd4j.rand(Array(inputDim, outputDim), -0.01, 0.01, RNG)\n  private val b = Nd4j.rand(Array(1, outputDim), -0.01, 0.01, RNG)\n  private var _inputs = Nd4j.zeros(1, inputDim)\n  \n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    _inputs = inputs\n    (inputs mmul W) addRowVector b\n  }\n  \n  def backProp(outputsGrad: INDArray): Unit = {\n    val gradW = _inputs.T mmul outputsGrad\n    val gradb = outputsGrad.sum(0)\n    val prop = outputsGrad mmul W.T\n    W -= gradW * learningRate\n    b -= gradb * learningRate\n    prop\n  }\n}\n",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res208: org.nd4j.linalg.api.ndarray.INDArray = \n[[0.50, 0.50],\n [0.43, 0.57]]\n"
+      "text" : "<console>:67: warning: a pure expression does nothing in statement position; you may be omitting necessary parentheses\n           prop\n           ^\nimport org.nd4s.Implicits._\ndefined class Dense\nwarning: previously defined object Dense is not a companion to class Dense.\nCompanions must be defined together; you may wish to use :paste mode for this.\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "[[0.50, 0.50],\n [0.43, 0.57]]"
+        "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 44,
-      "time" : "Took: 541 milliseconds, at 2017-3-19 22:43"
+      "execution_count" : 45,
+      "time" : "Took: 1 second 294 milliseconds, at 2017-3-20 23:57"
     } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D6D77A7B392D45EE824D918D52837A3D"
+    },
+    "cell_type" : "code",
+    "source" : "val inputDim = 3\nval outputDim = 5\nval rng = new CpuNativeRandom(SEED)\nval W = Nd4j.rand(Array(inputDim, outputDim), -0.01, 0.01, RNG)\nval b = Nd4j.rand(Array(1, outputDim), -0.01, 0.01, RNG)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "inputDim: Int = 3\noutputDim: Int = 5\nrng: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@136b8f8d\nW: org.nd4j.linalg.api.ndarray.INDArray = \n[[-0.01, 0.01, -0.00, -0.01, 0.01],\n [0.01, -0.01, -0.01, 0.00, 0.00],\n [-0.01, 0.00, -0.00, -0.00, 0.01]]\nb: org.nd4j.linalg.api.ndarray.INDArray = [0.00, -0.01, 0.01, -0.01, -0.00]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 21,
+      "time" : "Took: 1 second 765 milliseconds, at 2017-3-20 22:52"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "9CC924B34C01448B82E0900DC809B2ED"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
   } ],
   "nbformat" : 4
 }
