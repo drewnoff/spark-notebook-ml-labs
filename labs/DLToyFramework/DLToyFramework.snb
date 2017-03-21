@@ -31,7 +31,7 @@
       "id" : "A4067CCA55FB4DC69A025D7126F21D6D"
     },
     "cell_type" : "code",
-    "source" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\n\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom",
+    "source" : "import org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\n\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -75,48 +75,26 @@
       "id" : "D14ECAF500734E6FB5AB8E3D5327D54A"
     },
     "cell_type" : "code",
-    "source" : "def sigmoid(x: INDArray): INDArray = {\n  Transforms.pow(Transforms.exp(-x) + 1, -1)\n}\n  ",
+    "source" : "def sigmoid(x: INDArray): INDArray = {\n  Transforms.pow(Transforms.exp(-x) + 1, -1)\n}\n \n\ndef sigmoidGrad(f: INDArray): INDArray = {\n  f * (-f + 1)\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "sigmoid: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+      "text" : "sigmoid: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\nsigmoidGrad: (f: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4,
-      "time" : "Took: 1 second 65 milliseconds, at 2017-3-20 21:44"
+      "execution_count" : 57,
+      "time" : "Took: 742 milliseconds, at 2017-3-21 10:17"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : false,
-      "id" : "667B2170D45D46EA8D6B1BE376833B94"
-    },
-    "cell_type" : "code",
-    "source" : "def sigmoidGrad(f: INDArray): INDArray = {\n  f * (-f + 1)\n}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "sigmoidGrad: (f: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 5,
-      "time" : "Took: 1 second 99 milliseconds, at 2017-3-20 21:44"
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "8733FF598AE84B38930E39267862D942"
+      "id" : "E3AAA615A8494AA2ABEE01384040B244"
     },
     "cell_type" : "code",
     "source" : "/*\n * Compute the softmax function for each row of the input x.\n */\ndef softmax(x: INDArray): INDArray = {\n  val exps = Transforms.exp(x.addColumnVector(-x.max(1)))\n  exps.divColumnVector(exps.sum(1))\n}",
@@ -130,8 +108,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 6,
-      "time" : "Took: 1 second 255 milliseconds, at 2017-3-20 21:44"
+      "execution_count" : 58,
+      "time" : "Took: 870 milliseconds, at 2017-3-21 10:17"
     } ]
   }, {
     "metadata" : {
@@ -141,41 +119,19 @@
       "id" : "B8C8D8BCDBA545BB959CE1B467CB2DE4"
     },
     "cell_type" : "code",
-    "source" : "def sigmoidTest(): Unit = {\n  val x = Array(Array(1, 2), Array(-1, -2)).toNDArray\n  val f = sigmoid(x)\n  val g = sigmoidGrad(f)\n  val sigmoidVals = Array(Array(0.73105858, 0.88079708),\n                          Array(0.26894142, 0.11920292)).toNDArray\n  val gradVals = Array(Array(0.19661193, 0.10499359),\n                       Array(0.19661193, 0.10499359)).toNDArray\n  assert((f - Transforms.abs(sigmoidVals)).max(1) < 1e-6)\n  assert((g - Transforms.abs(gradVals)).max(1) < 1e-6)\n  println(\"sigmoid tests passed\")\n}",
+    "source" : "def sigmoidTest(): Unit = {\n  val x = Array(Array(1, 2), Array(-1, -2)).toNDArray\n  val f = sigmoid(x)\n  val g = sigmoidGrad(f)\n  val sigmoidVals = Array(Array(0.73105858, 0.88079708),\n                          Array(0.26894142, 0.11920292)).toNDArray\n  val gradVals = Array(Array(0.19661193, 0.10499359),\n                       Array(0.19661193, 0.10499359)).toNDArray\n  assert((f - Transforms.abs(sigmoidVals)).max(1) < 1e-6)\n  assert((g - Transforms.abs(gradVals)).max(1) < 1e-6)\n  println(\"sigmoid tests passed\")\n}\n\n\ndef softmaxTest(): Unit = {\n  val x = Array(Array(1001, 1002), \n                Array(3, 4)).toNDArray\n  val logits = softmax(x)\n  val expectedLogits = Array(Array(0.26894142, 0.73105858),\n                             Array(0.26894142, 0.73105858)).toNDArray\n  assert((logits - Transforms.abs(expectedLogits)).max(1) < 1e-6)\n  assert(\n    (softmax(Array(1, 1).toNDArray) - Transforms.abs(Array(0.5, 0.5).toNDArray)).max(1) < 1e-6\n  )\n  println(\"softmax tests passed\")\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "sigmoidTest: ()Unit\n"
+      "text" : "sigmoidTest: ()Unit\nsoftmaxTest: ()Unit\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 7,
-      "time" : "Took: 1 second 311 milliseconds, at 2017-3-20 21:44"
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "7E20DF81D2884E02BEAF4005233C805E"
-    },
-    "cell_type" : "code",
-    "source" : "def softmaxTest(): Unit = {\n  val x = Array(Array(1001, 1002), \n                Array(3, 4)).toNDArray\n  val logits = softmax(x)\n  val expectedLogits = Array(Array(0.26894142, 0.73105858),\n                             Array(0.26894142, 0.73105858)).toNDArray\n  assert((logits - Transforms.abs(expectedLogits)).max(1) < 1e-6)\n  assert(\n    (softmax(Array(1, 1).toNDArray) - Transforms.abs(Array(0.5, 0.5).toNDArray)).max(1) < 1e-6\n  )\n  println(\"softmax tests passed\")\n}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "softmaxTest: ()Unit\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 8,
-      "time" : "Took: 1 second 725 milliseconds, at 2017-3-20 21:44"
+      "execution_count" : 55,
+      "time" : "Took: 1 second 15 milliseconds, at 2017-3-21 10:15"
     } ]
   }, {
     "metadata" : {
@@ -207,7 +163,7 @@
       "id" : "8A710585A72E4F39A083A1C8ACE5F2CB"
     },
     "cell_type" : "code",
-    "source" : "trait NetLayer {\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray\n  def backProp(outputsGrad: INDArray): Unit\n}",
+    "source" : "trait NetLayer {\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray\n  def backProp(outputsGrad: INDArray): INDArray\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -218,8 +174,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 39,
-      "time" : "Took: 584 milliseconds, at 2017-3-20 23:43"
+      "execution_count" : 49,
+      "time" : "Took: 508 milliseconds, at 2017-3-21 10:11"
     } ]
   }, {
     "metadata" : {
@@ -229,51 +185,51 @@
       "id" : "94BCEC29D1FF47F08E02B3016F5E0113"
     },
     "cell_type" : "code",
-    "source" : "import org.nd4s.Implicits._\n\nclass Dense(inputDim: Int, outputDim: Int, val learningRate: Double) extends NetLayer {\n  private val W = Nd4j.rand(Array(inputDim, outputDim), -0.01, 0.01, RNG)\n  private val b = Nd4j.rand(Array(1, outputDim), -0.01, 0.01, RNG)\n  private var _inputs = Nd4j.zeros(1, inputDim)\n  \n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    _inputs = inputs\n    (inputs mmul W) addRowVector b\n  }\n  \n  def backProp(outputsGrad: INDArray): Unit = {\n    val gradW = _inputs.T mmul outputsGrad\n    val gradb = outputsGrad.sum(0)\n    val prop = outputsGrad mmul W.T\n    W -= gradW * learningRate\n    b -= gradb * learningRate\n    prop\n  }\n}\n",
+    "source" : "import org.nd4s.Implicits._\n\nclass Dense(inputDim: Int, outputDim: Int, val learningRate: Double) extends NetLayer {\n  private val W = Nd4j.rand(Array(inputDim, outputDim), -0.01, 0.01, RNG)\n  private val b = Nd4j.rand(Array(1, outputDim), -0.01, 0.01, RNG)\n  private var _inputs = Nd4j.zeros(1, inputDim)\n  \n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    _inputs = inputs\n    (inputs mmul W) addRowVector b\n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    val gradW = _inputs.T mmul outputsGrad\n    val gradb = outputsGrad.sum(0)\n    val prop = outputsGrad mmul W.T\n    W -= gradW * learningRate\n    b -= gradb * learningRate\n    prop\n  }\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "<console>:67: warning: a pure expression does nothing in statement position; you may be omitting necessary parentheses\n           prop\n           ^\nimport org.nd4s.Implicits._\ndefined class Dense\nwarning: previously defined object Dense is not a companion to class Dense.\nCompanions must be defined together; you may wish to use :paste mode for this.\n"
+      "text" : "import org.nd4s.Implicits._\ndefined class Dense\nwarning: previously defined object Dense is not a companion to class Dense.\nCompanions must be defined together; you may wish to use :paste mode for this.\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 45,
-      "time" : "Took: 1 second 294 milliseconds, at 2017-3-20 23:57"
+      "execution_count" : 60,
+      "time" : "Took: 1 second 149 milliseconds, at 2017-3-21 10:18"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : false,
-      "id" : "D6D77A7B392D45EE824D918D52837A3D"
+      "id" : "C6928100FBFD4F9087EFB6550FDFCE0E"
     },
     "cell_type" : "code",
-    "source" : "val inputDim = 3\nval outputDim = 5\nval rng = new CpuNativeRandom(SEED)\nval W = Nd4j.rand(Array(inputDim, outputDim), -0.01, 0.01, RNG)\nval b = Nd4j.rand(Array(1, outputDim), -0.01, 0.01, RNG)",
+    "source" : "import org.nd4s.Implicits._\n\nclass SigmoidActivation extends NetLayer {\n  private var _outputs = Nd4j.zeros(1)\n  \n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    _outputs = sigmoid(inputs)\n    _outputs\n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad * sigmoidGrad(_outputs)\n  }\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "inputDim: Int = 3\noutputDim: Int = 5\nrng: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@136b8f8d\nW: org.nd4j.linalg.api.ndarray.INDArray = \n[[-0.01, 0.01, -0.00, -0.01, 0.01],\n [0.01, -0.01, -0.01, 0.00, 0.00],\n [-0.01, 0.00, -0.00, -0.00, 0.01]]\nb: org.nd4j.linalg.api.ndarray.INDArray = [0.00, -0.01, 0.01, -0.01, -0.00]\n"
+      "text" : "import org.nd4s.Implicits._\ndefined class SigmoidActivation\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 21,
-      "time" : "Took: 1 second 765 milliseconds, at 2017-3-20 22:52"
+      "execution_count" : 61,
+      "time" : "Took: 1 second 220 milliseconds, at 2017-3-21 10:18"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : true,
-      "id" : "9CC924B34C01448B82E0900DC809B2ED"
+      "id" : "F59BB35B716A451D820E82A0BA975BA3"
     },
     "cell_type" : "code",
-    "source" : "",
+    "source" : "// class Softmax extends NetLayer {\n",
     "outputs" : [ ]
   } ],
   "nbformat" : 4
