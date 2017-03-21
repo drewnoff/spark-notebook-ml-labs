@@ -35,15 +35,15 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.nd4s.Implicits._\nimport org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom\n"
+      "text" : "import org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 43,
-      "time" : "Took: 1 second 70 milliseconds, at 2017-3-20 23:56"
+      "execution_count" : 13,
+      "time" : "Took: 960 milliseconds, at 2017-3-21 22:49"
     } ]
   }, {
     "metadata" : {
@@ -57,15 +57,15 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "RNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@45948f84\n"
+      "text" : "RNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@6ae19811\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 23,
-      "time" : "Took: 1 second 452 milliseconds, at 2017-3-20 22:55"
+      "execution_count" : 14,
+      "time" : "Took: 975 milliseconds, at 2017-3-21 22:49"
     } ]
   }, {
     "metadata" : {
@@ -75,19 +75,19 @@
       "id" : "D14ECAF500734E6FB5AB8E3D5327D54A"
     },
     "cell_type" : "code",
-    "source" : "def sigmoid(x: INDArray): INDArray = {\n  Transforms.pow(Transforms.exp(-x) + 1, -1)\n}\n \n\ndef sigmoidGrad(f: INDArray): INDArray = {\n  f * (-f + 1)\n}",
+    "source" : "import org.nd4s.Implicits._\n\ndef sigmoid(x: INDArray): INDArray = {\n  Transforms.pow(Transforms.exp(-x) + 1, -1)\n}\n \n\ndef sigmoidGrad(f: INDArray): INDArray = {\n  f * (-f + 1)\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "sigmoid: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\nsigmoidGrad: (f: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+      "text" : "import org.nd4s.Implicits._\nsigmoid: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\nsigmoidGrad: (f: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 57,
-      "time" : "Took: 742 milliseconds, at 2017-3-21 10:17"
+      "execution_count" : 15,
+      "time" : "Took: 2 seconds 94 milliseconds, at 2017-3-21 22:50"
     } ]
   }, {
     "metadata" : {
@@ -108,8 +108,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 58,
-      "time" : "Took: 870 milliseconds, at 2017-3-21 10:17"
+      "execution_count" : 16,
+      "time" : "Took: 963 milliseconds, at 2017-3-21 22:50"
     } ]
   }, {
     "metadata" : {
@@ -130,8 +130,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 55,
-      "time" : "Took: 1 second 15 milliseconds, at 2017-3-21 10:15"
+      "execution_count" : 17,
+      "time" : "Took: 897 milliseconds, at 2017-3-21 22:50"
     } ]
   }, {
     "metadata" : {
@@ -152,8 +152,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 9,
-      "time" : "Took: 2 seconds 270 milliseconds, at 2017-3-20 21:44"
+      "execution_count" : 18,
+      "time" : "Took: 982 milliseconds, at 2017-3-21 22:50"
     } ]
   }, {
     "metadata" : {
@@ -174,8 +174,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 49,
-      "time" : "Took: 508 milliseconds, at 2017-3-21 10:11"
+      "execution_count" : 19,
+      "time" : "Took: 556 milliseconds, at 2017-3-21 22:50"
     } ]
   }, {
     "metadata" : {
@@ -189,15 +189,15 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.nd4s.Implicits._\ndefined class Dense\nwarning: previously defined object Dense is not a companion to class Dense.\nCompanions must be defined together; you may wish to use :paste mode for this.\n"
+      "text" : "import org.nd4s.Implicits._\ndefined class Dense\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 60,
-      "time" : "Took: 1 second 149 milliseconds, at 2017-3-21 10:18"
+      "execution_count" : 20,
+      "time" : "Took: 1 second 374 milliseconds, at 2017-3-21 22:50"
     } ]
   }, {
     "metadata" : {
@@ -211,26 +211,74 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import org.nd4s.Implicits._\ndefined class SigmoidActivation\n"
+      "text" : "<console>:38: error: abstract member may not have private modifier\n         private var _outputs: INDArray\n                     ^\n"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F59BB35B716A451D820E82A0BA975BA3"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\nclass Softmax extends NetLayer {\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    softmax(inputs)\n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    val predictions = outputsGrad(0, ->)\n    val labels = outputsGrad(1, ->)\n    predictions - labels\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class Softmax\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 61,
-      "time" : "Took: 1 second 220 milliseconds, at 2017-3-21 10:18"
+      "execution_count" : 25,
+      "time" : "Took: 1 second 683 milliseconds, at 2017-3-21 23:44"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true,
-      "id" : "F59BB35B716A451D820E82A0BA975BA3"
+      "collapsed" : false,
+      "id" : "705378E3036742998FB06EE39B5C3E70"
     },
     "cell_type" : "code",
-    "source" : "// class Softmax extends NetLayer {\n",
-    "outputs" : [ ]
+    "source" : "import org.nd4s.Implicits._\n\nclass Dropout(val dropRate: Double = 0.0) extends NetLayer {\n  var mask: INDArray = Nd4j.zeros(1)\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    if (isTrain) {\n      mask = Nd4j.zeros(inputs.shape()(1), 1)\n      Nd4j.choice(Array(0, 1).toNDArray, Array(dropRate, 1 - dropRate).toNDArray, mask)\n      inputs * mask\n    } else {\n      inputs * (1 - dropRate)\n    }    \n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad * mask\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class Dropout\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 31,
+      "time" : "Took: 1 second 419 milliseconds, at 2017-3-22 0:11"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A871DC7E594B4BB388BD066A4D16A12A"
+    },
+    "cell_type" : "code",
+    "source" : "def crossEntropy(predictions: INDArray, labels: INDArray): Double = {\n  val cost = - (Transforms.log(predictions) * labels).sumNumber.asInstanceOf[Double]\n  cost / labels.shape()(0)\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "crossEntropy: (predictions: org.nd4j.linalg.api.ndarray.INDArray, labels: org.nd4j.linalg.api.ndarray.INDArray)Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 32,
+      "time" : "Took: 1 second 3 milliseconds, at 2017-3-22 0:19"
+    } ]
   } ],
   "nbformat" : 4
 }
