@@ -43,7 +43,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 1,
-      "time" : "Took: 1 second 693 milliseconds, at 2017-3-26 9:27"
+      "time" : "Took: 1 second 678 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -65,7 +65,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 2,
-      "time" : "Took: 3 seconds 237 milliseconds, at 2017-3-26 9:27"
+      "time" : "Took: 1 second 987 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -79,7 +79,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "rngSEED: Int = 181\nRNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@68648b9e\n"
+      "text" : "rngSEED: Int = 181\nRNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@74ed427b\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -87,7 +87,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 3,
-      "time" : "Took: 1 second 800 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 89 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -109,7 +109,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 4,
-      "time" : "Took: 2 seconds 503 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 655 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -131,7 +131,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 5,
-      "time" : "Took: 1 second 191 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 703 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -153,7 +153,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 6,
-      "time" : "Took: 1 second 386 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 989 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -175,7 +175,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 7,
-      "time" : "Took: 1 second 738 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 132 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -197,7 +197,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 8,
-      "time" : "Took: 695 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 608 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -219,7 +219,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 9,
-      "time" : "Took: 1 second 782 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 454 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -241,7 +241,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 10,
-      "time" : "Took: 2 seconds 505 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 307 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -263,7 +263,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 11,
-      "time" : "Took: 1 second 427 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 376 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -273,7 +273,7 @@
       "id" : "705378E3036742998FB06EE39B5C3E70"
     },
     "cell_type" : "code",
-    "source" : "import org.nd4s.Implicits._\n\nclass Dropout(val dropRate: Double = 0.0) extends NetLayer {\n  var mask: INDArray = Nd4j.zeros(1)\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    if (isTrain) {\n      mask = Nd4j.zeros(inputs.shape()(1), 1)\n      Nd4j.choice(Array(0, 1).toNDArray, Array(dropRate, 1 - dropRate).toNDArray, mask)\n      inputs.mulRowVector(mask.T)\n    } else {\n      inputs * (1 - dropRate)\n    }    \n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad * mask\n  }\n}",
+    "source" : "import org.nd4s.Implicits._\n\nclass Dropout(val dropRate: Double = 0.0) extends NetLayer {\n  var mask: INDArray = Nd4j.zeros(1)\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    if (isTrain) {\n      mask = Nd4j.zeros(inputs.shape()(1), 1)\n      Nd4j.choice(Array(0, 1).toNDArray, Array(dropRate, 1 - dropRate).toNDArray, mask)\n      inputs.mulRowVector(mask.T)\n    } else {\n      inputs * (1 - dropRate)\n    }    \n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad.mulRowVector(mask.T)\n  }\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -285,7 +285,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 12,
-      "time" : "Took: 1 second 920 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 679 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -307,7 +307,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 13,
-      "time" : "Took: 1 second 589 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 986 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -329,7 +329,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 14,
-      "time" : "Took: 1 second 556 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 33 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -357,7 +357,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 15,
-      "time" : "Took: 1 second 573 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 851 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -379,7 +379,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 16,
-      "time" : "Took: 1 second 513 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 906 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -389,7 +389,7 @@
       "id" : "B1F01220EC894EAD82FFA872B34771EF"
     },
     "cell_type" : "code",
-    "source" : "import scala.collection.JavaConverters._\n\n\ncase class NeuralNet(layers: Vector[NetLayer] = Vector()) {\n  \n  def addLayer(layer: NetLayer): NeuralNet = {\n    this.copy(layers :+ layer)\n  }\n  \n  def fit(trainData: DataSetIterator, numEpochs: Int, validationData: DataSet): Seq[Metric] = {\n    val history = (1 to numEpochs).foldLeft(List[Metric]()){ (history, epoch) =>\n      trainData.reset()\n      trainData.asScala.foreach ( ds => trainBatch(ds.getFeatures, ds.getLabels) )\n      \n      // validate on validation Dataset\n      val prediction = this.predict(validationData.getFeatures)\n      val loss = crossEntropy(prediction, validationData.getLabels)\n      val acc = accuracy(prediction, validationData.getLabels)\n      \n      println(s\"Epoch: $epoch/$numEpochs - loss: $loss - acc: $acc\")\n\n      Metric(epoch, acc, loss) :: history\n    }\n    history.reverse\n  }\n  \n  def predict(X: INDArray): INDArray = {\n    layers.foldLeft(X){\n      (input, layer) => layer.forwardProp(input, isTrain=false)\n    }\n  }\n    \n  private def trainBatch(X: INDArray, Y: INDArray): Unit = {\n    val YPredict = layers.foldLeft(X){\n      (input, layer) => layer.forwardProp(input, isTrain=true)\n    }\n    val shape = X.shape\n    layers.reverse.foldLeft(\n      Nd4j.vstack(YPredict, Y).reshape(2, shape(0), shape(1))\n    ){\n      (deriv, layer) => layer.backProp(deriv)\n    }\n  }  \n}",
+    "source" : "import scala.collection.JavaConverters._\n\n\ncase class NeuralNet(layers: Vector[NetLayer] = Vector()) {\n  \n  def addLayer(layer: NetLayer): NeuralNet = {\n    this.copy(layers :+ layer)\n  }\n  \n  def fit(trainData: DataSetIterator, numEpochs: Int, validationData: DataSet): Seq[Metric] = {\n    val history = (1 to numEpochs).foldLeft(List[Metric]()){ (history, epoch) =>\n      trainData.reset()\n      trainData.asScala.foreach ( ds => trainBatch(ds.getFeatures, ds.getLabels) )\n      \n      // validate on validation Dataset\n      val prediction = this.predict(validationData.getFeatures)\n      val loss = crossEntropy(prediction, validationData.getLabels)\n      val acc = accuracy(prediction, validationData.getLabels)\n      \n      println(s\"Epoch: $epoch/$numEpochs - loss: $loss - acc: $acc\")\n\n      Metric(epoch, acc, loss) :: history\n    }\n    history.reverse\n  }\n  \n  def predict(X: INDArray): INDArray = {\n    layers.foldLeft(X){\n      (input, layer) => layer.forwardProp(input, isTrain=false)\n    }\n  }\n    \n  private def trainBatch(X: INDArray, Y: INDArray): Unit = {\n    val YPredict = layers.foldLeft(X){\n      (input, layer) => layer.forwardProp(input, isTrain=true)\n    }\n    val shape = Y.shape\n    layers.reverse.foldLeft(\n      Nd4j.vstack(YPredict, Y).reshape(2, shape(0), shape(1))\n    ){\n      (deriv, layer) => layer.backProp(deriv)\n    }\n  }  \n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -401,7 +401,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 17,
-      "time" : "Took: 3 seconds 283 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 2 seconds 121 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -429,7 +429,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 18,
-      "time" : "Took: 1 second 671 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 945 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -443,7 +443,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "learningRate: Double = 0.01\nbatchSize: Int = 128\nmnistTrain: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@2e2151bb\nmnistTest: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@31261aef\ninputDim: Int = 784\ntotalTestExamples: Int = 10000\n"
+      "text" : "learningRate: Double = 0.01\nbatchSize: Int = 128\nmnistTrain: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@64ea4398\nmnistTest: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@5d1512a3\ninputDim: Int = 784\ntotalTestExamples: Int = 10000\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -451,7 +451,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 19,
-      "time" : "Took: 2 seconds 85 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 76 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -465,7 +465,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "model: NeuralNet = NeuralNet(Vector($iwC$$iwC$Dense@2b64fd81, $iwC$$iwC$SigmoidActivation@77dada03, $iwC$$iwC$Dropout@3c5e53a4, $iwC$$iwC$Dense@5626ea47, $iwC$$iwC$SigmoidActivation@5aa29df7, $iwC$$iwC$Dropout@7b895e62, $iwC$$iwC$Dense@3504e1c4, $iwC$$iwC$Softmax@541141f1))\n"
+      "text" : "model: NeuralNet = NeuralNet(Vector($iwC$$iwC$Dense@29d5e44c, $iwC$$iwC$SigmoidActivation@7b2d74ff, $iwC$$iwC$Dropout@60ca3a9e, $iwC$$iwC$Dense@5f967af1, $iwC$$iwC$SigmoidActivation@596712cb, $iwC$$iwC$Dropout@49fd0f94, $iwC$$iwC$Dense@78d2c2ff, $iwC$$iwC$Softmax@14ff6ee6))\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -473,7 +473,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 20,
-      "time" : "Took: 2 seconds 866 milliseconds, at 2017-3-26 9:28"
+      "time" : "Took: 1 second 105 milliseconds, at 2017-3-26 15:8"
     } ]
   }, {
     "metadata" : {
@@ -483,104 +483,73 @@
       "id" : "153C4951EE454D068DE1F8E03DF6EB5F"
     },
     "cell_type" : "code",
-    "source" : "val history = model.fit(mnistTrain, 10, (new MnistDataSetIterator(totalTestExamples, false, rngSEED)).next)",
+    "source" : "val history = model.fit(mnistTrain, 40, (new MnistDataSetIterator(totalTestExamples, false, rngSEED)).next)",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "java.lang.IllegalStateException: Mis matched lengths: [200704] != [2560]\n\tat org.nd4j.linalg.util.LinAlgExceptions.assertSameLength(LinAlgExceptions.java:40)\n\tat org.nd4j.linalg.api.ops.BaseTransformOp.<init>(BaseTransformOp.java:47)\n\tat org.nd4j.linalg.api.ops.impl.transforms.Set.<init>(Set.java:24)\n\tat org.nd4j.linalg.api.ndarray.BaseNDArray.assign(BaseNDArray.java:1223)\n\tat org.nd4j.linalg.api.ndarray.BaseNDArray.reshape(BaseNDArray.java:3629)\n\tat org.nd4j.linalg.api.ndarray.BaseNDArray.reshape(BaseNDArray.java:3672)\n\tat $iwC$$iwC$NeuralNet.$line63$$read$$iwC$$iwC$NeuralNet$$trainBatch(<console>:78)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1$$anonfun$apply$1.apply(<console>:52)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1$$anonfun$apply$1.apply(<console>:52)\n\tat scala.collection.Iterator$class.foreach(Iterator.scala:727)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1157)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1.apply(<console>:52)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1.apply(<console>:50)\n\tat scala.collection.TraversableOnce$$anonfun$foldLeft$1.apply(TraversableOnce.scala:144)\n\tat scala.collection.TraversableOnce$$anonfun$foldLeft$1.apply(TraversableOnce.scala:144)\n\tat scala.collection.immutable.Range.foreach(Range.scala:141)\n\tat scala.collection.TraversableOnce$class.foldLeft(TraversableOnce.scala:144)\n\tat scala.collection.AbstractTraversable.foldLeft(Traversable.scala:105)\n\tat $iwC$$iwC$NeuralNet.fit(<console>:50)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:138)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:145)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:147)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:149)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:151)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:153)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:155)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:157)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:159)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:161)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:163)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:165)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:167)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:169)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:171)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:173)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:175)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:177)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:179)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:181)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:183)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:185)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:187)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:189)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:191)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:193)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:195)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:197)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:199)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:201)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:203)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:205)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:207)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:209)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:211)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:213)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:215)\n\tat $iwC$$iwC$$iwC$$iwC.<init>(<console>:217)\n\tat $iwC$$iwC$$iwC.<init>(<console>:219)\n\tat $iwC$$iwC.<init>(<console>:221)\n\tat $iwC.<init>(<console>:223)\n\tat <init>(<console>:225)\n\tat .<init>(<console>:229)\n\tat .<clinit>(<console>)\n\tat .<init>(<console>:7)\n\tat .<clinit>(<console>)\n\tat $print(<console>)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat org.apache.spark.repl.SparkIMain$ReadEvalPrint.call(SparkIMain.scala:1046)\n\tat org.apache.spark.repl.SparkIMain$Request.loadAndRun(SparkIMain.scala:1327)\n\tat org.apache.spark.repl.SparkIMain.loadAndRunReq$1(SparkIMain.scala:822)\n\tat org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:853)\n\tat org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:801)\n\tat notebook.kernel.Repl$$anonfun$6.apply(Repl.scala:202)\n\tat notebook.kernel.Repl$$anonfun$6.apply(Repl.scala:202)\n\tat scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)\n\tat scala.Console$.withOut(Console.scala:126)\n\tat notebook.kernel.Repl.evaluate(Repl.scala:201)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$18.replEvaluate$1(ReplCalculator.scala:252)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$18.apply(ReplCalculator.scala:265)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$18.apply(ReplCalculator.scala:246)\n\tat scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)\n\tat scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:40)\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:397)\n\tat scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)\n\tat scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)\n\tat scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)\n\tat scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)\n\n"
+      "text" : "Epoch: 1/40 - loss: 0.553437841796875 - acc: 0.8236\nEpoch: 2/40 - loss: 0.3287392578125 - acc: 0.8997\nEpoch: 3/40 - loss: 0.287028662109375 - acc: 0.9103\nEpoch: 4/40 - loss: 0.2096341064453125 - acc: 0.9356\nEpoch: 5/40 - loss: 0.1902560791015625 - acc: 0.9414\nEpoch: 6/40 - loss: 0.170572607421875 - acc: 0.9485\nEpoch: 7/40 - loss: 0.1558003173828125 - acc: 0.9513\nEpoch: 8/40 - loss: 0.1388808837890625 - acc: 0.9565\nEpoch: 9/40 - loss: 0.1310806640625 - acc: 0.9597\nEpoch: 10/40 - loss: 0.12377705078125 - acc: 0.9606\nEpoch: 11/40 - loss: 0.11897177734375 - acc: 0.9631\nEpoch: 12/40 - loss: 0.112712158203125 - acc: 0.9643\nEpoch: 13/40 - loss: 0.1101241943359375 - acc: 0.9654\nEpoch: 14/40 - loss: 0.10270872802734375 - acc: 0.9675\nEpoch: 15/40 - loss: 0.09695755615234375 - acc: 0.9698\nEpoch: 16/40 - loss: 0.0928009033203125 - acc: 0.9714\nEpoch: 17/40 - loss: 0.09171278076171875 - acc: 0.9717\nEpoch: 18/40 - loss: 0.0893869140625 - acc: 0.9711\nEpoch: 19/40 - loss: 0.08768370361328125 - acc: 0.9714\nEpoch: 20/40 - loss: 0.08273265380859375 - acc: 0.9733\nEpoch: 21/40 - loss: 0.08220009765625 - acc: 0.9732\nEpoch: 22/40 - loss: 0.08050025634765624 - acc: 0.9737\nEpoch: 23/40 - loss: 0.07561025390625 - acc: 0.9763\nEpoch: 24/40 - loss: 0.07690062866210938 - acc: 0.9757\nEpoch: 25/40 - loss: 0.07695980224609375 - acc: 0.9757\nEpoch: 26/40 - loss: 0.07533101806640626 - acc: 0.976\nEpoch: 27/40 - loss: 0.07689620971679688 - acc: 0.9757\nEpoch: 28/40 - loss: 0.0723163330078125 - acc: 0.9771\nEpoch: 29/40 - loss: 0.06934053955078125 - acc: 0.9786\nEpoch: 30/40 - loss: 0.06918525390625 - acc: 0.9783\nEpoch: 31/40 - loss: 0.067534716796875 - acc: 0.9785\nEpoch: 32/40 - loss: 0.06565299072265625 - acc: 0.9789\nEpoch: 33/40 - loss: 0.06615639038085938 - acc: 0.9794\nEpoch: 34/40 - loss: 0.06506829833984375 - acc: 0.9791\nEpoch: 35/40 - loss: 0.06601197509765624 - acc: 0.9785\nEpoch: 36/40 - loss: 0.06776669921875 - acc: 0.9795\nEpoch: 37/40 - loss: 0.063225244140625 - acc: 0.9796\nEpoch: 38/40 - loss: 0.06246710205078125 - acc: 0.9799\nEpoch: 39/40 - loss: 0.063174951171875 - acc: 0.9806\nEpoch: 40/40 - loss: 0.0638287353515625 - acc: 0.9802\nhistory: Seq[Metric] = List(Metric(1,0.8236,0.553437841796875), Metric(2,0.8997,0.3287392578125), Metric(3,0.9103,0.287028662109375), Metric(4,0.9356,0.2096341064453125), Metric(5,0.9414,0.1902560791015625), Metric(6,0.9485,0.170572607421875), Metric(7,0.9513,0.1558003173828125), Metric(8,0.9565,0.1388808837890625), Metric(9,0.9597,0.1310806640625), Metric(10,0.9606,0.12377705078125), Metric(11,0.9631,0.11897177734375), Metric(12,0.9643,0.112712158203125), Metric(13,0.9654,0.1101241943359375), Metric(14,0.9675,0.10270872802734375), Metric(15,0.9698,0.09695755615234375), Metric(16,0.9714,0.0928009033203125), Metric(17,0.9717,0.09171278076171875), Metric(18,0.9711,0.0893869140625), Metric(19,0.9714,0.08768370361328125), Metric(20,0.9733,0.08273265380859375), Metric(21,0.9732,0.08220009765..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 21,
+      "time" : "Took: 6 minutes 4 seconds 683 milliseconds, at 2017-3-26 15:14"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "15151B8114FC4CB3B94F956AFDDCF06A"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(history,\n                  layout=\"{title: 'Accuracy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: '%'}}\",\n                  dataOptions=\"{mode: 'lines'}\",\n                  dataSources=\"{x: 'epoch', y: 'acc'}\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res35: notebook.front.widgets.charts.CustomPlotlyChart[Seq[Metric]] = <CustomPlotlyChart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonffaab47b6ef45e070f3459f7c4799155&quot;,&quot;dataInit&quot;:[{&quot;epoch&quot;:1,&quot;acc&quot;:0.8236,&quot;loss&quot;:0.553437841796875},{&quot;epoch&quot;:2,&quot;acc&quot;:0.8997,&quot;loss&quot;:0.3287392578125},{&quot;epoch&quot;:3,&quot;acc&quot;:0.9103,&quot;loss&quot;:0.287028662109375},{&quot;epoch&quot;:4,&quot;acc&quot;:0.9356,&quot;loss&quot;:0.2096341064453125},{&quot;epoch&quot;:5,&quot;acc&quot;:0.9414,&quot;loss&quot;:0.1902560791015625},{&quot;epoch&quot;:6,&quot;acc&quot;:0.9485,&quot;loss&quot;:0.170572607421875},{&quot;epoch&quot;:7,&quot;acc&quot;:0.9513,&quot;loss&quot;:0.1558003173828125},{&quot;epoch&quot;:8,&quot;acc&quot;:0.9565,&quot;loss&quot;:0.1388808837890625},{&quot;epoch&quot;:9,&quot;acc&quot;:0.9597,&quot;loss&quot;:0.1310806640625},{&quot;epoch&quot;:10,&quot;acc&quot;:0.9606,&quot;loss&quot;:0.12377705078125},{&quot;epoch&quot;:11,&quot;acc&quot;:0.9631,&quot;loss&quot;:0.11897177734375},{&quot;epoch&quot;:12,&quot;acc&quot;:0.9643,&quot;loss&quot;:0.112712158203125},{&quot;epoch&quot;:13,&quot;acc&quot;:0.9654,&quot;loss&quot;:0.1101241943359375},{&quot;epoch&quot;:14,&quot;acc&quot;:0.9675,&quot;loss&quot;:0.10270872802734375},{&quot;epoch&quot;:15,&quot;acc&quot;:0.9698,&quot;loss&quot;:0.09695755615234375},{&quot;epoch&quot;:16,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.0928009033203125},{&quot;epoch&quot;:17,&quot;acc&quot;:0.9717,&quot;loss&quot;:0.09171278076171875},{&quot;epoch&quot;:18,&quot;acc&quot;:0.9711,&quot;loss&quot;:0.0893869140625},{&quot;epoch&quot;:19,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.08768370361328125},{&quot;epoch&quot;:20,&quot;acc&quot;:0.9733,&quot;loss&quot;:0.08273265380859375},{&quot;epoch&quot;:21,&quot;acc&quot;:0.9732,&quot;loss&quot;:0.08220009765625},{&quot;epoch&quot;:22,&quot;acc&quot;:0.9737,&quot;loss&quot;:0.08050025634765624},{&quot;epoch&quot;:23,&quot;acc&quot;:0.9763,&quot;loss&quot;:0.07561025390625},{&quot;epoch&quot;:24,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07690062866210938},{&quot;epoch&quot;:25,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07695980224609375},{&quot;epoch&quot;:26,&quot;acc&quot;:0.976,&quot;loss&quot;:0.07533101806640626},{&quot;epoch&quot;:27,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07689620971679688},{&quot;epoch&quot;:28,&quot;acc&quot;:0.9771,&quot;loss&quot;:0.0723163330078125},{&quot;epoch&quot;:29,&quot;acc&quot;:0.9786,&quot;loss&quot;:0.06934053955078125},{&quot;epoch&quot;:30,&quot;acc&quot;:0.9783,&quot;loss&quot;:0.06918525390625},{&quot;epoch&quot;:31,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.067534716796875},{&quot;epoch&quot;:32,&quot;acc&quot;:0.9789,&quot;loss&quot;:0.06565299072265625},{&quot;epoch&quot;:33,&quot;acc&quot;:0.9794,&quot;loss&quot;:0.06615639038085938},{&quot;epoch&quot;:34,&quot;acc&quot;:0.9791,&quot;loss&quot;:0.06506829833984375},{&quot;epoch&quot;:35,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.06601197509765624},{&quot;epoch&quot;:36,&quot;acc&quot;:0.9795,&quot;loss&quot;:0.06776669921875},{&quot;epoch&quot;:37,&quot;acc&quot;:0.9796,&quot;loss&quot;:0.063225244140625},{&quot;epoch&quot;:38,&quot;acc&quot;:0.9799,&quot;loss&quot;:0.06246710205078125},{&quot;epoch&quot;:39,&quot;acc&quot;:0.9806,&quot;loss&quot;:0.063174951171875},{&quot;epoch&quot;:40,&quot;acc&quot;:0.9802,&quot;loss&quot;:0.0638287353515625}],&quot;genId&quot;:&quot;1697260207&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customPlotlyChart'], \n      function(playground, _magiccustomPlotlyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomPlotlyChart,\n    \"o\": {\"js\":\"var layout = {title: 'Accuracy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: '%'}}; var dataSources={x: 'epoch', y: 'acc'}; var dataOptions = {mode: 'lines'}\",\"headers\":[\"epoch\",\"acc\",\"loss\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n      <span class=\"chart-total-item-count\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone8b97392377bbd600f64b611c3241f8e&quot;,&quot;initialValue&quot;:&quot;40&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> entries total</span>\n      <span class=\"chart-sampling-warning\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon58244a52a4f893dbf143dd669dece9b8&quot;,&quot;initialValue&quot;:&quot;&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n      <div>\n      </div>\n    </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 27,
+      "time" : "Took: 1 second 215 milliseconds, at 2017-3-26 15:22"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "66F17A982AF440CFB32F9847471E3A32"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(history,\n                  layout=\"{title: 'Cross entropy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: 'loss'}}\",\n                  dataOptions=\"\"\"{\n                    mode: 'lines', \n                    line: {\n                          color: 'rgb(128, 0, 128)',\n                          width: 3\n                          }\n                    }\"\"\",\n                  dataSources=\"{x: 'epoch', y: 'loss'}\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res45: notebook.front.widgets.charts.CustomPlotlyChart[Seq[Metric]] = <CustomPlotlyChart widget>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anone28aa95a82f464e7ddffbc8171e40f11&quot;,&quot;dataInit&quot;:[{&quot;epoch&quot;:1,&quot;acc&quot;:0.8236,&quot;loss&quot;:0.553437841796875},{&quot;epoch&quot;:2,&quot;acc&quot;:0.8997,&quot;loss&quot;:0.3287392578125},{&quot;epoch&quot;:3,&quot;acc&quot;:0.9103,&quot;loss&quot;:0.287028662109375},{&quot;epoch&quot;:4,&quot;acc&quot;:0.9356,&quot;loss&quot;:0.2096341064453125},{&quot;epoch&quot;:5,&quot;acc&quot;:0.9414,&quot;loss&quot;:0.1902560791015625},{&quot;epoch&quot;:6,&quot;acc&quot;:0.9485,&quot;loss&quot;:0.170572607421875},{&quot;epoch&quot;:7,&quot;acc&quot;:0.9513,&quot;loss&quot;:0.1558003173828125},{&quot;epoch&quot;:8,&quot;acc&quot;:0.9565,&quot;loss&quot;:0.1388808837890625},{&quot;epoch&quot;:9,&quot;acc&quot;:0.9597,&quot;loss&quot;:0.1310806640625},{&quot;epoch&quot;:10,&quot;acc&quot;:0.9606,&quot;loss&quot;:0.12377705078125},{&quot;epoch&quot;:11,&quot;acc&quot;:0.9631,&quot;loss&quot;:0.11897177734375},{&quot;epoch&quot;:12,&quot;acc&quot;:0.9643,&quot;loss&quot;:0.112712158203125},{&quot;epoch&quot;:13,&quot;acc&quot;:0.9654,&quot;loss&quot;:0.1101241943359375},{&quot;epoch&quot;:14,&quot;acc&quot;:0.9675,&quot;loss&quot;:0.10270872802734375},{&quot;epoch&quot;:15,&quot;acc&quot;:0.9698,&quot;loss&quot;:0.09695755615234375},{&quot;epoch&quot;:16,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.0928009033203125},{&quot;epoch&quot;:17,&quot;acc&quot;:0.9717,&quot;loss&quot;:0.09171278076171875},{&quot;epoch&quot;:18,&quot;acc&quot;:0.9711,&quot;loss&quot;:0.0893869140625},{&quot;epoch&quot;:19,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.08768370361328125},{&quot;epoch&quot;:20,&quot;acc&quot;:0.9733,&quot;loss&quot;:0.08273265380859375},{&quot;epoch&quot;:21,&quot;acc&quot;:0.9732,&quot;loss&quot;:0.08220009765625},{&quot;epoch&quot;:22,&quot;acc&quot;:0.9737,&quot;loss&quot;:0.08050025634765624},{&quot;epoch&quot;:23,&quot;acc&quot;:0.9763,&quot;loss&quot;:0.07561025390625},{&quot;epoch&quot;:24,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07690062866210938},{&quot;epoch&quot;:25,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07695980224609375},{&quot;epoch&quot;:26,&quot;acc&quot;:0.976,&quot;loss&quot;:0.07533101806640626},{&quot;epoch&quot;:27,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07689620971679688},{&quot;epoch&quot;:28,&quot;acc&quot;:0.9771,&quot;loss&quot;:0.0723163330078125},{&quot;epoch&quot;:29,&quot;acc&quot;:0.9786,&quot;loss&quot;:0.06934053955078125},{&quot;epoch&quot;:30,&quot;acc&quot;:0.9783,&quot;loss&quot;:0.06918525390625},{&quot;epoch&quot;:31,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.067534716796875},{&quot;epoch&quot;:32,&quot;acc&quot;:0.9789,&quot;loss&quot;:0.06565299072265625},{&quot;epoch&quot;:33,&quot;acc&quot;:0.9794,&quot;loss&quot;:0.06615639038085938},{&quot;epoch&quot;:34,&quot;acc&quot;:0.9791,&quot;loss&quot;:0.06506829833984375},{&quot;epoch&quot;:35,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.06601197509765624},{&quot;epoch&quot;:36,&quot;acc&quot;:0.9795,&quot;loss&quot;:0.06776669921875},{&quot;epoch&quot;:37,&quot;acc&quot;:0.9796,&quot;loss&quot;:0.063225244140625},{&quot;epoch&quot;:38,&quot;acc&quot;:0.9799,&quot;loss&quot;:0.06246710205078125},{&quot;epoch&quot;:39,&quot;acc&quot;:0.9806,&quot;loss&quot;:0.063174951171875},{&quot;epoch&quot;:40,&quot;acc&quot;:0.9802,&quot;loss&quot;:0.0638287353515625}],&quot;genId&quot;:&quot;443704690&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customPlotlyChart'], \n      function(playground, _magiccustomPlotlyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomPlotlyChart,\n    \"o\": {\"js\":\"var layout = {title: 'Cross entropy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: 'loss'}}; var dataSources={x: 'epoch', y: 'loss'}; var dataOptions = {\\n                    mode: 'lines', \\n                    line: {\\n                          color: 'rgb(128, 0, 128)',\\n                          width: 3\\n                          }\\n                    }\",\"headers\":[\"epoch\",\"acc\",\"loss\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n      <span class=\"chart-total-item-count\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon3c944cb77879f155356bbeea4f2810bb&quot;,&quot;initialValue&quot;:&quot;40&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> entries total</span>\n      <span class=\"chart-sampling-warning\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb054a1dafd759472c23265ce3eb3f5c4&quot;,&quot;initialValue&quot;:&quot;&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n      <div>\n      </div>\n    </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 32,
+      "time" : "Took: 916 milliseconds, at 2017-3-26 15:27"
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : true,
-      "id" : "6431DB4497834A1E920CCEA64EDACDDD"
+      "id" : "AF310E51E16F4F378B1482A1E5060F86"
     },
     "cell_type" : "code",
     "source" : "",
-    "outputs" : [ ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "6DE76FA500F544B989F93F6140DF8E9A"
-    },
-    "cell_type" : "code",
-    "source" : "model.layers(0).forwardProp(inputs, true)",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "res25: NetLayer = $iwC$$iwC$Dense@2b64fd81\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : "$line31.$read$$iwC$$iwC$Dense@2b64fd81"
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 22,
-      "time" : "Took: 1 second 515 milliseconds, at 2017-3-26 9:36"
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab384068860-0\"\n}"
-      },
-      "id" : "AF1E5AB5D04746F9809DDAD8B775E203"
-    },
-    "cell_type" : "code",
-    "source" : "val outputs = model.layers.slice(0, 7).foldLeft(inputs){(X, layer) => layer.forwardProp(X, true)}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "outputs: org.nd4j.linalg.api.ndarray.INDArray = \n[[0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n..."
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 29,
-      "time" : "Took: 1 second 333 milliseconds, at 2017-3-26 9:43"
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab1683342575-0\"\n}",
-        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
-      },
-      "id" : "A4809DC38A614182888D891E4E0025EA"
-    },
-    "cell_type" : "code",
-    "source" : "val predict = softmax.forwardProp(outputs, true)",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "predict: org.nd4j.linalg.api.ndarray.INDArray = \n[[0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10,..."
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 33,
-      "time" : "Took: 937 milliseconds, at 2017-3-26 9:45"
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true,
-      "id" : "34DEB306A17E43FD8E59049057BEE86E"
-    },
-    "cell_type" : "code",
-    "source" : "predict.shape",
     "outputs" : [ ]
   } ],
   "nbformat" : 4
