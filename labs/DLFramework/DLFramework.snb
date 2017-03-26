@@ -1,0 +1,587 @@
+{
+  "metadata" : {
+    "id" : "ea6e0418-480d-4802-9895-1bb2505a26c7",
+    "name" : "DLToyFramework",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "sparkNotebook" : null,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : [ "org.bytedeco % javacpp % 1.3.2", "org.nd4j % nd4j-native-platform % 0.8.0", "org.nd4j %% nd4s % 0.8.0", "org.deeplearning4j % deeplearning4j-core % 0.8.0" ],
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : {
+      "spark.app.name" : "Notebook",
+      "spark.master" : "local[*]",
+      "spark.executor.memory" : "1G"
+    },
+    "customVars" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A4067CCA55FB4DC69A025D7126F21D6D"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\n\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4j.linalg.factory.Nd4j\nimport org.nd4j.linalg.api.ndarray.INDArray\nimport org.nd4j.linalg.ops.transforms.Transforms\nimport org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1,
+      "time" : "Took: 1 second 693 milliseconds, at 2017-3-26 9:27"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "74E7992C196640C2831B9202DCA9DDF4"
+    },
+    "cell_type" : "code",
+    "source" : "Nd4j.ones(2,3)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res3: org.nd4j.linalg.api.ndarray.INDArray = \n[[1.00, 1.00, 1.00],\n [1.00, 1.00, 1.00]]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "[[1.00, 1.00, 1.00],\n [1.00, 1.00, 1.00]]"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2,
+      "time" : "Took: 3 seconds 237 milliseconds, at 2017-3-26 9:27"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "85797E2F81AB4BD58042C4F90E36F2B8"
+    },
+    "cell_type" : "code",
+    "source" : "val rngSEED = 181\nval RNG = new CpuNativeRandom(rngSEED)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "rngSEED: Int = 181\nRNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@68648b9e\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3,
+      "time" : "Took: 1 second 800 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D14ECAF500734E6FB5AB8E3D5327D54A"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\ndef sigmoid(x: INDArray): INDArray = {\n  Transforms.pow(Transforms.exp(-x) + 1, -1)\n}\n \n\ndef sigmoidGrad(f: INDArray): INDArray = {\n  f * (-f + 1)\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\nsigmoid: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\nsigmoidGrad: (f: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4,
+      "time" : "Took: 2 seconds 503 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E3AAA615A8494AA2ABEE01384040B244"
+    },
+    "cell_type" : "code",
+    "source" : "/*\n * Compute the softmax function for each row of the input x.\n */\ndef softmax(x: INDArray): INDArray = {\n  val exps = Transforms.exp(x.addColumnVector(-x.max(1)))\n  exps.divColumnVector(exps.sum(1))\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "softmax: (x: org.nd4j.linalg.api.ndarray.INDArray)org.nd4j.linalg.api.ndarray.INDArray\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5,
+      "time" : "Took: 1 second 191 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B8C8D8BCDBA545BB959CE1B467CB2DE4"
+    },
+    "cell_type" : "code",
+    "source" : "def sigmoidTest(): Unit = {\n  val x = Array(Array(1, 2), Array(-1, -2)).toNDArray\n  val f = sigmoid(x)\n  val g = sigmoidGrad(f)\n  val sigmoidVals = Array(Array(0.73105858, 0.88079708),\n                          Array(0.26894142, 0.11920292)).toNDArray\n  val gradVals = Array(Array(0.19661193, 0.10499359),\n                       Array(0.19661193, 0.10499359)).toNDArray\n  assert((f - Transforms.abs(sigmoidVals)).max(1) < 1e-6)\n  assert((g - Transforms.abs(gradVals)).max(1) < 1e-6)\n  println(\"sigmoid tests passed\")\n}\n\n\ndef softmaxTest(): Unit = {\n  val x = Array(Array(1001, 1002), \n                Array(3, 4)).toNDArray\n  val logits = softmax(x)\n  val expectedLogits = Array(Array(0.26894142, 0.73105858),\n                             Array(0.26894142, 0.73105858)).toNDArray\n  assert((logits - Transforms.abs(expectedLogits)).max(1) < 1e-6)\n  assert(\n    (softmax(Array(1, 1).toNDArray) - Transforms.abs(Array(0.5, 0.5).toNDArray)).max(1) < 1e-6\n  )\n  println(\"softmax tests passed\")\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sigmoidTest: ()Unit\nsoftmaxTest: ()Unit\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6,
+      "time" : "Took: 1 second 386 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2AA4AF0D847C40C58B9EDFF54EFA5EC8"
+    },
+    "cell_type" : "code",
+    "source" : "sigmoidTest\nsoftmaxTest",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sigmoid tests passed\nsoftmax tests passed\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 7,
+      "time" : "Took: 1 second 738 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8A710585A72E4F39A083A1C8ACE5F2CB"
+    },
+    "cell_type" : "code",
+    "source" : "trait NetLayer {\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray\n  def backProp(outputsGrad: INDArray): INDArray\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "defined trait NetLayer\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8,
+      "time" : "Took: 695 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "94BCEC29D1FF47F08E02B3016F5E0113"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\nclass Dense(inputDim: Int, outputDim: Int, val learningRate: Double) extends NetLayer {\n  private val W = Nd4j.rand(Array(inputDim, outputDim), -0.01, 0.01, RNG)\n  private val b = Nd4j.rand(Array(1, outputDim), -0.01, 0.01, RNG)\n  private var _inputs = Nd4j.zeros(1, inputDim)\n  \n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    _inputs = inputs\n    (inputs mmul W) addRowVector b\n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    val gradW = _inputs.T mmul outputsGrad\n    val gradb = outputsGrad.sum(0)\n    val prop = outputsGrad mmul W.T\n    W -= gradW * learningRate\n    b -= gradb * learningRate\n    prop\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class Dense\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 9,
+      "time" : "Took: 1 second 782 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C6928100FBFD4F9087EFB6550FDFCE0E"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\nclass SigmoidActivation extends NetLayer {\n  private var _outputs = Nd4j.zeros(1)\n  \n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    _outputs = sigmoid(inputs)\n    _outputs\n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad * sigmoidGrad(_outputs)\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class SigmoidActivation\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 10,
+      "time" : "Took: 2 seconds 505 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F59BB35B716A451D820E82A0BA975BA3"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\nclass Softmax extends NetLayer {\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    softmax(inputs)\n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    val predictions = outputsGrad(0, ->)\n    val labels = outputsGrad(1, ->)\n    predictions - labels\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class Softmax\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 11,
+      "time" : "Took: 1 second 427 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "705378E3036742998FB06EE39B5C3E70"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\nclass Dropout(val dropRate: Double = 0.0) extends NetLayer {\n  var mask: INDArray = Nd4j.zeros(1)\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    if (isTrain) {\n      mask = Nd4j.zeros(inputs.shape()(1), 1)\n      Nd4j.choice(Array(0, 1).toNDArray, Array(dropRate, 1 - dropRate).toNDArray, mask)\n      inputs.mulRowVector(mask.T)\n    } else {\n      inputs * (1 - dropRate)\n    }    \n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad * mask\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class Dropout\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 12,
+      "time" : "Took: 1 second 920 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A871DC7E594B4BB388BD066A4D16A12A"
+    },
+    "cell_type" : "code",
+    "source" : "def crossEntropy(predictions: INDArray, labels: INDArray): Double = {\n  val cost = - (Transforms.log(predictions) * labels).sumNumber.asInstanceOf[Double]\n  cost / labels.shape()(0)\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "crossEntropy: (predictions: org.nd4j.linalg.api.ndarray.INDArray, labels: org.nd4j.linalg.api.ndarray.INDArray)Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 13,
+      "time" : "Took: 1 second 589 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "AB7D21976ED946509245991859A7F766"
+    },
+    "cell_type" : "code",
+    "source" : "def accuracy(predictions: INDArray, labels: INDArray): Double = {\n  val samplesNum = labels.shape()(0)\n  val matchesNum = (Nd4j.argMax(predictions, 1) eq Nd4j.argMax(labels, 1)).sumNumber.asInstanceOf[Double]\n  matchesNum / samplesNum\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "accuracy: (predictions: org.nd4j.linalg.api.ndarray.INDArray, labels: org.nd4j.linalg.api.ndarray.INDArray)Double\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 14,
+      "time" : "Took: 1 second 556 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "5985675AD417429F8BAED067FBF23F9C"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Neural Network"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "39AFAAFD2519433AAD40061184D5D2BF"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4j.linalg.dataset.api.iterator.DataSetIterator\nimport org.nd4j.linalg.dataset.DataSet",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4j.linalg.dataset.api.iterator.DataSetIterator\nimport org.nd4j.linalg.dataset.DataSet\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 15,
+      "time" : "Took: 1 second 573 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7F4993AA238D48368F83FD50601B836E"
+    },
+    "cell_type" : "code",
+    "source" : "case class Metric(epoch: Int, acc: Double, loss: Double)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "defined class Metric\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 16,
+      "time" : "Took: 1 second 513 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B1F01220EC894EAD82FFA872B34771EF"
+    },
+    "cell_type" : "code",
+    "source" : "import scala.collection.JavaConverters._\n\n\ncase class NeuralNet(layers: Vector[NetLayer] = Vector()) {\n  \n  def addLayer(layer: NetLayer): NeuralNet = {\n    this.copy(layers :+ layer)\n  }\n  \n  def fit(trainData: DataSetIterator, numEpochs: Int, validationData: DataSet): Seq[Metric] = {\n    val history = (1 to numEpochs).foldLeft(List[Metric]()){ (history, epoch) =>\n      trainData.reset()\n      trainData.asScala.foreach ( ds => trainBatch(ds.getFeatures, ds.getLabels) )\n      \n      // validate on validation Dataset\n      val prediction = this.predict(validationData.getFeatures)\n      val loss = crossEntropy(prediction, validationData.getLabels)\n      val acc = accuracy(prediction, validationData.getLabels)\n      \n      println(s\"Epoch: $epoch/$numEpochs - loss: $loss - acc: $acc\")\n\n      Metric(epoch, acc, loss) :: history\n    }\n    history.reverse\n  }\n  \n  def predict(X: INDArray): INDArray = {\n    layers.foldLeft(X){\n      (input, layer) => layer.forwardProp(input, isTrain=false)\n    }\n  }\n    \n  private def trainBatch(X: INDArray, Y: INDArray): Unit = {\n    val YPredict = layers.foldLeft(X){\n      (input, layer) => layer.forwardProp(input, isTrain=true)\n    }\n    val shape = X.shape\n    layers.reverse.foldLeft(\n      Nd4j.vstack(YPredict, Y).reshape(2, shape(0), shape(1))\n    ){\n      (deriv, layer) => layer.backProp(deriv)\n    }\n  }  \n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.collection.JavaConverters._\ndefined class NeuralNet\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 17,
+      "time" : "Took: 3 seconds 283 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "D2392D6C4AE34622B923A3CADA688261"
+    },
+    "cell_type" : "markdown",
+    "source" : "## MNIST"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "ACE10B0E92964245B8FD82C1E99C27AF"
+    },
+    "cell_type" : "code",
+    "source" : "import org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 18,
+      "time" : "Took: 1 second 671 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "0BBA2DB07555458E81F95AAF7A83CC8A"
+    },
+    "cell_type" : "code",
+    "source" : "val learningRate = 0.01\nval batchSize = 128\n\nval mnistTrain = new MnistDataSetIterator(batchSize, true, rngSEED)\nval mnistTest = new MnistDataSetIterator(batchSize, false, rngSEED)\n\nval inputDim = mnistTest.next.getFeatures.shape()(1)\nval totalTestExamples = mnistTest.numExamples()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "learningRate: Double = 0.01\nbatchSize: Int = 128\nmnistTrain: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@2e2151bb\nmnistTest: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@31261aef\ninputDim: Int = 784\ntotalTestExamples: Int = 10000\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 19,
+      "time" : "Took: 2 seconds 85 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "CD9BBCF630D4409D8F3F45064D765264"
+    },
+    "cell_type" : "code",
+    "source" : "val model = NeuralNet()\n            .addLayer(new Dense(inputDim=inputDim, outputDim=512, learningRate=learningRate))\n            .addLayer(new SigmoidActivation())\n            .addLayer(new Dropout(dropRate=0.3))\n            .addLayer(new Dense(512, 512, learningRate))\n            .addLayer(new SigmoidActivation())\n            .addLayer(new Dropout(0.3))\n            .addLayer(new Dense(512, 10, learningRate))\n            .addLayer(new Softmax())",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "model: NeuralNet = NeuralNet(Vector($iwC$$iwC$Dense@2b64fd81, $iwC$$iwC$SigmoidActivation@77dada03, $iwC$$iwC$Dropout@3c5e53a4, $iwC$$iwC$Dense@5626ea47, $iwC$$iwC$SigmoidActivation@5aa29df7, $iwC$$iwC$Dropout@7b895e62, $iwC$$iwC$Dense@3504e1c4, $iwC$$iwC$Softmax@541141f1))\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 20,
+      "time" : "Took: 2 seconds 866 milliseconds, at 2017-3-26 9:28"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "153C4951EE454D068DE1F8E03DF6EB5F"
+    },
+    "cell_type" : "code",
+    "source" : "val history = model.fit(mnistTrain, 10, (new MnistDataSetIterator(totalTestExamples, false, rngSEED)).next)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "java.lang.IllegalStateException: Mis matched lengths: [200704] != [2560]\n\tat org.nd4j.linalg.util.LinAlgExceptions.assertSameLength(LinAlgExceptions.java:40)\n\tat org.nd4j.linalg.api.ops.BaseTransformOp.<init>(BaseTransformOp.java:47)\n\tat org.nd4j.linalg.api.ops.impl.transforms.Set.<init>(Set.java:24)\n\tat org.nd4j.linalg.api.ndarray.BaseNDArray.assign(BaseNDArray.java:1223)\n\tat org.nd4j.linalg.api.ndarray.BaseNDArray.reshape(BaseNDArray.java:3629)\n\tat org.nd4j.linalg.api.ndarray.BaseNDArray.reshape(BaseNDArray.java:3672)\n\tat $iwC$$iwC$NeuralNet.$line63$$read$$iwC$$iwC$NeuralNet$$trainBatch(<console>:78)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1$$anonfun$apply$1.apply(<console>:52)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1$$anonfun$apply$1.apply(<console>:52)\n\tat scala.collection.Iterator$class.foreach(Iterator.scala:727)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1157)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1.apply(<console>:52)\n\tat $iwC$$iwC$NeuralNet$$anonfun$1.apply(<console>:50)\n\tat scala.collection.TraversableOnce$$anonfun$foldLeft$1.apply(TraversableOnce.scala:144)\n\tat scala.collection.TraversableOnce$$anonfun$foldLeft$1.apply(TraversableOnce.scala:144)\n\tat scala.collection.immutable.Range.foreach(Range.scala:141)\n\tat scala.collection.TraversableOnce$class.foldLeft(TraversableOnce.scala:144)\n\tat scala.collection.AbstractTraversable.foldLeft(Traversable.scala:105)\n\tat $iwC$$iwC$NeuralNet.fit(<console>:50)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:138)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:145)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:147)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:149)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:151)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:153)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:155)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:157)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:159)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:161)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:163)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:165)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:167)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:169)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:171)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:173)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:175)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:177)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:179)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:181)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:183)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:185)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:187)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:189)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:191)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:193)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:195)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:197)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:199)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:201)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:203)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:205)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:207)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:209)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:211)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:213)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:215)\n\tat $iwC$$iwC$$iwC$$iwC.<init>(<console>:217)\n\tat $iwC$$iwC$$iwC.<init>(<console>:219)\n\tat $iwC$$iwC.<init>(<console>:221)\n\tat $iwC.<init>(<console>:223)\n\tat <init>(<console>:225)\n\tat .<init>(<console>:229)\n\tat .<clinit>(<console>)\n\tat .<init>(<console>:7)\n\tat .<clinit>(<console>)\n\tat $print(<console>)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat org.apache.spark.repl.SparkIMain$ReadEvalPrint.call(SparkIMain.scala:1046)\n\tat org.apache.spark.repl.SparkIMain$Request.loadAndRun(SparkIMain.scala:1327)\n\tat org.apache.spark.repl.SparkIMain.loadAndRunReq$1(SparkIMain.scala:822)\n\tat org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:853)\n\tat org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:801)\n\tat notebook.kernel.Repl$$anonfun$6.apply(Repl.scala:202)\n\tat notebook.kernel.Repl$$anonfun$6.apply(Repl.scala:202)\n\tat scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)\n\tat scala.Console$.withOut(Console.scala:126)\n\tat notebook.kernel.Repl.evaluate(Repl.scala:201)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$18.replEvaluate$1(ReplCalculator.scala:252)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$18.apply(ReplCalculator.scala:265)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$18.apply(ReplCalculator.scala:246)\n\tat scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)\n\tat scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:40)\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:397)\n\tat scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)\n\tat scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)\n\tat scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)\n\tat scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)\n\n"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "6431DB4497834A1E920CCEA64EDACDDD"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6DE76FA500F544B989F93F6140DF8E9A"
+    },
+    "cell_type" : "code",
+    "source" : "model.layers(0).forwardProp(inputs, true)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res25: NetLayer = $iwC$$iwC$Dense@2b64fd81\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "$line31.$read$$iwC$$iwC$Dense@2b64fd81"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 22,
+      "time" : "Took: 1 second 515 milliseconds, at 2017-3-26 9:36"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab384068860-0\"\n}"
+      },
+      "id" : "AF1E5AB5D04746F9809DDAD8B775E203"
+    },
+    "cell_type" : "code",
+    "source" : "val outputs = model.layers.slice(0, 7).foldLeft(inputs){(X, layer) => layer.forwardProp(X, true)}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "outputs: org.nd4j.linalg.api.ndarray.INDArray = \n[[0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n [0.00, -0.03, -0.06, -0.00, 0.04, 0.07, 0.09, -0.03, -0.02, 0.05],\n..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 29,
+      "time" : "Took: 1 second 333 milliseconds, at 2017-3-26 9:43"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1683342575-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "A4809DC38A614182888D891E4E0025EA"
+    },
+    "cell_type" : "code",
+    "source" : "val predict = softmax.forwardProp(outputs, true)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "predict: org.nd4j.linalg.api.ndarray.INDArray = \n[[0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10, 0.10],\n [0.10, 0.10, 0.09, 0.10, 0.10, 0.11, 0.11, 0.10, 0.10,..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 33,
+      "time" : "Took: 937 milliseconds, at 2017-3-26 9:45"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "34DEB306A17E43FD8E59049057BEE86E"
+    },
+    "cell_type" : "code",
+    "source" : "predict.shape",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}
