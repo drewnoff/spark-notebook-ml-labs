@@ -49,14 +49,40 @@
     "source" : "Our framework will support following neural network layers.\n\n<img src=\"http://telegra.ph/file/175a34024bc45651d0be6.png\" width=500>\n</img>\n\n - **Fully-connected layer (or dense layer)**. Neurons in a fully connected layer have full connections to all activations in the previous layer. Their activations can hence be computed with a matrix multiplication followed by a bias offset.*\n \n  $$\\mathrm{Dense} \\equiv f\\left(\\textbf{x}\\right)=\\textbf{W}\\textbf{x}+\\textbf{b},$$\n \n where $\\textbf{W}\\in\\mathbb{R}^{(k,n)}$ - weight matrix, $\\textbf{b}\\in\\mathbb{R}^k$ - bias offset.\n \n \n - **Sigmoid activation layer**. \n    $$\\mathrm{Sigmoid} \\equiv f\\left(\\textbf{x}\\right)=\\frac{1}{1+\\exp^{\\textbf{-x}}}$$\n    \n    \n - **[Dropout layer](https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf)**. It's introduced to prevent overfitting.\n It takes parameter $d$ which is equal to probability of individual neuron being \"dropped out\" during the *training stage* independently for each training example. The removed nodes are then reinserted into the network with their original weights. At *testing stage* we're using the full network with each neuron's output weighted by a factor of $1-d$, so the expected value of the output of any neuron is the same as in the training stages.\n \n    $$\\mathrm{Dropout_{train}} \\equiv f\\left(\\textbf{x}\\right)=\\textbf{m}\\odot\\textbf{x}$$\n    $$\\textbf{m} \\in \\left\\{0,1\\right\\}^{n}$$\n    $$p\\left(m_{i}=0\\right)=d$$\n    \n    $$\\mathrm{Dropout_{test}}\\equiv f\\left(\\textbf{x}\\right)=\\left(1-d\\right)\\textbf{x}$$\n    \n    \n - **Softmax classifier layer**. It's a generalization of binary Logistic Regression classifier to multiple classes. The Softmax classifier gives normalized class probabilities as its output.\n  \n   $$\\mathrm{Softmax}_{i} \\equiv p_{i}\\left(\\textbf{x}\\right)=\\frac{e^{x_{i}}}{\\sum_{j}{e^{x_{j}}}}$$\n   \n   We will use the Softmax classifier together with **cross-entropy loss** which is a generalization of binary log loss for multiple classes.\n   The cross-entropy between a “true” distribution $p$ and an estimated distribution $q$ is defined as:\n   \n   $$\\mathcal{L}=-\\sum_{i}{p_{i}\\log{q_{i}}}$$\n   \n   The Softmax classifier is hence minimizing the cross-entropy between the estimated class probabilities and the “true” distribution, where \"true\" distribution $\\textbf{p}=\\left[p_{1}...p_{i}...\\right]$ with only one element is equal to $1$ (true class) and all the other are equal to $0$. "
   }, {
     "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true,
       "id" : "DA9AC02B70484CA6A0FDBDFEC3159353"
     },
-    "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
+    "cell_type" : "markdown",
+    "source" : "## Install ND4J"
+  }, {
+    "metadata" : {
+      "id" : "99CF86E3C3F44577AE1F8A61F449D194"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Prerequisites"
+  }, {
+    "metadata" : {
+      "id" : "BDDAAA4E696A42298B100EF1EFAEE77A"
+    },
+    "cell_type" : "markdown",
+    "source" : " - [JavaCPP](http://nd4j.org/getstarted#javacpp)\n - [BLAS (ATLAS, MKL, or OpenBLAS)](http://nd4j.org/getstarted#blas)"
+  }, {
+    "metadata" : {
+      "id" : "7F87D6496B9D44A589F61E9CCFCCE7ED"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Configuring dependencies"
+  }, {
+    "metadata" : {
+      "id" : "CB2A089DB6CE454A802DAC264B35B9C5"
+    },
+    "cell_type" : "markdown",
+    "source" : "These will vary depending on whether you’re running on CPUs or GPUs.\nThe default backend for CPUs is `nd4j-native-platform`, and for CUDA it is `nd4j-cuda-7.5-platform`.\n\nAssuming the default backend for CPUs is used, `customDeps` section of Spark Notebook metadata (`Edit` -> `Edit Notebook Metadata`) should look like following:\n\n```\n \"customDeps\": [\n    \"org.bytedeco % javacpp % 1.3.2\",\n    \"org.nd4j % nd4j-native-platform % 0.8.0\",\n    \"org.nd4j %% nd4s % 0.8.0\",\n    \"org.deeplearning4j % deeplearning4j-core % 0.8.0\"\n  ]\n```"
+  }, {
+    "metadata" : {
+      "id" : "BCD87D17A2DF4C9A8480F0D1583F8629"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Sigmoid & Softmax functions "
   }, {
     "metadata" : {
       "trusted" : true,
@@ -77,7 +103,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 1,
-      "time" : "Took: 1 second 678 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 2 seconds 268 milliseconds, at 2017-4-2 23:49"
     } ]
   }, {
     "metadata" : {
@@ -99,7 +125,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 2,
-      "time" : "Took: 1 second 987 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 5 seconds 645 milliseconds, at 2017-4-2 23:49"
     } ]
   }, {
     "metadata" : {
@@ -113,7 +139,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "rngSEED: Int = 181\nRNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@74ed427b\n"
+      "text" : "rngSEED: Int = 181\nRNG: org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom = org.nd4j.linalg.cpu.nativecpu.rng.CpuNativeRandom@2ffd784c\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -121,7 +147,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 3,
-      "time" : "Took: 1 second 89 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 565 milliseconds, at 2017-4-2 23:49"
     } ]
   }, {
     "metadata" : {
@@ -143,7 +169,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 4,
-      "time" : "Took: 1 second 655 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 880 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -165,7 +191,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 5,
-      "time" : "Took: 703 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 837 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -187,7 +213,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 6,
-      "time" : "Took: 989 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 149 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -209,8 +235,20 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 7,
-      "time" : "Took: 1 second 132 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 489 milliseconds, at 2017-4-2 23:50"
     } ]
+  }, {
+    "metadata" : {
+      "id" : "D3B621B488064302A0E6D5C58222A408"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Network Layers"
+  }, {
+    "metadata" : {
+      "id" : "50D28D3439C84453A671EF37619B9A57"
+    },
+    "cell_type" : "markdown",
+    "source" : "Let's define `NetLayer` trait for building network layers. We need to provide two methods:\n - `forwardProp` for forward propagation of input through the neural network in order to generate the network's output.\n - `backProp` for delta backpropagation and weights update. \n   `backProp` takes the weight's output gradients with respect to layer's inputs. The weight's output gradient and input activation are multiplied to find the gradient of the weight. A ratio (gets tuned by `learningRate`) of the weight's gradient is subtracted from the weight."
   }, {
     "metadata" : {
       "trusted" : true,
@@ -231,7 +269,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 8,
-      "time" : "Took: 608 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 920 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -253,7 +291,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 9,
-      "time" : "Took: 1 second 454 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 694 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -275,8 +313,36 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 10,
-      "time" : "Took: 1 second 307 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 2 seconds 18 milliseconds, at 2017-4-2 23:50"
     } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "20930FAB2AA54B94BE12F94666C5EEA0"
+    },
+    "cell_type" : "code",
+    "source" : "import org.nd4s.Implicits._\n\nclass Dropout(val dropRate: Double = 0.0) extends NetLayer {\n  var mask: INDArray = Nd4j.zeros(1)\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    if (isTrain) {\n      mask = Nd4j.zeros(1, inputs.shape()(1))\n      Nd4j.choice(Array(0, 1).toNDArray, Array(dropRate, 1 - dropRate).toNDArray, mask)\n      inputs.mulRowVector(mask)\n    } else {\n      inputs * (1 - dropRate)\n    }    \n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad.mulRowVector(mask)\n  }\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.nd4s.Implicits._\ndefined class Dropout\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 11,
+      "time" : "Took: 1 second 921 milliseconds, at 2017-4-2 23:50"
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "58FBF8A5DC08478C8843D6C1E91049FF"
+    },
+    "cell_type" : "markdown",
+    "source" : "We assume that the **Softmax** is always the last layer of the network.\n\nAlso it can be shown that the gradient of cross-entropy loss of the outputs of softmax layer with respect to softmax layer's input has a simple form:\n\n $$\\frac{\\partial \\mathcal{L}}{\\partial x_{i}}=g_{i}-p_{i}$$\n \n So to start backpropagation stage let's take the `Softmax` output probabilities alongside with true labels as an input for `backProp` method of the `Softmax` layer.\n"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -296,30 +362,8 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 11,
-      "time" : "Took: 1 second 376 milliseconds, at 2017-3-26 15:8"
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "705378E3036742998FB06EE39B5C3E70"
-    },
-    "cell_type" : "code",
-    "source" : "import org.nd4s.Implicits._\n\nclass Dropout(val dropRate: Double = 0.0) extends NetLayer {\n  var mask: INDArray = Nd4j.zeros(1)\n  def forwardProp(inputs: INDArray, isTrain: Boolean): INDArray = {\n    if (isTrain) {\n      mask = Nd4j.zeros(inputs.shape()(1), 1)\n      Nd4j.choice(Array(0, 1).toNDArray, Array(dropRate, 1 - dropRate).toNDArray, mask)\n      inputs.mulRowVector(mask.T)\n    } else {\n      inputs * (1 - dropRate)\n    }    \n  }\n  \n  def backProp(outputsGrad: INDArray): INDArray = {\n    outputsGrad.mulRowVector(mask.T)\n  }\n}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "import org.nd4s.Implicits._\ndefined class Dropout\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
       "execution_count" : 12,
-      "time" : "Took: 1 second 679 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 875 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -341,7 +385,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 13,
-      "time" : "Took: 986 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 902 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -351,7 +395,7 @@
       "id" : "AB7D21976ED946509245991859A7F766"
     },
     "cell_type" : "code",
-    "source" : "def accuracy(predictions: INDArray, labels: INDArray): Double = {\n  val samplesNum = labels.shape()(0)\n  val matchesNum = (Nd4j.argMax(predictions, 1) eq Nd4j.argMax(labels, 1)).sumNumber.asInstanceOf[Double]\n  matchesNum / samplesNum\n}",
+    "source" : "def accuracy(predictions: INDArray, labels: INDArray): Double = {\n  val samplesNum = labels.shape()(0)\n  val matchesNum = (Nd4j.argMax(predictions, 1) eq Nd4j.argMax(labels, 1)).sumNumber.asInstanceOf[Double]\n  100.0 * matchesNum / samplesNum\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
@@ -363,7 +407,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 14,
-      "time" : "Took: 1 second 33 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 115 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -391,7 +435,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 15,
-      "time" : "Took: 851 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 927 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -413,7 +457,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 16,
-      "time" : "Took: 906 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 921 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -435,7 +479,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 17,
-      "time" : "Took: 2 seconds 121 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 2 seconds 661 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -463,7 +507,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 18,
-      "time" : "Took: 945 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 977 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -477,7 +521,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "learningRate: Double = 0.01\nbatchSize: Int = 128\nmnistTrain: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@64ea4398\nmnistTest: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@5d1512a3\ninputDim: Int = 784\ntotalTestExamples: Int = 10000\n"
+      "text" : "learningRate: Double = 0.01\nbatchSize: Int = 128\nmnistTrain: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@7ab58ec2\nmnistTest: org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator = org.deeplearning4j.datasets.iterator.impl.MnistDataSetIterator@3681f6e8\ninputDim: Int = 784\ntotalTestExamples: Int = 10000\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -485,7 +529,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 19,
-      "time" : "Took: 1 second 76 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 1 second 710 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -499,7 +543,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "model: NeuralNet = NeuralNet(Vector($iwC$$iwC$Dense@29d5e44c, $iwC$$iwC$SigmoidActivation@7b2d74ff, $iwC$$iwC$Dropout@60ca3a9e, $iwC$$iwC$Dense@5f967af1, $iwC$$iwC$SigmoidActivation@596712cb, $iwC$$iwC$Dropout@49fd0f94, $iwC$$iwC$Dense@78d2c2ff, $iwC$$iwC$Softmax@14ff6ee6))\n"
+      "text" : "model: NeuralNet = NeuralNet(Vector($iwC$$iwC$Dense@6e34cf41, $iwC$$iwC$SigmoidActivation@7b916832, $iwC$$iwC$Dropout@72dec70f, $iwC$$iwC$Dense@1322cf19, $iwC$$iwC$SigmoidActivation@5b2454fb, $iwC$$iwC$Dropout@2b846755, $iwC$$iwC$Dense@2f662b95, $iwC$$iwC$Softmax@2ab96367))\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -507,7 +551,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 20,
-      "time" : "Took: 1 second 105 milliseconds, at 2017-3-26 15:8"
+      "time" : "Took: 989 milliseconds, at 2017-4-2 23:50"
     } ]
   }, {
     "metadata" : {
@@ -521,7 +565,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "Epoch: 1/40 - loss: 0.553437841796875 - acc: 0.8236\nEpoch: 2/40 - loss: 0.3287392578125 - acc: 0.8997\nEpoch: 3/40 - loss: 0.287028662109375 - acc: 0.9103\nEpoch: 4/40 - loss: 0.2096341064453125 - acc: 0.9356\nEpoch: 5/40 - loss: 0.1902560791015625 - acc: 0.9414\nEpoch: 6/40 - loss: 0.170572607421875 - acc: 0.9485\nEpoch: 7/40 - loss: 0.1558003173828125 - acc: 0.9513\nEpoch: 8/40 - loss: 0.1388808837890625 - acc: 0.9565\nEpoch: 9/40 - loss: 0.1310806640625 - acc: 0.9597\nEpoch: 10/40 - loss: 0.12377705078125 - acc: 0.9606\nEpoch: 11/40 - loss: 0.11897177734375 - acc: 0.9631\nEpoch: 12/40 - loss: 0.112712158203125 - acc: 0.9643\nEpoch: 13/40 - loss: 0.1101241943359375 - acc: 0.9654\nEpoch: 14/40 - loss: 0.10270872802734375 - acc: 0.9675\nEpoch: 15/40 - loss: 0.09695755615234375 - acc: 0.9698\nEpoch: 16/40 - loss: 0.0928009033203125 - acc: 0.9714\nEpoch: 17/40 - loss: 0.09171278076171875 - acc: 0.9717\nEpoch: 18/40 - loss: 0.0893869140625 - acc: 0.9711\nEpoch: 19/40 - loss: 0.08768370361328125 - acc: 0.9714\nEpoch: 20/40 - loss: 0.08273265380859375 - acc: 0.9733\nEpoch: 21/40 - loss: 0.08220009765625 - acc: 0.9732\nEpoch: 22/40 - loss: 0.08050025634765624 - acc: 0.9737\nEpoch: 23/40 - loss: 0.07561025390625 - acc: 0.9763\nEpoch: 24/40 - loss: 0.07690062866210938 - acc: 0.9757\nEpoch: 25/40 - loss: 0.07695980224609375 - acc: 0.9757\nEpoch: 26/40 - loss: 0.07533101806640626 - acc: 0.976\nEpoch: 27/40 - loss: 0.07689620971679688 - acc: 0.9757\nEpoch: 28/40 - loss: 0.0723163330078125 - acc: 0.9771\nEpoch: 29/40 - loss: 0.06934053955078125 - acc: 0.9786\nEpoch: 30/40 - loss: 0.06918525390625 - acc: 0.9783\nEpoch: 31/40 - loss: 0.067534716796875 - acc: 0.9785\nEpoch: 32/40 - loss: 0.06565299072265625 - acc: 0.9789\nEpoch: 33/40 - loss: 0.06615639038085938 - acc: 0.9794\nEpoch: 34/40 - loss: 0.06506829833984375 - acc: 0.9791\nEpoch: 35/40 - loss: 0.06601197509765624 - acc: 0.9785\nEpoch: 36/40 - loss: 0.06776669921875 - acc: 0.9795\nEpoch: 37/40 - loss: 0.063225244140625 - acc: 0.9796\nEpoch: 38/40 - loss: 0.06246710205078125 - acc: 0.9799\nEpoch: 39/40 - loss: 0.063174951171875 - acc: 0.9806\nEpoch: 40/40 - loss: 0.0638287353515625 - acc: 0.9802\nhistory: Seq[Metric] = List(Metric(1,0.8236,0.553437841796875), Metric(2,0.8997,0.3287392578125), Metric(3,0.9103,0.287028662109375), Metric(4,0.9356,0.2096341064453125), Metric(5,0.9414,0.1902560791015625), Metric(6,0.9485,0.170572607421875), Metric(7,0.9513,0.1558003173828125), Metric(8,0.9565,0.1388808837890625), Metric(9,0.9597,0.1310806640625), Metric(10,0.9606,0.12377705078125), Metric(11,0.9631,0.11897177734375), Metric(12,0.9643,0.112712158203125), Metric(13,0.9654,0.1101241943359375), Metric(14,0.9675,0.10270872802734375), Metric(15,0.9698,0.09695755615234375), Metric(16,0.9714,0.0928009033203125), Metric(17,0.9717,0.09171278076171875), Metric(18,0.9711,0.0893869140625), Metric(19,0.9714,0.08768370361328125), Metric(20,0.9733,0.08273265380859375), Metric(21,0.9732,0.08220009765..."
+      "text" : "Epoch: 1/40 - loss: 0.57162705078125 - acc: 81.94\nEpoch: 2/40 - loss: 0.348628173828125 - acc: 89.34\nEpoch: 3/40 - loss: 0.273960546875 - acc: 91.83\nEpoch: 4/40 - loss: 0.2305306396484375 - acc: 92.76\nEpoch: 5/40 - loss: 0.20194395751953126 - acc: 93.76\nEpoch: 6/40 - loss: 0.17214320068359376 - acc: 94.87\nEpoch: 7/40 - loss: 0.15777041015625 - acc: 95.29\nEpoch: 8/40 - loss: 0.1411923583984375 - acc: 95.75\nEpoch: 9/40 - loss: 0.1371442138671875 - acc: 95.65\nEpoch: 10/40 - loss: 0.1223932373046875 - acc: 96.2\nEpoch: 11/40 - loss: 0.11889525146484375 - acc: 96.35\nEpoch: 12/40 - loss: 0.11355523681640625 - acc: 96.5\nEpoch: 13/40 - loss: 0.10255557861328125 - acc: 96.63\nEpoch: 14/40 - loss: 0.10248739013671875 - acc: 96.67\nEpoch: 15/40 - loss: 0.10121082153320313 - acc: 96.76\nEpoch: 16/40 - loss: 0.09314661254882813 - acc: 97.05\nEpoch: 17/40 - loss: 0.0908234619140625 - acc: 97.09\nEpoch: 18/40 - loss: 0.08782809448242188 - acc: 97.21\nEpoch: 19/40 - loss: 0.084460498046875 - acc: 97.25\nEpoch: 20/40 - loss: 0.08508148803710938 - acc: 97.32\nEpoch: 21/40 - loss: 0.08242890625 - acc: 97.49\nEpoch: 22/40 - loss: 0.07931015014648438 - acc: 97.55\nEpoch: 23/40 - loss: 0.07825602416992188 - acc: 97.6\nEpoch: 24/40 - loss: 0.07847127685546874 - acc: 97.47\nEpoch: 25/40 - loss: 0.07547276611328126 - acc: 97.6\nEpoch: 26/40 - loss: 0.074110009765625 - acc: 97.64\nEpoch: 27/40 - loss: 0.07486264038085938 - acc: 97.69\nEpoch: 28/40 - loss: 0.07151276245117187 - acc: 97.73\nEpoch: 29/40 - loss: 0.07469411010742187 - acc: 97.76\nEpoch: 30/40 - loss: 0.06966272583007813 - acc: 97.88\nEpoch: 31/40 - loss: 0.066982666015625 - acc: 97.84\nEpoch: 32/40 - loss: 0.06796741333007812 - acc: 97.87\nEpoch: 33/40 - loss: 0.06789564208984375 - acc: 97.95\nEpoch: 34/40 - loss: 0.065538916015625 - acc: 98.03\nEpoch: 35/40 - loss: 0.066549365234375 - acc: 97.88\nEpoch: 36/40 - loss: 0.06736263427734375 - acc: 97.83\nEpoch: 37/40 - loss: 0.0646685302734375 - acc: 97.98\nEpoch: 38/40 - loss: 0.0628564208984375 - acc: 97.97\nEpoch: 39/40 - loss: 0.0657330322265625 - acc: 98.0\nEpoch: 40/40 - loss: 0.063365771484375 - acc: 97.98\nhistory: Seq[Metric] = List(Metric(1,81.94,0.57162705078125), Metric(2,89.34,0.348628173828125), Metric(3,91.83,0.273960546875), Metric(4,92.76,0.2305306396484375), Metric(5,93.76,0.20194395751953126), Metric(6,94.87,0.17214320068359376), Metric(7,95.29,0.15777041015625), Metric(8,95.75,0.1411923583984375), Metric(9,95.65,0.1371442138671875), Metric(10,96.2,0.1223932373046875), Metric(11,96.35,0.11889525146484375), Metric(12,96.5,0.11355523681640625), Metric(13,96.63,0.10255557861328125), Metric(14,96.67,0.10248739013671875), Metric(15,96.76,0.10121082153320313), Metric(16,97.05,0.09314661254882813), Metric(17,97.09,0.0908234619140625), Metric(18,97.21,0.08782809448242188), Metric(19,97.25,0.084460498046875), Metric(20,97.32,0.08508148803710938), Metric(21,97.49,0.08242890625), Metric(2..."
     }, {
       "metadata" : { },
       "data" : {
@@ -529,7 +573,7 @@
       },
       "output_type" : "execute_result",
       "execution_count" : 21,
-      "time" : "Took: 6 minutes 4 seconds 683 milliseconds, at 2017-3-26 15:14"
+      "time" : "Took: 6 minutes 36 seconds 254 milliseconds, at 2017-4-2 23:57"
     } ]
   }, {
     "metadata" : {
@@ -539,19 +583,19 @@
       "id" : "15151B8114FC4CB3B94F956AFDDCF06A"
     },
     "cell_type" : "code",
-    "source" : "CustomPlotlyChart(history,\n                  layout=\"{title: 'Accuracy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: 'acc'}}\",\n                  dataOptions=\"{mode: 'lines'}\",\n                  dataSources=\"{x: 'epoch', y: 'acc'}\")",
+    "source" : "CustomPlotlyChart(history,\n                  layout=\"{title: 'Accuracy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: '%'}}\",\n                  dataOptions=\"{mode: 'lines'}\",\n                  dataSources=\"{x: 'epoch', y: 'acc'}\")",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res55: notebook.front.widgets.charts.CustomPlotlyChart[Seq[Metric]] = <CustomPlotlyChart widget>\n"
+      "text" : "res29: notebook.front.widgets.charts.CustomPlotlyChart[Seq[Metric]] = <CustomPlotlyChart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon7c618540a260fdfff90ccf071f600f16&quot;,&quot;dataInit&quot;:[{&quot;epoch&quot;:1,&quot;acc&quot;:0.8236,&quot;loss&quot;:0.553437841796875},{&quot;epoch&quot;:2,&quot;acc&quot;:0.8997,&quot;loss&quot;:0.3287392578125},{&quot;epoch&quot;:3,&quot;acc&quot;:0.9103,&quot;loss&quot;:0.287028662109375},{&quot;epoch&quot;:4,&quot;acc&quot;:0.9356,&quot;loss&quot;:0.2096341064453125},{&quot;epoch&quot;:5,&quot;acc&quot;:0.9414,&quot;loss&quot;:0.1902560791015625},{&quot;epoch&quot;:6,&quot;acc&quot;:0.9485,&quot;loss&quot;:0.170572607421875},{&quot;epoch&quot;:7,&quot;acc&quot;:0.9513,&quot;loss&quot;:0.1558003173828125},{&quot;epoch&quot;:8,&quot;acc&quot;:0.9565,&quot;loss&quot;:0.1388808837890625},{&quot;epoch&quot;:9,&quot;acc&quot;:0.9597,&quot;loss&quot;:0.1310806640625},{&quot;epoch&quot;:10,&quot;acc&quot;:0.9606,&quot;loss&quot;:0.12377705078125},{&quot;epoch&quot;:11,&quot;acc&quot;:0.9631,&quot;loss&quot;:0.11897177734375},{&quot;epoch&quot;:12,&quot;acc&quot;:0.9643,&quot;loss&quot;:0.112712158203125},{&quot;epoch&quot;:13,&quot;acc&quot;:0.9654,&quot;loss&quot;:0.1101241943359375},{&quot;epoch&quot;:14,&quot;acc&quot;:0.9675,&quot;loss&quot;:0.10270872802734375},{&quot;epoch&quot;:15,&quot;acc&quot;:0.9698,&quot;loss&quot;:0.09695755615234375},{&quot;epoch&quot;:16,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.0928009033203125},{&quot;epoch&quot;:17,&quot;acc&quot;:0.9717,&quot;loss&quot;:0.09171278076171875},{&quot;epoch&quot;:18,&quot;acc&quot;:0.9711,&quot;loss&quot;:0.0893869140625},{&quot;epoch&quot;:19,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.08768370361328125},{&quot;epoch&quot;:20,&quot;acc&quot;:0.9733,&quot;loss&quot;:0.08273265380859375},{&quot;epoch&quot;:21,&quot;acc&quot;:0.9732,&quot;loss&quot;:0.08220009765625},{&quot;epoch&quot;:22,&quot;acc&quot;:0.9737,&quot;loss&quot;:0.08050025634765624},{&quot;epoch&quot;:23,&quot;acc&quot;:0.9763,&quot;loss&quot;:0.07561025390625},{&quot;epoch&quot;:24,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07690062866210938},{&quot;epoch&quot;:25,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07695980224609375},{&quot;epoch&quot;:26,&quot;acc&quot;:0.976,&quot;loss&quot;:0.07533101806640626},{&quot;epoch&quot;:27,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07689620971679688},{&quot;epoch&quot;:28,&quot;acc&quot;:0.9771,&quot;loss&quot;:0.0723163330078125},{&quot;epoch&quot;:29,&quot;acc&quot;:0.9786,&quot;loss&quot;:0.06934053955078125},{&quot;epoch&quot;:30,&quot;acc&quot;:0.9783,&quot;loss&quot;:0.06918525390625},{&quot;epoch&quot;:31,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.067534716796875},{&quot;epoch&quot;:32,&quot;acc&quot;:0.9789,&quot;loss&quot;:0.06565299072265625},{&quot;epoch&quot;:33,&quot;acc&quot;:0.9794,&quot;loss&quot;:0.06615639038085938},{&quot;epoch&quot;:34,&quot;acc&quot;:0.9791,&quot;loss&quot;:0.06506829833984375},{&quot;epoch&quot;:35,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.06601197509765624},{&quot;epoch&quot;:36,&quot;acc&quot;:0.9795,&quot;loss&quot;:0.06776669921875},{&quot;epoch&quot;:37,&quot;acc&quot;:0.9796,&quot;loss&quot;:0.063225244140625},{&quot;epoch&quot;:38,&quot;acc&quot;:0.9799,&quot;loss&quot;:0.06246710205078125},{&quot;epoch&quot;:39,&quot;acc&quot;:0.9806,&quot;loss&quot;:0.063174951171875},{&quot;epoch&quot;:40,&quot;acc&quot;:0.9802,&quot;loss&quot;:0.0638287353515625}],&quot;genId&quot;:&quot;1458365325&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customPlotlyChart'], \n      function(playground, _magiccustomPlotlyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomPlotlyChart,\n    \"o\": {\"js\":\"var layout = {title: 'Accuracy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: 'acc'}}; var dataSources={x: 'epoch', y: 'acc'}; var dataOptions = {mode: 'lines'}\",\"headers\":[\"epoch\",\"acc\",\"loss\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n      <span class=\"chart-total-item-count\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon78f09deabe1a0c8afa2bb6060f134b35&quot;,&quot;initialValue&quot;:&quot;40&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> entries total</span>\n      <span class=\"chart-sampling-warning\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon108586515aec12258080c4e05bf9f38f&quot;,&quot;initialValue&quot;:&quot;&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n      <div>\n      </div>\n    </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon9a1b6e5be7651703df405103341e2339&quot;,&quot;dataInit&quot;:[{&quot;epoch&quot;:1,&quot;acc&quot;:81.94,&quot;loss&quot;:0.57162705078125},{&quot;epoch&quot;:2,&quot;acc&quot;:89.34,&quot;loss&quot;:0.348628173828125},{&quot;epoch&quot;:3,&quot;acc&quot;:91.83,&quot;loss&quot;:0.273960546875},{&quot;epoch&quot;:4,&quot;acc&quot;:92.76,&quot;loss&quot;:0.2305306396484375},{&quot;epoch&quot;:5,&quot;acc&quot;:93.76,&quot;loss&quot;:0.20194395751953126},{&quot;epoch&quot;:6,&quot;acc&quot;:94.87,&quot;loss&quot;:0.17214320068359376},{&quot;epoch&quot;:7,&quot;acc&quot;:95.29,&quot;loss&quot;:0.15777041015625},{&quot;epoch&quot;:8,&quot;acc&quot;:95.75,&quot;loss&quot;:0.1411923583984375},{&quot;epoch&quot;:9,&quot;acc&quot;:95.65,&quot;loss&quot;:0.1371442138671875},{&quot;epoch&quot;:10,&quot;acc&quot;:96.2,&quot;loss&quot;:0.1223932373046875},{&quot;epoch&quot;:11,&quot;acc&quot;:96.35,&quot;loss&quot;:0.11889525146484375},{&quot;epoch&quot;:12,&quot;acc&quot;:96.5,&quot;loss&quot;:0.11355523681640625},{&quot;epoch&quot;:13,&quot;acc&quot;:96.63,&quot;loss&quot;:0.10255557861328125},{&quot;epoch&quot;:14,&quot;acc&quot;:96.67,&quot;loss&quot;:0.10248739013671875},{&quot;epoch&quot;:15,&quot;acc&quot;:96.76,&quot;loss&quot;:0.10121082153320313},{&quot;epoch&quot;:16,&quot;acc&quot;:97.05,&quot;loss&quot;:0.09314661254882813},{&quot;epoch&quot;:17,&quot;acc&quot;:97.09,&quot;loss&quot;:0.0908234619140625},{&quot;epoch&quot;:18,&quot;acc&quot;:97.21,&quot;loss&quot;:0.08782809448242188},{&quot;epoch&quot;:19,&quot;acc&quot;:97.25,&quot;loss&quot;:0.084460498046875},{&quot;epoch&quot;:20,&quot;acc&quot;:97.32,&quot;loss&quot;:0.08508148803710938},{&quot;epoch&quot;:21,&quot;acc&quot;:97.49,&quot;loss&quot;:0.08242890625},{&quot;epoch&quot;:22,&quot;acc&quot;:97.55,&quot;loss&quot;:0.07931015014648438},{&quot;epoch&quot;:23,&quot;acc&quot;:97.6,&quot;loss&quot;:0.07825602416992188},{&quot;epoch&quot;:24,&quot;acc&quot;:97.47,&quot;loss&quot;:0.07847127685546874},{&quot;epoch&quot;:25,&quot;acc&quot;:97.6,&quot;loss&quot;:0.07547276611328126},{&quot;epoch&quot;:26,&quot;acc&quot;:97.64,&quot;loss&quot;:0.074110009765625},{&quot;epoch&quot;:27,&quot;acc&quot;:97.69,&quot;loss&quot;:0.07486264038085938},{&quot;epoch&quot;:28,&quot;acc&quot;:97.73,&quot;loss&quot;:0.07151276245117187},{&quot;epoch&quot;:29,&quot;acc&quot;:97.76,&quot;loss&quot;:0.07469411010742187},{&quot;epoch&quot;:30,&quot;acc&quot;:97.88,&quot;loss&quot;:0.06966272583007813},{&quot;epoch&quot;:31,&quot;acc&quot;:97.84,&quot;loss&quot;:0.066982666015625},{&quot;epoch&quot;:32,&quot;acc&quot;:97.87,&quot;loss&quot;:0.06796741333007812},{&quot;epoch&quot;:33,&quot;acc&quot;:97.95,&quot;loss&quot;:0.06789564208984375},{&quot;epoch&quot;:34,&quot;acc&quot;:98.03,&quot;loss&quot;:0.065538916015625},{&quot;epoch&quot;:35,&quot;acc&quot;:97.88,&quot;loss&quot;:0.066549365234375},{&quot;epoch&quot;:36,&quot;acc&quot;:97.83,&quot;loss&quot;:0.06736263427734375},{&quot;epoch&quot;:37,&quot;acc&quot;:97.98,&quot;loss&quot;:0.0646685302734375},{&quot;epoch&quot;:38,&quot;acc&quot;:97.97,&quot;loss&quot;:0.0628564208984375},{&quot;epoch&quot;:39,&quot;acc&quot;:98.0,&quot;loss&quot;:0.0657330322265625},{&quot;epoch&quot;:40,&quot;acc&quot;:97.98,&quot;loss&quot;:0.063365771484375}],&quot;genId&quot;:&quot;1803379875&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customPlotlyChart'], \n      function(playground, _magiccustomPlotlyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomPlotlyChart,\n    \"o\": {\"js\":\"var layout = {title: 'Accuracy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: '%'}}; var dataSources={x: 'epoch', y: 'acc'}; var dataOptions = {mode: 'lines'}\",\"headers\":[\"epoch\",\"acc\",\"loss\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n      <span class=\"chart-total-item-count\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon82b0c6d0e78ce2ec5afef3b7ba548ea8&quot;,&quot;initialValue&quot;:&quot;40&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> entries total</span>\n      <span class=\"chart-sampling-warning\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon618067bd6fdf81ea4eaa83a1fc4c59ea&quot;,&quot;initialValue&quot;:&quot;&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n      <div>\n      </div>\n    </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 37,
-      "time" : "Took: 1 second 14 milliseconds, at 2017-3-26 15:34"
+      "execution_count" : 24,
+      "time" : "Took: 1 second 855 milliseconds, at 2017-4-2 23:58"
     } ]
   }, {
     "metadata" : {
@@ -565,15 +609,15 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res53: notebook.front.widgets.charts.CustomPlotlyChart[Seq[Metric]] = <CustomPlotlyChart widget>\n"
+      "text" : "res27: notebook.front.widgets.charts.CustomPlotlyChart[Seq[Metric]] = <CustomPlotlyChart widget>\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonf0f3105221bc3657f1e5cb19643bd644&quot;,&quot;dataInit&quot;:[{&quot;epoch&quot;:1,&quot;acc&quot;:0.8236,&quot;loss&quot;:0.553437841796875},{&quot;epoch&quot;:2,&quot;acc&quot;:0.8997,&quot;loss&quot;:0.3287392578125},{&quot;epoch&quot;:3,&quot;acc&quot;:0.9103,&quot;loss&quot;:0.287028662109375},{&quot;epoch&quot;:4,&quot;acc&quot;:0.9356,&quot;loss&quot;:0.2096341064453125},{&quot;epoch&quot;:5,&quot;acc&quot;:0.9414,&quot;loss&quot;:0.1902560791015625},{&quot;epoch&quot;:6,&quot;acc&quot;:0.9485,&quot;loss&quot;:0.170572607421875},{&quot;epoch&quot;:7,&quot;acc&quot;:0.9513,&quot;loss&quot;:0.1558003173828125},{&quot;epoch&quot;:8,&quot;acc&quot;:0.9565,&quot;loss&quot;:0.1388808837890625},{&quot;epoch&quot;:9,&quot;acc&quot;:0.9597,&quot;loss&quot;:0.1310806640625},{&quot;epoch&quot;:10,&quot;acc&quot;:0.9606,&quot;loss&quot;:0.12377705078125},{&quot;epoch&quot;:11,&quot;acc&quot;:0.9631,&quot;loss&quot;:0.11897177734375},{&quot;epoch&quot;:12,&quot;acc&quot;:0.9643,&quot;loss&quot;:0.112712158203125},{&quot;epoch&quot;:13,&quot;acc&quot;:0.9654,&quot;loss&quot;:0.1101241943359375},{&quot;epoch&quot;:14,&quot;acc&quot;:0.9675,&quot;loss&quot;:0.10270872802734375},{&quot;epoch&quot;:15,&quot;acc&quot;:0.9698,&quot;loss&quot;:0.09695755615234375},{&quot;epoch&quot;:16,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.0928009033203125},{&quot;epoch&quot;:17,&quot;acc&quot;:0.9717,&quot;loss&quot;:0.09171278076171875},{&quot;epoch&quot;:18,&quot;acc&quot;:0.9711,&quot;loss&quot;:0.0893869140625},{&quot;epoch&quot;:19,&quot;acc&quot;:0.9714,&quot;loss&quot;:0.08768370361328125},{&quot;epoch&quot;:20,&quot;acc&quot;:0.9733,&quot;loss&quot;:0.08273265380859375},{&quot;epoch&quot;:21,&quot;acc&quot;:0.9732,&quot;loss&quot;:0.08220009765625},{&quot;epoch&quot;:22,&quot;acc&quot;:0.9737,&quot;loss&quot;:0.08050025634765624},{&quot;epoch&quot;:23,&quot;acc&quot;:0.9763,&quot;loss&quot;:0.07561025390625},{&quot;epoch&quot;:24,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07690062866210938},{&quot;epoch&quot;:25,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07695980224609375},{&quot;epoch&quot;:26,&quot;acc&quot;:0.976,&quot;loss&quot;:0.07533101806640626},{&quot;epoch&quot;:27,&quot;acc&quot;:0.9757,&quot;loss&quot;:0.07689620971679688},{&quot;epoch&quot;:28,&quot;acc&quot;:0.9771,&quot;loss&quot;:0.0723163330078125},{&quot;epoch&quot;:29,&quot;acc&quot;:0.9786,&quot;loss&quot;:0.06934053955078125},{&quot;epoch&quot;:30,&quot;acc&quot;:0.9783,&quot;loss&quot;:0.06918525390625},{&quot;epoch&quot;:31,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.067534716796875},{&quot;epoch&quot;:32,&quot;acc&quot;:0.9789,&quot;loss&quot;:0.06565299072265625},{&quot;epoch&quot;:33,&quot;acc&quot;:0.9794,&quot;loss&quot;:0.06615639038085938},{&quot;epoch&quot;:34,&quot;acc&quot;:0.9791,&quot;loss&quot;:0.06506829833984375},{&quot;epoch&quot;:35,&quot;acc&quot;:0.9785,&quot;loss&quot;:0.06601197509765624},{&quot;epoch&quot;:36,&quot;acc&quot;:0.9795,&quot;loss&quot;:0.06776669921875},{&quot;epoch&quot;:37,&quot;acc&quot;:0.9796,&quot;loss&quot;:0.063225244140625},{&quot;epoch&quot;:38,&quot;acc&quot;:0.9799,&quot;loss&quot;:0.06246710205078125},{&quot;epoch&quot;:39,&quot;acc&quot;:0.9806,&quot;loss&quot;:0.063174951171875},{&quot;epoch&quot;:40,&quot;acc&quot;:0.9802,&quot;loss&quot;:0.0638287353515625}],&quot;genId&quot;:&quot;1439521848&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customPlotlyChart'], \n      function(playground, _magiccustomPlotlyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomPlotlyChart,\n    \"o\": {\"js\":\"var layout = {title: 'Cross entropy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: 'loss'}}; var dataSources={x: 'epoch', y: 'loss'}; var dataOptions = {\\n                    mode: 'lines', \\n                    line: {\\n                          color: 'green',\\n                          width: 3\\n                          }\\n                    }\",\"headers\":[\"epoch\",\"acc\",\"loss\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n      <span class=\"chart-total-item-count\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonf0a2b47d5cd98390f7d7a323de8602ce&quot;,&quot;initialValue&quot;:&quot;40&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> entries total</span>\n      <span class=\"chart-sampling-warning\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon4c10db5d6a8634373a94fce7a34fbb61&quot;,&quot;initialValue&quot;:&quot;&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n      <div>\n      </div>\n    </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonaeff8599c9be509fecf318df639eb605&quot;,&quot;dataInit&quot;:[{&quot;epoch&quot;:1,&quot;acc&quot;:81.94,&quot;loss&quot;:0.57162705078125},{&quot;epoch&quot;:2,&quot;acc&quot;:89.34,&quot;loss&quot;:0.348628173828125},{&quot;epoch&quot;:3,&quot;acc&quot;:91.83,&quot;loss&quot;:0.273960546875},{&quot;epoch&quot;:4,&quot;acc&quot;:92.76,&quot;loss&quot;:0.2305306396484375},{&quot;epoch&quot;:5,&quot;acc&quot;:93.76,&quot;loss&quot;:0.20194395751953126},{&quot;epoch&quot;:6,&quot;acc&quot;:94.87,&quot;loss&quot;:0.17214320068359376},{&quot;epoch&quot;:7,&quot;acc&quot;:95.29,&quot;loss&quot;:0.15777041015625},{&quot;epoch&quot;:8,&quot;acc&quot;:95.75,&quot;loss&quot;:0.1411923583984375},{&quot;epoch&quot;:9,&quot;acc&quot;:95.65,&quot;loss&quot;:0.1371442138671875},{&quot;epoch&quot;:10,&quot;acc&quot;:96.2,&quot;loss&quot;:0.1223932373046875},{&quot;epoch&quot;:11,&quot;acc&quot;:96.35,&quot;loss&quot;:0.11889525146484375},{&quot;epoch&quot;:12,&quot;acc&quot;:96.5,&quot;loss&quot;:0.11355523681640625},{&quot;epoch&quot;:13,&quot;acc&quot;:96.63,&quot;loss&quot;:0.10255557861328125},{&quot;epoch&quot;:14,&quot;acc&quot;:96.67,&quot;loss&quot;:0.10248739013671875},{&quot;epoch&quot;:15,&quot;acc&quot;:96.76,&quot;loss&quot;:0.10121082153320313},{&quot;epoch&quot;:16,&quot;acc&quot;:97.05,&quot;loss&quot;:0.09314661254882813},{&quot;epoch&quot;:17,&quot;acc&quot;:97.09,&quot;loss&quot;:0.0908234619140625},{&quot;epoch&quot;:18,&quot;acc&quot;:97.21,&quot;loss&quot;:0.08782809448242188},{&quot;epoch&quot;:19,&quot;acc&quot;:97.25,&quot;loss&quot;:0.084460498046875},{&quot;epoch&quot;:20,&quot;acc&quot;:97.32,&quot;loss&quot;:0.08508148803710938},{&quot;epoch&quot;:21,&quot;acc&quot;:97.49,&quot;loss&quot;:0.08242890625},{&quot;epoch&quot;:22,&quot;acc&quot;:97.55,&quot;loss&quot;:0.07931015014648438},{&quot;epoch&quot;:23,&quot;acc&quot;:97.6,&quot;loss&quot;:0.07825602416992188},{&quot;epoch&quot;:24,&quot;acc&quot;:97.47,&quot;loss&quot;:0.07847127685546874},{&quot;epoch&quot;:25,&quot;acc&quot;:97.6,&quot;loss&quot;:0.07547276611328126},{&quot;epoch&quot;:26,&quot;acc&quot;:97.64,&quot;loss&quot;:0.074110009765625},{&quot;epoch&quot;:27,&quot;acc&quot;:97.69,&quot;loss&quot;:0.07486264038085938},{&quot;epoch&quot;:28,&quot;acc&quot;:97.73,&quot;loss&quot;:0.07151276245117187},{&quot;epoch&quot;:29,&quot;acc&quot;:97.76,&quot;loss&quot;:0.07469411010742187},{&quot;epoch&quot;:30,&quot;acc&quot;:97.88,&quot;loss&quot;:0.06966272583007813},{&quot;epoch&quot;:31,&quot;acc&quot;:97.84,&quot;loss&quot;:0.066982666015625},{&quot;epoch&quot;:32,&quot;acc&quot;:97.87,&quot;loss&quot;:0.06796741333007812},{&quot;epoch&quot;:33,&quot;acc&quot;:97.95,&quot;loss&quot;:0.06789564208984375},{&quot;epoch&quot;:34,&quot;acc&quot;:98.03,&quot;loss&quot;:0.065538916015625},{&quot;epoch&quot;:35,&quot;acc&quot;:97.88,&quot;loss&quot;:0.066549365234375},{&quot;epoch&quot;:36,&quot;acc&quot;:97.83,&quot;loss&quot;:0.06736263427734375},{&quot;epoch&quot;:37,&quot;acc&quot;:97.98,&quot;loss&quot;:0.0646685302734375},{&quot;epoch&quot;:38,&quot;acc&quot;:97.97,&quot;loss&quot;:0.0628564208984375},{&quot;epoch&quot;:39,&quot;acc&quot;:98.0,&quot;loss&quot;:0.0657330322265625},{&quot;epoch&quot;:40,&quot;acc&quot;:97.98,&quot;loss&quot;:0.063365771484375}],&quot;genId&quot;:&quot;400670577&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/customPlotlyChart'], \n      function(playground, _magiccustomPlotlyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magiccustomPlotlyChart,\n    \"o\": {\"js\":\"var layout = {title: 'Cross entropy on validation set', xaxis: {title: 'epoch'}, yaxis: {title: 'loss'}}; var dataSources={x: 'epoch', y: 'loss'}; var dataOptions = {\\n                    mode: 'lines', \\n                    line: {\\n                          color: 'green',\\n                          width: 3\\n                          }\\n                    }\",\"headers\":[\"epoch\",\"acc\",\"loss\"],\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n      <span class=\"chart-total-item-count\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anond93ba35c528826faca24f9a3521fcdc0&quot;,&quot;initialValue&quot;:&quot;40&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> entries total</span>\n      <span class=\"chart-sampling-warning\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon840c0904b8927136db83125878ae5034&quot;,&quot;initialValue&quot;:&quot;&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId, initialValue)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n      <div>\n      </div>\n    </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 36,
-      "time" : "Took: 1 second 25 milliseconds, at 2017-3-26 15:28"
+      "execution_count" : 23,
+      "time" : "Took: 2 seconds 413 milliseconds, at 2017-4-2 23:58"
     } ]
   }, {
     "metadata" : {
