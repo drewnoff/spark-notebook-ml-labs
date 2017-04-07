@@ -10,3 +10,4 @@ Available labs:
 * [Data Analysis Toolbox](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DataAnalysisToolbox)
 * [Introduction To Machine Learning](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/IntroToMachineLearning)
 * [Bag of Words Meets Bags of Popcorn](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/BagOfWordsMeetsBagsOfPopcorn)
+* [Neural Networks & Backpropagation with ND4J](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DLFramework)
