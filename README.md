@@ -13,4 +13,4 @@ Available labs:
 * [Neural Networks & Backpropagation with ND4J](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DLFramework)
 
 ### Labs Updates
-The first two labs ca be replaced with [labs](https://www.dropbox.com/s/oid55diw61vvhhi/scalaIO-notebooks.zip?dl=0) from my [ScalaIO](http://scala.io/2016/talks.html#/#MFT-5837) workshop. Spark 2.x, Spark DataFrames API, plotly charts, Spark ML.
+The first two labs can be replaced with [labs](https://www.dropbox.com/s/oid55diw61vvhhi/scalaIO-notebooks.zip?dl=0) from my [ScalaIO](http://scala.io/2016/talks.html#/#MFT-5837) workshop. Spark 2.x, Spark DataFrames API, plotly charts, Spark ML.
