@@ -1,5 +1,5 @@
 # spark-notebook-ml-labs
-All labs are implemented in [Spark Notebook](https://github.com/andypetrella/spark-notebook). In particular spark-notebook-0.6.3 with scala-2.10.5 and spark-1.6.1 was used.
+All labs are implemented in [Spark Notebook](https://github.com/andypetrella/spark-notebook). In particular spark-notebook-0.6.3 with scala-2.10.5 and spark-1.6.1 was used for the most of the labs.
 In these labs we are going to get familiar with tools for data analysis and machine learning:
 * [breeze](https://github.com/scalanlp/breeze)
 * [spark dataframes](http://spark.apache.org/docs/latest/sql-programming-guide)
@@ -7,7 +7,10 @@ In these labs we are going to get familiar with tools for data analysis and mach
 * spark-notebook visualization capabilities
 
 Available labs:
-* [Data Analysis Toolbox](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DataAnalysisToolbox)
-* [Introduction To Machine Learning](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/IntroToMachineLearning)
+* (see the labs updates) [Data Analysis Toolbox](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DataAnalysisToolbox)
+* (see the labs updates) [Introduction To Machine Learning](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/IntroToMachineLearning)
 * [Bag of Words Meets Bags of Popcorn](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/BagOfWordsMeetsBagsOfPopcorn)
 * [Neural Networks & Backpropagation with ND4J](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DLFramework)
+
+### Labs Updates
+The first two labs ca be replaced with [labs](https://www.dropbox.com/s/oid55diw61vvhhi/scalaIO-notebooks.zip?dl=0) from my [ScalaIO](http://scala.io/2016/talks.html#/#MFT-5837) workshop. Spark 2.x, Spark DataFrames API, plotly charts, Spark ML.
