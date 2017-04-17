@@ -11,35 +11,34 @@ Our framework will support following neural network layers.
 
  - **Fully-connected layer (or dense layer)**. Neurons in a fully connected layer have full connections to all activations in the previous layer. Their activations can hence be computed with a matrix multiplication followed by a bias offset.*
  
-  $$\mathrm{Dense} \equiv f\left(\textbf{x}\right)=\textbf{W}\textbf{x}+\textbf{b},$$
+  <img src="http://telegra.ph/file/d2c25b153883ab5964ac9.png" align="center" border="0" alt="\mathrm{Dense} \equiv f\left(\textbf{x}\right)=\textbf{W}\textbf{x}+\textbf{b}" width="197" height="19" />,
  
- where $\textbf{W}\in\mathbb{R}^{(k,n)}$ - weight matrix, $\textbf{b}\in\mathbb{R}^k$ - bias offset.
+ where
+ <img src="http://telegra.ph/file/382e7cd46918ea933991c.png" align="center" border="0" alt="\textbf{W}\in\mathbb{R}^{(k,n)}" width="237" height="19" /> - weight matrix,
+ <img src="http://telegra.ph/file/ba96de4353ecf27f45a2a.png" align="center" border="0" alt="\textbf{b}\in\mathbb{R}^k" width="215" height="19" /> - bias offset.
  
  
  - **Sigmoid activation layer**. 
-    $$\mathrm{Sigmoid} \equiv f\left(\textbf{x}\right)=\frac{1}{1+\exp^{\textbf{-x}}}$$
+ 
+    <img src="http://telegra.ph/file/c8fd772f3bab71cc82c30.png" align="center" border="0" alt="\mathrm{Sigmoid} \equiv f\left(\textbf{x}\right)=\frac{1}{1+\exp^{\textbf{-x}}}" width="229" height="46" />
     
     
  - **[Dropout layer](https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf)**. It's introduced to prevent overfitting.
  It takes parameter $d$ which is equal to probability of individual neuron being "dropped out" during the *training stage* independently for each training example. The removed nodes are then reinserted into the network with their original weights. At *testing stage* we're using the full network with each neuron's output weighted by a factor of $1-d$, so the expected value of the output of any neuron is the same as in the training stages.
  
-    $$\mathrm{Dropout_{train}} \equiv f\left(\textbf{x}\right)=\textbf{m}\odot\textbf{x}$$
-    $$\textbf{m} \in \left\{0,1\right\}^{n}$$
-    $$p\left(m_{i}=0\right)=d$$
-    
-    $$\mathrm{Dropout_{test}}\equiv f\left(\textbf{x}\right)=\left(1-d\right)\textbf{x}$$
+    <img src="http://telegra.ph/file/e965e8a3ac05cbb893efe.png" align="center" border="0" alt=" $$\mathrm{Dropout_{train}} \equiv f\left(\textbf{x}\right)=\textbf{m}\odot\textbf{x}$$    $$\textbf{m} \in \left\{0,1\right\}^{n}$$    $$p\left(m_{i}=0\right)=d$$        $$\mathrm{Dropout_{test}}\equiv f\left(\textbf{x}\right)=\left(1-d\right)\textbf{x}$$" width="444" height="76" />
     
     
  - **Softmax classifier layer**. It's a generalization of binary Logistic Regression classifier to multiple classes. The Softmax classifier gives normalized class probabilities as its output.
   
-   $$\mathrm{Softmax}_{i} \equiv p_{i}\left(\textbf{x}\right)=\frac{e^{x_{i}}}{\sum_{j}{e^{x_{j}}}}$$
+  <img src="http://telegra.ph/file/110df4eb679e501246a78.png" align="center" border="0" alt=" $$\mathrm{Softmax}_{i} \equiv p_{i}\left(\textbf{x}\right)=\frac{e^{x_{i}}}{\sum_{j}{e^{x_{j}}}}$$" width="204" height="36" />
    
    We will use the Softmax classifier together with **cross-entropy loss** which is a generalization of binary log loss for multiple classes.
    The cross-entropy between a “true” distribution $p$ and an estimated distribution $q$ is defined as:
    
-   $$\mathcal{L}=-\sum_{i}{p_{i}\log{q_{i}}}$$
+   <img src="http://telegra.ph/file/f8a1df033c2f8e31d790e.png" align="center" border="0" alt="$$\mathcal{L}=-\sum_{i}{p_{i}\log{q_{i}}}$$" width="137" height="22" />
    
-   The Softmax classifier is hence minimizing the cross-entropy between the estimated class probabilities and the “true” distribution, where "true" distribution $\textbf{p}=\left[p_{1}...p_{i}...\right]$ with only one element is equal to $1$ (true class) and all the other are equal to $0$. 
+   The Softmax classifier is hence minimizing the cross-entropy between the estimated class probabilities and the “true” distribution, where "true" distribution <img src="http://telegra.ph/file/62ef1f14d98148e90ea40.png" align="center" border="0" alt="$\textbf{p}=\left[p_{1}...p_{i}...\right]$" width="114" height="19" /> with only one element is equal to $1$ (true class) and all the other are equal to $0$. 
 
 ## Install ND4J
 
@@ -217,7 +216,7 @@ We assume that the **Softmax** is always the last layer of the network.
 
 Also it can be shown that the gradient of cross-entropy loss of the outputs of softmax layer with respect to softmax layer's input has a simple form:
 
- $$\frac{\partial \mathcal{L}}{\partial x_{i}}=g_{i}-p_{i}$$
+<img src="http://telegra.ph/file/7d07acf33088acd4bebc4.png" align="center" border="0" alt=" $$\frac{\partial \mathcal{L}}{\partial x_{i}}=g_{i}-p_{i}$$" width="97" height="28" />
  
  So to start backpropagation stage let's take the `Softmax` output probabilities alongside with true labels as an input for `backProp` method of the `Softmax` layer.
 
