@@ -1,0 +1,936 @@
+{
+  "metadata" : {
+    "name" : "TitanicSurvivalExploration",
+    "user_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : {
+      "spark.app.name" : "ScalaIO Getting Started",
+      "spark.master" : "local[4]",
+      "spark.executor.memory" : "2G"
+    }
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "0BA359D1BEC942DB8031E9858B9DD1AA"
+    },
+    "cell_type" : "markdown",
+    "source" : "#  Titanic Survival Exploration"
+  }, {
+    "metadata" : {
+      "id" : "A7F1BB711F984380B18A2940C47EF8E5"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:center\">\n  <img src=\"http://telegra.ph/file/f5adcd2e260285ed766bd.png\" width=\"192\" height=\"100\" style=\"margin-right:70px\">\n  <img src=\"http://telegra.ph/file/72de05a5e0fc1e392e569.png\" width=\"111\" height=\"128\">\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "E4266CA3E6134B5E8A554817A707C970"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Spark quick review"
+  }, {
+    "metadata" : {
+      "id" : "567C1BC18DE446EE98E0CE36009E9831"
+    },
+    "cell_type" : "markdown",
+    "source" : "* Latest Stable Release: v2.0\n\nSpark provides convenient programming abstraction and parallel runtime to hide distributed computations complexities.\n\n\n<img src=\"http://telegra.ph/file/41a2ce855b179b4e9bd44.png\" width=\"316\" height=\"149\">\n\n\nIn this first lab we will focus on DataFrames and SQL.\nIn second lab we will use Spark MLlib for building machine learning pipelines."
+  }, {
+    "metadata" : {
+      "id" : "C8DC749EF8F4478DB39C467D73068FF6"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Spark Cluster"
+  }, {
+    "metadata" : {
+      "id" : "4AD326A983274CEA8B87BE4C98D3CDAD"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:left\">\n  <img src=\"http://telegra.ph/file/cf242107c6e3fc854ce04.png\" width=\"567\" height=\"492\">\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "15413540BBFD4F388A44153BB4CF069B"
+    },
+    "cell_type" : "markdown",
+    "source" : "Main entry point for Spark functionality is a `SparkContex`. `SparkContext` tells Spark how to access a cluster.\n`Spark Notebook` automatically creates `SparkContext`."
+  }, {
+    "metadata" : {
+      "id" : "C825C743E52D43C7BCAEA3F3891995E7"
+    },
+    "cell_type" : "markdown",
+    "source" : "Examples of `master` parameter configuration for `SparkContext`:\n\n| Master Parameter  |             Description                 |\n| ----------------- |----------------------------------------:|\n| local[K]          | run Spark locally with K worker threads |\n| spark://HOST:PORT | connect to Spark Standalone cluster     |\n| mesos://HOST:PORT | connect to Mesos cluster                |"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "ABD9BF935E294C88805CD1AEC1E96ADA"
+    },
+    "cell_type" : "code",
+    "source" : "sparkContext",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "0A2F5803720C45CA9A889FD74DC877DA"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Spark SQL and DataFrames"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "17F4292D9DE84C64AA8F14B44607F1E5"
+    },
+    "cell_type" : "code",
+    "source" : "// This import is needed to use the $-notation\nimport spark.implicits._",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "1D4AF5C1BA434D9E829C556E8C2DEE9B"
+    },
+    "cell_type" : "markdown",
+    "source" : "* http://spark.apache.org/docs/latest/sql-programming-guide.html\n* http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.sql.Dataset"
+  }, {
+    "metadata" : {
+      "id" : "824436EF882B4EACBAC707DF156DD69F"
+    },
+    "cell_type" : "markdown",
+    "source" : "A DataFrame is a distributed collection of data organized into named columns.\nIt is conceptually equivalent to a table in a relational database or a data frame in R/Python"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "F3CCD76E01224741BFFC12D770595288"
+    },
+    "cell_type" : "markdown",
+    "source" : "The entry point to programming Spark with SQL and DataFrame API in Spark 2.0 is the new `SparkSession` class:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2E2F6A73B390466997E51CE0BADA4ECD"
+    },
+    "cell_type" : "code",
+    "source" : "sparkSession",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F0D3F939A3B44F5893ECEC40FA6D1B84"
+    },
+    "cell_type" : "code",
+    "source" : "val spark = sparkSession",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "2CDC4126ACA04B7AA763E6D33DD9625A"
+    },
+    "cell_type" : "markdown",
+    "source" : "With a SparkSession you can create DataFrames from an existing RDD, from files in HDFS or any other storage system, or from Scala collections."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A1BDE4957E344C76963EEF5F0FA057D7"
+    },
+    "cell_type" : "code",
+    "source" : "Seq((\"Alice\", 20, \"female\"), (\"Bob\", 31, \"male\"), (\"Eva\", 16, \"female\")).toDF(\"name\", \"age\", \"gender\").show()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab539102187-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "F953AF369A1D49999B1F547696C898F9"
+    },
+    "cell_type" : "code",
+    "source" : "case class Person(name: String, age: Int, gender: String)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4D8CE8E8E05340DCB6E4087D9CC583C2"
+    },
+    "cell_type" : "code",
+    "source" : "val persons = Seq(Person(\"Alice\", 20, \"female\"), Person(\"Bob\", 31, \"male\"), Person(\"Eva\", 16, \"female\")).toDF()\npersons.show()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F4837DEF00DB49518CA0B3E9A79A4B2B"
+    },
+    "cell_type" : "code",
+    "source" : "persons.select(\"name\", \"age\").show()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "12C92D4BA4FE4C35954609339303CDBA"
+    },
+    "cell_type" : "code",
+    "source" : "val young = persons.filter($\"age\" < 21)\nyoung.show()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "153803FA749D4E768373D0FCEABEB951"
+    },
+    "cell_type" : "code",
+    "source" : "young.select(young(\"name\"), ($\"age\" + 1).alias(\"incremented age\"))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B3D06BA78056468F9359DC1262B02FAA"
+    },
+    "cell_type" : "code",
+    "source" : "persons.groupBy(\"gender\").count.show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "E4C4B34A08814E478FB00FB3788F0E36"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Titanic Dataset"
+  }, {
+    "metadata" : {
+      "id" : "7BF47E9F62104B648B12C00F0B139D3F"
+    },
+    "cell_type" : "markdown",
+    "source" : "More on this dataset you can read [here](https://www.kaggle.com/c/titanic/data)."
+  }, {
+    "metadata" : {
+      "id" : "ABE465E9052F4B84A8369D2872C159D3"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:left\">\n  <img src=\"https://upload.wikimedia.org/wikipedia/commons/6/6e/Stöwer_Titanic.jpg\" width=\"427\" height=\"292\">\n</div>\n<div style=\"font-size:x-small\">\n  By <span class=\"fn value\"><a href=\"//commons.wikimedia.org/wiki/Willy_St%C3%B6wer\" title=\"Willy Stöwer\">Willy Stöwer</a>, died on 31st May 1931</span> - Magazine Die Gartenlaube, <a href=\"https://en.wikipedia.org/wiki/Die_Gartenlaube\" class=\"extiw\" title=\"en:Die Gartenlaube\">en:Die Gartenlaube</a> and <a href=\"https://de.wikipedia.org/wiki/Die_Gartenlaube\" class=\"extiw\" title=\"de:Die Gartenlaube\">de:Die Gartenlaube</a>, Public Domain, <a href=\"https://commons.wikimedia.org/w/index.php?curid=97646\">Link</a>\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "6C9768C541FA402583A3991F6F64F981"
+    },
+    "cell_type" : "markdown",
+    "source" : "Out of the box, DataFrame supports reading data from the most popular formats, including JSON files, CSV files, Parquet files, Hive tables."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "39C8B97E811A4F48810AEF1D886F26BF"
+    },
+    "cell_type" : "code",
+    "source" : "val passengersDF = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/scalaIO-notebooks/data/titanic_train.csv\")  ",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "1FCA01D29C584C3C8CD81564234B66B8"
+    },
+    "cell_type" : "code",
+    "source" : "passengersDF.printSchema",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "8BFFFBF5773B431CB9B48760CB5D2E4C"
+    },
+    "cell_type" : "markdown",
+    "source" : "Look at 5 records in passengers DataFrame:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1709273702-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "0FBC0EB917884F5092DB5870A778C20D"
+    },
+    "cell_type" : "code",
+    "source" : "passengersDF.limit(5)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1939918210-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "C099D678BCDC47EF9FC70120C2553C0A"
+    },
+    "cell_type" : "code",
+    "source" : "passengersDF.select(\"Name\", \"Age\", \"Pclass\", \"Survived\").show(5, truncate=false)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "C7F79F4F8FC44F9FBC0D0007C0CA9D02"
+    },
+    "cell_type" : "markdown",
+    "source" : "The sql function on a SparkSession enables applications to run SQL queries programmatically and returns the result as a DataFrame.\nTo do this we need to register the DataFrame as a SQL temporary view"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "CE6823262FC64FDB9F3F0A561F1A3EA6"
+    },
+    "cell_type" : "code",
+    "source" : "passengersDF.createOrReplaceTempView(\"passengers\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "1EBC8EA3E63D47418D87F6C9D643344A"
+    },
+    "cell_type" : "code",
+    "source" : "spark.sql(\"\"\"\n  SELECT Name, Age, Pclass, Survived FROM passengers\n  WHERE Age < 30\n\"\"\").show(3, truncate=false)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "4DD3EA91E8F647C285CBF053308ECE28"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Transformations and Actions"
+  }, {
+    "metadata" : {
+      "id" : "1AD3002411144A64B75E212B903D2D2A"
+    },
+    "cell_type" : "markdown",
+    "source" : "Spark operations on DataFrames are one of two types. \n* Transformations are lazily evaluated and create new Dataframes from existing ones. \n* Actions trigger computation and return results or write DataFrames to storage.\n\n*Computations are only triggered when an action is invoked.*\n\nHere are some examples.\n\n\n|   Transformations   |    Actions   |\n| :-----------------: |:------------:|\n| select              |  count       |\n| filter              |  show        |\n| groupBy             |  save        |\n| orderBy             |  **collect** |\n| sample              |  take        |\n| limit               |  reduce      |\n| withColumn          ||\n| join                ||"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "66265A8E3F3C4682B120E4491E19FE80"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-1. How many different classes of passengers were aboard the Titanic?**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E06494D18F2A41A988ED237FEE686936"
+    },
+    "cell_type" : "code",
+    "source" : "val pclasses = passengersDF.select(\"Pclass\").distinct\n\npclasses.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2D1113AEF17F420C9FE869661E10A7A7"
+    },
+    "cell_type" : "code",
+    "source" : "pclasses.show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E689CD08EF394D178E415C5F1EB5D164"
+    },
+    "cell_type" : "code",
+    "source" : "spark.sql(\"\"\"\n  SELECT DISTINCT Pclass from passengers\n\"\"\").count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "ABB5DAB6E64B49F589EC1A3E0EA25756"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-2. How many passengers were in each class?**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F83908E659D148A29C2B08C20D3F20D3"
+    },
+    "cell_type" : "code",
+    "source" : "val numByClass = passengersDF.groupBy(\"Pclass\").count\nnumByClass.show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2DE1CB257F9B42979B67818B65835825"
+    },
+    "cell_type" : "code",
+    "source" : "spark.sql(\"\"\"\n SELECT Pclass, count(PassengerID) as class_count FROM passengers\n GROUP BY Pclass\n ORDER BY class_count DESC\n\"\"\").show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1222012869-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "241BF06A77504EE5835B7706DC3D6A80"
+    },
+    "cell_type" : "code",
+    "source" : "numByClass.collect",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "539395181C18426A8A92BDFE30B38FF5"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(numByClass,\n                  layout=\"{title: 'Passengers per class', xaxis: {title: 'Pclass'}}\",\n                  dataOptions=\"{type: 'bar'}\",\n                  dataSources=\"{x: 'Pclass', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "B22F8FEBB82E49348B5788109E706B07"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-3. How many women and men were in each class?**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D9767491DA4147ED883CC035089C8C76"
+    },
+    "cell_type" : "code",
+    "source" : "val grByGenderAndClass = passengersDF.groupBy(\"Pclass\", \"Sex\").count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D6A740F6875146578887A67D62CABE51"
+    },
+    "cell_type" : "code",
+    "source" : "grByGenderAndClass",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B3E3EC5E5ED8444883D27AE4050BAB4D"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(grByGenderAndClass,\n                  layout=\"{title: 'Passengers per class', xaxis: {title: 'Pclass'}, barmode: 'group'}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'Sex'}\",\n                  dataSources=\"{x: 'Pclass', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "8852C6D27A7548678558B726FA4EC0CA"
+    },
+    "cell_type" : "markdown",
+    "source" : "### DataFrame Functions and UDF"
+  }, {
+    "metadata" : {
+      "id" : "0C12589398E54FDB9CB5303E2ACF6600"
+    },
+    "cell_type" : "markdown",
+    "source" : "http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.sql.functions$"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B4A586C3124641D08FD92E291914325C"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.functions.{mean, min, max}\n\npassengersDF.select(mean(\"Age\").alias(\"Average Age\"), min(\"Age\"), max(\"Age\")).show()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "36483A5F3D3148FA867F7C00FCBDFE5E"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.functions.count\n\npassengersDF.groupBy(\"Pclass\")\n            .agg(count(\"Pclass\").alias(\"class_count\"))\n            .orderBy(-$\"class_count\")\n            .show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "857AD3D31D3447388F2EF03F2150EF7E"
+    },
+    "cell_type" : "markdown",
+    "source" : "For more specific tasks one can use User Defined Functions.\n\nLet's say we want to get a column with full names of port of embarkation."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "51DB33FCFB394E358EDE6C6C7D4AEF8B"
+    },
+    "cell_type" : "code",
+    "source" : "passengersDF.select(\"Embarked\").distinct.show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "1ACADA9161D94D6393E9639507EF6B77"
+    },
+    "cell_type" : "markdown",
+    "source" : "From dataset description we know that C = Cherbourg; Q = Queenstown; S = Southampton."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B2C67EAA4DAD4D048297CCEF98601BD9"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.functions.udf\n\nval embarkedFullName: (String) => String = (embarked: String) =>\n  if (embarked == \"Q\")\n    \"Queenstown\"\n  else if (embarked == \"C\")\n    \"Cherbourg\"\n  else\n    \"Southampton\"\n\n\nval embarkedFullNameUDF = udf(embarkedFullName)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "CBA7286CBB9B40C08E961A5AFFC562AA"
+    },
+    "cell_type" : "markdown",
+    "source" : "Also we want to get a column with more verbose survival status of passenger: `survived` and `died`."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E7158FE3637440D29AA7C0611532686D"
+    },
+    "cell_type" : "code",
+    "source" : "val survivedStatus: (Integer) => String = (survived: Integer) =>\n  if (survived == 1)\n    \"survived\"\n  else\n    \"died\"\n\nval survivedStatusUDF = udf(survivedStatus)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6EBB943DEAB247D084A70AD43DAAD151"
+    },
+    "cell_type" : "code",
+    "source" : "val pdf = passengersDF\n        .withColumn(\"Embarkation\", embarkedFullNameUDF($\"Embarked\"))\n        .drop(\"Embarked\")\n        .withColumn(\"SurvivedStatus\", survivedStatusUDF($\"Survived\"))\n        .cache()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "9111446574A142638399B4B2FDBFE2E0"
+    },
+    "cell_type" : "code",
+    "source" : "pdf.select(\"Name\", \"Embarkation\", \"SurvivedStatus\").limit(5)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "7478E5D34328498FAFAFCE7587733B8B"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Practice session"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "FE0F6FE181A14D70B5BC90E69DC471BE"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-5. Count the number and percentage of survivors and dead passengers.**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D8C3FC886C224BA1B40FC6B96E221410"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.functions.count // hint\n\nval numPassengers = pdf.count()\n\nval grBySurvived = pdf.groupBy(\"SurvivedStatus\")\n                      .agg(count(\"PassengerId\").alias(\"count\"), \n                           ((count(\"PassengerId\") / numPassengers) * 100).alias(\"%\"))\ngrBySurvived.show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "F2E89C82208D4CE1BD756D6147752C26"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-6.** \n- **Plot the distribution of dead and surviving passengers.**\n- **Plot the distribution of survivors and dead passengers by class.**\n- **Plot the distribution of survivors and dead passengers by gender.**\n- **Plot the distribution of survivors and dead passengers by port of embarkation. **\n- **Plot the % of survivors by port of embarkation. **\n- **Plot the distribution of passenger classes by port of embarkation. **"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "DCFE583EBC614827B2192913336A270C"
+    },
+    "cell_type" : "code",
+    "source" : "// Distribution of dead and survived passengers\n\nCustomPlotlyChart(grBySurvived,\n                  layout=\"{title: 'Passengers by status', xaxis: {title: 'status'}, yaxis: {title: '%'}}\",\n                  dataOptions=\"{type: 'bar'}\",\n                  dataSources=\"{x: 'SurvivedStatus', y: '%'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "FF53CEB29DED42CCBBEF5061F090D300"
+    },
+    "cell_type" : "code",
+    "source" : "// Distribution of the number of survivors and dead passengers by class.\n\nCustomPlotlyChart(pdf.groupBy(\"SurvivedStatus\", \"Pclass\").count,\n                  layout=\"{title: 'Number of passengers by survival status per class', xaxis: {title: 'Pclass'}, barmode: 'group'}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'SurvivedStatus'}\",\n                  dataSources=\"{x: 'Pclass', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "B0A55CA3DB65485D8EAD5DC01B1EBD43"
+    },
+    "cell_type" : "code",
+    "source" : "// Distribution of survivors and dead passengers by gender.\n\nCustomPlotlyChart(pdf.groupBy(\"SurvivedStatus\", \"Sex\").count,\n                  layout=\"{title: 'Number of passengers by status by gender', xaxis: {title: 'Gender'}, barmode: 'group'}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'SurvivedStatus'}\",\n                  dataSources=\"{x: 'Sex', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4382CC3408474AC591A917BE71C0D6DD"
+    },
+    "cell_type" : "code",
+    "source" : "// Distribution of survivors and dead passengers by port of embarkation.\n\nCustomPlotlyChart(pdf.groupBy(\"Embarkation\", \"SurvivedStatus\").count,\n                  layout=\"{barmode: 'group'}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'SurvivedStatus'}\",\n                  dataSources=\"{x: 'Embarkation', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab348620047-1\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "C92E240948514A769695125D47A6F3E8"
+    },
+    "cell_type" : "code",
+    "source" : "// % of survivors by port of embarkation.\n\nCustomPlotlyChart(pdf.groupBy(\"Embarkation\").agg((sum(\"Survived\") / count(\"Survived\") * 100).alias(\"SurvivalRate\")),\n                  layout=\"{title: '% of survival per embarkation'}\",\n                  dataOptions=\"{type: 'bar'}\",\n                  dataSources=\"{x: 'Embarkation', y: 'SurvivalRate'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "EE39CF0D57B1481A917D276C5D55275D"
+    },
+    "cell_type" : "code",
+    "source" : "// Distribution of passenger classes by port of embarkation.\n\nCustomPlotlyChart(pdf.groupBy(\"Embarkation\", \"Pclass\").count,\n                  layout=\"{barmode: 'stack', title: 'Pclass distribution by Embarkation'}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'Pclass'}\",\n                  dataSources=\"{x: 'Embarkation', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "B94C5A499DEF4344AFAFC71EDEA4E4EB"
+    },
+    "cell_type" : "markdown",
+    "source" : "How to get the % of survived passengers by port of embarkation in this case?"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "42A9EA0451BF421E91A475E4ABD0A186"
+    },
+    "cell_type" : "code",
+    "source" : "val byEmbark =  pdf.groupBy(\"Embarkation\").agg(count(\"PassengerId\").alias(\"totalCount\"))\nval byEmbarkByClass = pdf.groupBy(\"Embarkation\", \"Pclass\").count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "02AC8277D19648188507F5312C51E562"
+    },
+    "cell_type" : "code",
+    "source" : "val embarkClassDistr = byEmbarkByClass.join(byEmbark, usingColumn=\"Embarkation\")\n                                      .select($\"Embarkation\",\n                                              $\"Pclass\", \n                                              ($\"count\" / $\"totalCount\" * 100).alias(\"%\"))\n\nCustomPlotlyChart(embarkClassDistr,\n                  layout=\"{barmode: 'stack', title: 'Pclass distribution by Embarkation', yaxis: {title: '%'}}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'Pclass'}\",\n                  dataSources=\"{x: 'Embarkation', y: '%'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "ED9BD96273124BE6B502992651149D91"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Histograms and Box Plots"
+  }, {
+    "metadata" : {
+      "id" : "AB9E955BCB114FB3882A6EDDDF015FAE"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-7 Obtain age distributions by passengers survival status.**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "FD743A9848C74C8DB1B1A7E93E351BAD"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(pdf, \n                  layout=\"{title: 'Age distribution by status', xaxis: {title: 'Age'}, barmode: 'overlay'}\",\n                  dataOptions=\"{type: 'histogram', opacity: 0.6, splitBy: 'SurvivedStatus'}\",\n                  dataSources=\"{x: 'Age'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A825DE70B29E46A58167CF7D5F9DA4AF"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(pdf, \n                  layout=\"{yaxis: {title: 'Age'}}\",\n                  dataOptions=\"{type: 'box', splitBy: 'SurvivedStatus'}\",\n                  dataSources=\"{y: 'Age'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "3B308D4AABF1491485890B86C4D4BFC8"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-8. Plot box plots of age distributions by passengers classes.**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D26A8F4FF341485AAD1034460EDA6761"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(pdf, \n                  layout=\"{yaxis: {title: 'Age'}}\",\n                  dataOptions=\"{type: 'box', splitBy: 'Pclass'}\",\n                  dataSources=\"{y: 'Age'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "D683E06CFC934A098175544B47E6C701"
+    },
+    "cell_type" : "markdown",
+    "source" : "This scatter plots show the dependences of the chances of survival from the cabin class, age and gender:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A6CB9EB11CED4E1F8623B9D2ED582AAE"
+    },
+    "cell_type" : "code",
+    "source" : "val survByClassAndAge = List(\"male\", \"female\").map{\n  gender =>\n    CustomPlotlyChart(pdf.filter($\"Sex\" === gender),\n                  layout=s\"\"\"{\n                    title: 'Survival by class and age, $gender.', \n                    yaxis: {title: 'class'}, \n                    xaxis: {title: 'age'}\n                  }\"\"\",\n                  dataOptions=\"\"\"{\n                    splitBy: 'SurvivedStatus',\n                    byTrace: {\n                      'survived': {\n                        mode: 'markers',\n                        marker: {\n                          size: 20,\n                          opacity: 0.3,\n                          color: 'orange'\n                        }\n                      },\n                      'died': {\n                        mode: 'markers',\n                        marker: {\n                          size: 15,\n                          opacity: 0.9,\n                          color: 'rgba(55, 128, 191, 0.6)'\n                        }\n                      }\n                    }\n                  }\"\"\",\n                  dataSources = \"{x: 'Age', y: 'Pclass'}\"\n                     )\n}",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A1F17AC9F5634BCC866AC03BD35CAF52"
+    },
+    "cell_type" : "code",
+    "source" : "survByClassAndAge(0)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E752E11B5E3E415DB83B1752E0CAA39C"
+    },
+    "cell_type" : "code",
+    "source" : "survByClassAndAge(1)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "DF18F97FFCB44B42A657D6002C72B0E5"
+    },
+    "cell_type" : "markdown",
+    "source" : "### More practice with UDF and Box Plots"
+  }, {
+    "metadata" : {
+      "id" : "895FA63345FC47F288917539A9E50014"
+    },
+    "cell_type" : "markdown",
+    "source" : "The titles of passengers could be useful source of information. Let's explore that."
+  }, {
+    "metadata" : {
+      "id" : "9BDE6CD9C586463E8CE2C86FEC396932"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-9. Plot box plots of age distributions by title.**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "69E2BD21E9E14113AE3842909DC135E7"
+    },
+    "cell_type" : "code",
+    "source" : "pdf.select(\"Name\").show(3, truncate=false)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A16D246A68A34A13AB667BB060F8785F"
+    },
+    "cell_type" : "code",
+    "source" : "val parseTitle: String => String = (name: String) =>\n  name.split(\", \")(1).split(\"\\\\.\")(0)\n\nval parseTitleUDF = udf(parseTitle)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "3FCBCF42719244908AD3271F198B723A"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(pdf.withColumn(\"Title\", parseTitleUDF($\"Name\")), \n                  layout=\"{yaxis: {title: 'Age'}}\",\n                  dataOptions=\"{type: 'box', splitBy: 'Title'}\",\n                  dataSources=\"{y: 'Age'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "7C40B636686F448D880E4EE0E4C1DC4E"
+    },
+    "cell_type" : "markdown",
+    "source" : "Often it is good practice to group the values of the categorical feature, especially when there are rare individual feature values such as `Don`, `Lady`, `Capt` in our case."
+  }, {
+    "metadata" : {
+      "id" : "5CAAC988C4C249E9899F435D95FA2BB8"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-10. Write UDF to group all the titles into five groups according to the following table:**\n\n|   Group       |    Title     |\n| :------------:|:------------:|\n| Aristocratic  | Capt, Col, Don, Dr, Jonkheer, Lady, Major, Rev, Sir, Countess |\n| Mrs           | Mrs, Ms         |\n| Miss          | Miss, Mlle, Mme |\n| Mr            | Mr              |\n| Master        | Master          |\n\n** Create new column called 'TitleGroup' and plot box plots of age distributions by title group.**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F32C7967F2C346548B5A2143BCE73D80"
+    },
+    "cell_type" : "code",
+    "source" : "val titleGroup: String => String = (title: String) => {\n  val aristocratic = Set(\"Capt\", \"Col\", \"Don\", \"Dr\", \"Jonkheer\", \"Lady\", \"Major\", \"Rev\", \"Sir\", \"the Countess\")\n  val mrs = Set(\"Mrs\", \"Ms\")\n  val miss = Set(\"Miss\", \"Mlle\", \"Mme\")\n  if (aristocratic.contains(title))\n    \"Aristocratic\"\n  else if (mrs.contains(title))\n    \"Mrs\"\n  else if (miss.contains(title))\n    \"Miss\"\n  else\n    title\n}\n\n// given column with passenger name obtain column with passenger title group.\nval parseTitleGroupUDF = udf(parseTitle andThen titleGroup)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "115AAD76AD1C4FB385A3144AFCE13A92"
+    },
+    "cell_type" : "code",
+    "source" : "val withTitleDF = pdf.withColumn(\"TitleGroup\", parseTitleGroupUDF($\"Name\"))\n\nCustomPlotlyChart(withTitleDF, \n                  layout=\"{yaxis: {title: 'Age'}}\",\n                  dataOptions=\"{type: 'box', splitBy: 'TitleGroup'}\",\n                  dataSources=\"{y: 'Age'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "5247C9EABE594E778E2012CA5161DA2E"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Q-11 Plot the distribution of the % of survivors by title group.**"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C1412161CF1942288B64C419CEDC2A81"
+    },
+    "cell_type" : "code",
+    "source" : "val byTitleGr = withTitleDF\n                   .groupBy(\"TitleGroup\")\n                   .agg((sum(\"Survived\") / count(\"Survived\") * 100).alias(\"%\"))\n\nCustomPlotlyChart(byTitleGr,\n                  layout=\"{title: '% of survival by title group'}\",\n                  dataOptions=\"{type: 'bar'}\",\n                  dataSources=\"{x: 'TitleGroup', y: '%'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "7C6408089C9F4EB5B32066C66E7E8306"
+    },
+    "cell_type" : "markdown",
+    "source" : "### Handling missing values"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "339B055ADE124967B44CA329F13B857B"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.functions.isnull\n\n100.0 * pdf.filter(isnull($\"Age\")).count / pdf.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5FD862836CBD4E3A80F284772118043D"
+    },
+    "cell_type" : "code",
+    "source" : "100.0 * pdf.filter($\"Cabin\" === \"\").count / pdf.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "1EFDAA762DB1431DAEF1F3C9F34B545A"
+    },
+    "cell_type" : "code",
+    "source" : "val cabinStatus: (String) => String = (cabin: String) =>\n  if (cabin == \"\")\n    \"noname\"\n  else\n    \"hasNumber\"\n\nval cabinStatusUDF = udf(cabinStatus)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "0C1F6D0D8C04490385680BC9F370D7A4"
+    },
+    "cell_type" : "code",
+    "source" : "val withCabinStatusDF = pdf.withColumn(\"CabinStatus\", cabinStatusUDF($\"Cabin\"))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2E23AA3B714F49E286B71AD626AEC7C5"
+    },
+    "cell_type" : "code",
+    "source" : "CustomPlotlyChart(withCabinStatusDF.groupBy(\"CabinStatus\", \"SurvivedStatus\").count,\n                  layout=\"{title: 'Number of passengers by survival status by cabin type', xaxis: {title: 'Cabin'}}\",\n                  dataOptions=\"{type: 'bar', splitBy: 'SurvivedStatus'}\",\n                  dataSources=\"{x: 'CabinStatus', y: 'count'}\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "5AD2074CF32B4E40A18B17FCD63250AB"
+    },
+    "cell_type" : "markdown",
+    "source" : "### On your own"
+  }, {
+    "metadata" : {
+      "id" : "CE92499FD6F74A79B7A5E3B2A5E90831"
+    },
+    "cell_type" : "markdown",
+    "source" : "Explore family relationships variables (SibSp and Parch).\nHow does the number of siblings/spouses aboard affect the chances of survival?\nHow does the number of parents/children aboard affect the chances of survival?\n\nInvent a new variable called `Family` to represent total number of relatives aboard and explore how does it affect hte chances of survival."
+  } ],
+  "nbformat" : 4
+}
