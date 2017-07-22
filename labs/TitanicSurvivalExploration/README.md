@@ -485,9 +485,9 @@ grBySurvived.show
 - **Plot the distribution of dead and surviving passengers.**
 - **Plot the distribution of survivors and dead passengers by class.**
 - **Plot the distribution of survivors and dead passengers by gender.**
-- **Plot the distribution of survivors and dead passengers by port of embarkation. **
-- **Plot the % of survivors by port of embarkation. **
-- **Plot the distribution of passenger classes by port of embarkation. **
+- **Plot the distribution of survivors and dead passengers by port of embarkation.**
+- **Plot the % of survivors by port of embarkation.**
+- **Plot the distribution of passenger classes by port of embarkation.**
 
 ```scala
 // Distribution of dead and survived passengers
@@ -500,3 +500,314 @@ CustomPlotlyChart(grBySurvived,
 
 <img src="http://telegra.ph/file/a03b6882b09456285e697.png" width=900>
 </img>
+
+```scala
+// Distribution of the number of survivors and dead passengers by class.
+
+CustomPlotlyChart(pdf.groupBy("SurvivedStatus", "Pclass").count,
+                  layout="{title: 'Number of passengers by survival status per class', xaxis: {title: 'Pclass'}, barmode: 'group'}",
+                  dataOptions="{type: 'bar', splitBy: 'SurvivedStatus'}",
+                  dataSources="{x: 'Pclass', y: 'count'}")
+```
+
+<img src="http://telegra.ph/file/6e81137a13d88112dc7a3.png" width=900>
+</img>
+
+```scala
+// Distribution of survivors and dead passengers by gender.
+
+CustomPlotlyChart(pdf.groupBy("SurvivedStatus", "Sex").count,
+                  layout="{title: 'Number of passengers by status by gender', xaxis: {title: 'Gender'}, barmode: 'group'}",
+                  dataOptions="{type: 'bar', splitBy: 'SurvivedStatus'}",
+                  dataSources="{x: 'Sex', y: 'count'}")
+```
+
+<img src="http://telegra.ph/file/3d717a5eb7e265dc858eb.png" width=900>
+</img>
+
+```scala
+// Distribution of survivors and dead passengers by port of embarkation.
+
+CustomPlotlyChart(pdf.groupBy("Embarkation", "SurvivedStatus").count,
+                  layout="{barmode: 'group'}",
+                  dataOptions="{type: 'bar', splitBy: 'SurvivedStatus'}",
+                  dataSources="{x: 'Embarkation', y: 'count'}")
+```
+
+<img src="http://telegra.ph/file/75f81dd53d5bcb8f8db4e.png" width=900>
+</img>
+
+```scala
+// % of survivors by port of embarkation.
+
+CustomPlotlyChart(pdf.groupBy("Embarkation").agg((sum("Survived") / count("Survived") * 100).alias("SurvivalRate")),
+                  layout="{title: '% of survival per embarkation'}",
+                  dataOptions="{type: 'bar'}",
+                  dataSources="{x: 'Embarkation', y: 'SurvivalRate'}")
+```
+
+<img src="http://telegra.ph/file/c430db6b285ae804f7d53.png" width=900>
+</img>
+
+```scala
+// Distribution of passenger classes by port of embarkation.
+
+CustomPlotlyChart(pdf.groupBy("Embarkation", "Pclass").count,
+                  layout="{barmode: 'stack', title: 'Pclass distribution by Embarkation'}",
+                  dataOptions="{type: 'bar', splitBy: 'Pclass'}",
+                  dataSources="{x: 'Embarkation', y: 'count'}")
+```
+<img src="http://telegra.ph/file/9df9159d58880165e8a46.png" width=900>
+</img>
+
+How to get the % of survived passengers by port of embarkation in this case?
+
+```scala
+val byEmbark =  pdf.groupBy("Embarkation").agg(count("PassengerId").alias("totalCount"))
+val byEmbarkByClass = pdf.groupBy("Embarkation", "Pclass").count
+
+val embarkClassDistr = byEmbarkByClass.join(byEmbark, usingColumn="Embarkation")
+                                      .select($"Embarkation",
+                                              $"Pclass", 
+                                              ($"count" / $"totalCount" * 100).alias("%"))
+
+CustomPlotlyChart(embarkClassDistr,
+                  layout="{barmode: 'stack', title: 'Pclass distribution by Embarkation', yaxis: {title: '%'}}",
+                  dataOptions="{type: 'bar', splitBy: 'Pclass'}",
+                  dataSources="{x: 'Embarkation', y: '%'}")
+```
+
+<img src="http://telegra.ph/file/53cf0b46923ad41549287.png" width=900>
+</img>
+
+### Histograms and Box Plots
+
+**Q-7 Obtain age distributions by passengers survival status.**
+
+```scala
+CustomPlotlyChart(pdf, 
+                  layout="{title: 'Age distribution by status', xaxis: {title: 'Age'}, barmode: 'overlay'}",
+                  dataOptions="{type: 'histogram', opacity: 0.6, splitBy: 'SurvivedStatus'}",
+                  dataSources="{x: 'Age'}")
+```
+<img src="http://telegra.ph/file/1b109fed97fb2e2eaa494.png" width=900>
+</img>
+
+```scala
+CustomPlotlyChart(pdf, 
+                  layout="{yaxis: {title: 'Age'}}",
+                  dataOptions="{type: 'box', splitBy: 'SurvivedStatus'}",
+                  dataSources="{y: 'Age'}")
+```
+<img src="http://telegra.ph/file/f8270cfa13e9245f998c0.png" width=900>
+</img>
+
+**Q-8. Plot box plots of age distributions by passengers classes.**
+
+```scala
+CustomPlotlyChart(pdf, 
+                  layout="{yaxis: {title: 'Age'}}",
+                  dataOptions="{type: 'box', splitBy: 'Pclass'}",
+                  dataSources="{y: 'Age'}")
+```
+
+<img src="http://telegra.ph/file/8613f3df86862869837a4.png" width=900>
+</img>
+
+This scatter plots show the dependences of the chances of survival from the cabin class, age and gender:
+
+```scala
+val survByClassAndAge = List("male", "female").map{
+  gender =>
+    CustomPlotlyChart(pdf.filter($"Sex" === gender),
+                  layout=s"""{
+                    title: 'Survival by class and age, $gender.', 
+                    yaxis: {title: 'class'}, 
+                    xaxis: {title: 'age'}
+                  }""",
+                  dataOptions="""{
+                    splitBy: 'SurvivedStatus',
+                    byTrace: {
+                      'survived': {
+                        mode: 'markers',
+                        marker: {
+                          size: 20,
+                          opacity: 0.3,
+                          color: 'orange'
+                        }
+                      },
+                      'died': {
+                        mode: 'markers',
+                        marker: {
+                          size: 15,
+                          opacity: 0.9,
+                          color: 'rgba(55, 128, 191, 0.6)'
+                        }
+                      }
+                    }
+                  }""",
+                  dataSources = "{x: 'Age', y: 'Pclass'}"
+                     )
+}
+
+survByClassAndAge(0)
+```
+
+<img src="http://telegra.ph/file/e91733ba23293250a7500.png" width=900>
+</img>
+
+```scala
+survByClassAndAge(1)
+```
+
+<img src="http://telegra.ph/file/8f52fcd59c70e68664a0c.png" width=900>
+</img>
+
+### More practice with UDF and Box Plots
+
+The titles of passengers could be useful source of information. Let's explore that.
+
+**Q-9. Plot box plots of age distributions by title.**
+
+```scala
+pdf.select("Name").show(3, truncate=false)
+```
+```
++---------------------------------------------------+
+|Name                                               |
++---------------------------------------------------+
+|Braund, Mr. Owen Harris                            |
+|Cumings, Mrs. John Bradley (Florence Briggs Thayer)|
+|Heikkinen, Miss. Laina                             |
++---------------------------------------------------+
+only showing top 3 rows
+```
+
+```scala
+val parseTitle: String => String = (name: String) =>
+  name.split(", ")(1).split("\\.")(0)
+
+val parseTitleUDF = udf(parseTitle)
+
+CustomPlotlyChart(pdf.withColumn("Title", parseTitleUDF($"Name")), 
+                  layout="{yaxis: {title: 'Age'}}",
+                  dataOptions="{type: 'box', splitBy: 'Title'}",
+                  dataSources="{y: 'Age'}")
+```
+
+<img src="http://telegra.ph/file/9036277a7a6e4b47390b4.png" width=900>
+</img>
+
+Often it is good practice to group the values of the categorical feature, especially when there are rare individual feature values such as `Don`, `Lady`, `Capt` in our case.
+
+**Q-10. Write UDF to group all the titles into five groups according to the following table:**
+
+|   Group       |    Title     |
+| :------------:|:------------:|
+| Aristocratic  | Capt, Col, Don, Dr, Jonkheer, Lady, Major, Rev, Sir, Countess |
+| Mrs           | Mrs, Ms         |
+| Miss          | Miss, Mlle, Mme |
+| Mr            | Mr              |
+| Master        | Master          |
+
+** Create new column called 'TitleGroup' and plot box plots of age distributions by title group.**
+
+```scala
+val titleGroup: String => String = (title: String) => {
+  val aristocratic = Set("Capt", "Col", "Don", "Dr", "Jonkheer", "Lady", "Major", "Rev", "Sir", "the Countess")
+  val mrs = Set("Mrs", "Ms")
+  val miss = Set("Miss", "Mlle", "Mme")
+  if (aristocratic.contains(title))
+    "Aristocratic"
+  else if (mrs.contains(title))
+    "Mrs"
+  else if (miss.contains(title))
+    "Miss"
+  else
+    title
+}
+
+// given column with passenger name obtain column with passenger title group.
+val parseTitleGroupUDF = udf(parseTitle andThen titleGroup)
+```
+
+```scala
+val withTitleDF = pdf.withColumn("TitleGroup", parseTitleGroupUDF($"Name"))
+
+CustomPlotlyChart(withTitleDF, 
+                  layout="{yaxis: {title: 'Age'}}",
+                  dataOptions="{type: 'box', splitBy: 'TitleGroup'}",
+                  dataSources="{y: 'Age'}")
+```
+
+<img src="http://telegra.ph/file/03cdce9bc6bcfdffb2a68.png" width=900>
+</img>
+
+
+**Q-11 Plot the distribution of the % of survivors by title group.**
+
+```scala
+val byTitleGr = withTitleDF
+                   .groupBy("TitleGroup")
+                   .agg((sum("Survived") / count("Survived") * 100).alias("%"))
+
+CustomPlotlyChart(byTitleGr,
+                  layout="{title: '% of survival by title group'}",
+                  dataOptions="{type: 'bar'}",
+                  dataSources="{x: 'TitleGroup', y: '%'}")
+```
+
+<img src="http://telegra.ph/file/71e50da227e09979866f9.png" width=900>
+</img>
+
+### Handling missing values
+
+```scala
+import org.apache.spark.sql.functions.isnull
+
+100.0 * pdf.filter(isnull($"Age")).count / pdf.count
+```
+```
+res209: Double = 19.865319865319865
+19.865319865319865
+```
+
+```scala
+100.0 * pdf.filter(isnull($"Cabin")).count / pdf.count
+```
+```
+res237: Double = 77.10437710437711
+77.10437710437711
+```
+
+```scala
+val cabinStatus: (String) => String = (cabin: String) =>
+  if (cabin == null)
+    "noname"
+  else
+    "hasNumber"
+
+val cabinStatusUDF = udf(cabinStatus)
+```
+
+```scala
+val withCabinStatusDF = pdf.withColumn("CabinStatus", cabinStatusUDF($"Cabin"))
+```
+
+```scala
+CustomPlotlyChart(withCabinStatusDF.groupBy("CabinStatus", "SurvivedStatus").count,
+                  layout="{title: 'Number of passengers by survival status by cabin type', xaxis: {title: 'Cabin'}}",
+                  dataOptions="{type: 'bar', splitBy: 'SurvivedStatus'}",
+                  dataSources="{x: 'CabinStatus', y: 'count'}")
+```
+
+<img src="http://telegra.ph/file/80f0099117e7772825118.png" width=900>
+</img>
+
+### On your own
+
+Explore family relationships variables (SibSp and Parch).
+How does the number of siblings/spouses aboard affect the chances of survival?
+How does the number of parents/children aboard affect the chances of survival?
+
+Invent a new variable called `Family` to represent total number of relatives aboard and explore how does it affect hte chances of survival.
