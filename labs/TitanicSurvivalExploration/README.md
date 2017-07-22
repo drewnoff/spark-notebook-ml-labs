@@ -326,7 +326,7 @@ CustomPlotlyChart(numByClass,
                   dataSources="{x: 'Pclass', y: 'count'}")
 ```
 
-<img src="http://telegra.ph/file/cd760d2837a43c2738614.png" width=800>
+<img src="http://telegra.ph/file/cd760d2837a43c2738614.png" width=900>
 </img>
 
 **Q-3. How many women and men were in each class?**
@@ -354,8 +354,149 @@ CustomPlotlyChart(grByGenderAndClass,
                   dataSources="{x: 'Pclass', y: 'count'}")
 ```
 
-<img src="http://telegra.ph/file/ff0fd209a3804c90b9601.png" width=800>
+<img src="http://telegra.ph/file/ff0fd209a3804c90b9601.png" width=900>
 </img>
 
 
 ### DataFrame Functions and UDF
+
+http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.sql.functions$
+
+```scala
+import org.apache.spark.sql.functions.{mean, min, max}
+
+passengersDF.select(mean("Age").alias("Average Age"), min("Age"), max("Age")).show()
+```
+```
++-----------------+--------+--------+
+|      Average Age|min(Age)|max(Age)|
++-----------------+--------+--------+
+|29.69911764705882|    0.42|    80.0|
++-----------------+--------+--------+
+```
+
+```scala
+import org.apache.spark.sql.functions.count
+
+passengersDF.groupBy("Pclass")
+            .agg(count("Pclass").alias("class_count"))
+            .orderBy(-$"class_count")
+            .show
+```
+```
++------+-----------+
+|Pclass|class_count|
++------+-----------+
+|     3|        491|
+|     1|        216|
+|     2|        184|
++------+-----------+
+```
+
+For more specific tasks one can use User Defined Functions.
+
+Let's say we want to get a column with full names of port of embarkation.
+
+```scala
+passengersDF.select("Embarked").distinct.show
+```
+```
++--------+
+|Embarked|
++--------+
+|       Q|
+|    null|
+|       C|
+|       S|
++--------+
+```
+
+From dataset description we know that C = Cherbourg; Q = Queenstown; S = Southampton.
+
+```scala
+import org.apache.spark.sql.functions.udf
+
+val embarkedFullName: (String) => String = (embarked: String) =>
+  if (embarked == "Q")
+    "Queenstown"
+  else if (embarked == "C")
+    "Cherbourg"
+  else
+    "Southampton"
+
+
+val embarkedFullNameUDF = udf(embarkedFullName)
+```
+
+Also we want to get a column with more verbose survival status of passenger: `survived` and `died`.
+
+```scala
+val survivedStatus: (Integer) => String = (survived: Integer) =>
+  if (survived == 1)
+    "survived"
+  else
+    "died"
+
+val survivedStatusUDF = udf(survivedStatus)
+
+val pdf = passengersDF
+        .withColumn("Embarkation", embarkedFullNameUDF($"Embarked"))
+        .drop("Embarked")
+        .withColumn("SurvivedStatus", survivedStatusUDF($"Survived"))
+        .cache()
+        
+pdf.select("Name", "Embarkation", "SurvivedStatus").show(5, truncate=false)
+```
+```
++---------------------------------------------------+-----------+--------------+
+|Name                                               |Embarkation|SurvivedStatus|
++---------------------------------------------------+-----------+--------------+
+|Braund, Mr. Owen Harris                            |Southampton|died          |
+|Cumings, Mrs. John Bradley (Florence Briggs Thayer)|Cherbourg  |survived      |
+|Heikkinen, Miss. Laina                             |Southampton|survived      |
+|Futrelle, Mrs. Jacques Heath (Lily May Peel)       |Southampton|survived      |
+|Allen, Mr. William Henry                           |Southampton|died          |
++---------------------------------------------------+-----------+--------------+
+only showing top 5 rows
+```
+
+**Q-5. Count the number and percentage of survivors and dead passengers.**
+
+```scala
+import org.apache.spark.sql.functions.count
+
+val numPassengers = pdf.count()
+
+val grBySurvived = pdf.groupBy("SurvivedStatus")
+                      .agg(count("PassengerId").alias("count"), 
+                           ((count("PassengerId") / numPassengers) * 100).alias("%"))
+grBySurvived.show
+```
+```
++--------------+-----+-----------------+
+|SurvivedStatus|count|                %|
++--------------+-----+-----------------+
+|          died|  549|61.61616161616161|
+|      survived|  342|38.38383838383838|
++--------------+-----+-----------------+
+```
+
+**Q-6.** 
+- **Plot the distribution of dead and surviving passengers.**
+- **Plot the distribution of survivors and dead passengers by class.**
+- **Plot the distribution of survivors and dead passengers by gender.**
+- **Plot the distribution of survivors and dead passengers by port of embarkation. **
+- **Plot the % of survivors by port of embarkation. **
+- **Plot the distribution of passenger classes by port of embarkation. **
+
+```scala
+// Distribution of dead and survived passengers
+
+CustomPlotlyChart(grBySurvived,
+                  layout="{title: 'Passengers by status', xaxis: {title: 'status'}, yaxis: {title: '%'}}",
+                  dataOptions="{type: 'bar'}",
+                  dataSources="{x: 'SurvivedStatus', y: '%'}")
+```
+
+<img src="http://telegra.ph/file/a03b6882b09456285e697.png" width=900>
+</img>
