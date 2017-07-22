@@ -250,7 +250,7 @@
       "id" : "39C8B97E811A4F48810AEF1D886F26BF"
     },
     "cell_type" : "code",
-    "source" : "val passengersDF = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/scalaIO-notebooks/data/titanic_train.csv\")  ",
+    "source" : "val passengersDF = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/spark-notebook-ml-labs/labs/TitanicSurvivalExploration/data/titanic_train.csv\")  ",
     "outputs" : [ ]
   }, {
     "metadata" : {
