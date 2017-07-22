@@ -43,7 +43,7 @@
       "id" : "567C1BC18DE446EE98E0CE36009E9831"
     },
     "cell_type" : "markdown",
-    "source" : "* Latest Stable Release: v2.0\n\nSpark provides convenient programming abstraction and parallel runtime to hide distributed computations complexities.\n\n\n<img src=\"http://telegra.ph/file/41a2ce855b179b4e9bd44.png\" width=\"316\" height=\"149\">\n\n\nIn this first lab we will focus on DataFrames and SQL.\nIn second lab we will use Spark MLlib for building machine learning pipelines."
+    "source" : "Spark provides convenient programming abstraction and parallel runtime to hide distributed computations complexities.\n\n\n<img src=\"http://telegra.ph/file/41a2ce855b179b4e9bd44.png\" width=\"316\" height=\"149\">\n\n\nIn this first lab we will focus on DataFrames and SQL.\nIn second lab we will use Spark MLlib for building machine learning pipelines."
   }, {
     "metadata" : {
       "id" : "C8DC749EF8F4478DB39C467D73068FF6"
@@ -89,16 +89,6 @@
     "source" : "## Spark SQL and DataFrames"
   }, {
     "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "17F4292D9DE84C64AA8F14B44607F1E5"
-    },
-    "cell_type" : "code",
-    "source" : "// This import is needed to use the $-notation\nimport spark.implicits._",
-    "outputs" : [ ]
-  }, {
-    "metadata" : {
       "id" : "1D4AF5C1BA434D9E829C556E8C2DEE9B"
     },
     "cell_type" : "markdown",
@@ -137,6 +127,16 @@
     },
     "cell_type" : "code",
     "source" : "val spark = sparkSession",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "07E8DBC462CA4A7282B9A36CED349356"
+    },
+    "cell_type" : "code",
+    "source" : "// This import is needed to use the $-notation\nimport spark.implicits._",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -250,7 +250,7 @@
       "id" : "39C8B97E811A4F48810AEF1D886F26BF"
     },
     "cell_type" : "code",
-    "source" : "val passengersDF = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/scalaIO-notebooks/data/titanic_train.csv\")  ",
+    "source" : "val passengersDF = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/spark-notebook-ml-labs/labs/TitanicSurvivalExploration/data/titanic_train.csv\")  ",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -281,20 +281,6 @@
     },
     "cell_type" : "code",
     "source" : "passengersDF.limit(5)",
-    "outputs" : [ ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
-      "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab1939918210-0\"\n}",
-        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
-      },
-      "id" : "C099D678BCDC47EF9FC70120C2553C0A"
-    },
-    "cell_type" : "code",
-    "source" : "passengersDF.select(\"Name\", \"Age\", \"Pclass\", \"Survived\").show(5, truncate=false)",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -405,7 +391,7 @@
       "input_collapsed" : false,
       "collapsed" : false,
       "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab1222012869-0\"\n}",
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1686677314-0\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
       },
       "id" : "241BF06A77504EE5835B7706DC3D6A80"
@@ -585,14 +571,14 @@
       "id" : "D8C3FC886C224BA1B40FC6B96E221410"
     },
     "cell_type" : "code",
-    "source" : "import org.apache.spark.sql.functions.count // hint\n\nval numPassengers = pdf.count()\n\nval grBySurvived = pdf.groupBy(\"SurvivedStatus\")\n                      .agg(count(\"PassengerId\").alias(\"count\"), \n                           ((count(\"PassengerId\") / numPassengers) * 100).alias(\"%\"))\ngrBySurvived.show",
+    "source" : "import org.apache.spark.sql.functions.count\n\nval numPassengers = pdf.count()\n\nval grBySurvived = pdf.groupBy(\"SurvivedStatus\")\n                      .agg(count(\"PassengerId\").alias(\"count\"), \n                           ((count(\"PassengerId\") / numPassengers) * 100).alias(\"%\"))\ngrBySurvived.show",
     "outputs" : [ ]
   }, {
     "metadata" : {
       "id" : "F2E89C82208D4CE1BD756D6147752C26"
     },
     "cell_type" : "markdown",
-    "source" : "**Q-6.** \n- **Plot the distribution of dead and surviving passengers.**\n- **Plot the distribution of survivors and dead passengers by class.**\n- **Plot the distribution of survivors and dead passengers by gender.**\n- **Plot the distribution of survivors and dead passengers by port of embarkation. **\n- **Plot the % of survivors by port of embarkation. **\n- **Plot the distribution of passenger classes by port of embarkation. **"
+    "source" : "**Q-6.** \n- **Plot the distribution of dead and surviving passengers.**\n- **Plot the distribution of survivors and dead passengers by class.**\n- **Plot the distribution of survivors and dead passengers by gender.**\n- **Plot the distribution of survivors and dead passengers by port of embarkation.**\n- **Plot the % of survivors by port of embarkation.**\n- **Plot the distribution of passenger classes by port of embarkation.**"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -887,7 +873,7 @@
       "id" : "5FD862836CBD4E3A80F284772118043D"
     },
     "cell_type" : "code",
-    "source" : "100.0 * pdf.filter($\"Cabin\" === \"\").count / pdf.count",
+    "source" : "100.0 * pdf.filter(isnull($\"Cabin\")).count / pdf.count",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -897,7 +883,7 @@
       "id" : "1EFDAA762DB1431DAEF1F3C9F34B545A"
     },
     "cell_type" : "code",
-    "source" : "val cabinStatus: (String) => String = (cabin: String) =>\n  if (cabin == \"\")\n    \"noname\"\n  else\n    \"hasNumber\"\n\nval cabinStatusUDF = udf(cabinStatus)",
+    "source" : "val cabinStatus: (String) => String = (cabin: String) =>\n  if (cabin == null)\n    \"noname\"\n  else\n    \"hasNumber\"\n\nval cabinStatusUDF = udf(cabinStatus)",
     "outputs" : [ ]
   }, {
     "metadata" : {
