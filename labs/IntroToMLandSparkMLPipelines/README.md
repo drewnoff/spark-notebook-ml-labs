@@ -314,3 +314,116 @@ treeCVModel.getEstimatorParamMaps
 </img>
 
 ## Adding categorical features
+
+Up to this point we did not use categorical features from the dataset. Let's see how additional categorical features will affect the quality of the classification. A common technique to convert categorical feature into numerical ones is [one-hot](https://en.wikipedia.org/wiki/One-hot) encoding. This can be done using [StringIndexer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.StringIndexer) transformation followed by [OneHotEncoder](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.OneHotEncoder) transformation.
+
+*Let's start with encoding just one new feature `occupation` and after that generalize encoding step for all categorical features and combine all processing steps using [pipeline](http://spark.apache.org/docs/1.6.1/ml-guide.html#pipeline)*
+
+```scala
+data.groupBy("occupation").count.show(truncate=false)
+println(data.select("occupation").distinct.count)
+```
+```
++-----------------+-----+
+|occupation       |count|
++-----------------+-----+
+|Sales            |1840 |
+|Exec-managerial  |2017 |
+|Prof-specialty   |2095 |
+|Handlers-cleaners|674  |
+|Farming-fishing  |481  |
+|Craft-repair     |2057 |
+|Transport-moving |799  |
+|Priv-house-serv  |90   |
+|Protective-serv  |343  |
+|Other-service    |1617 |
+|Tech-support     |464  |
+|Machine-op-inspct|1023 |
+|Armed-Forces     |3    |
+|Adm-clerical     |1844 |
++-----------------+-----+
+
+14
+```
+
+```scala
+import org.apache.spark.ml.feature.OneHotEncoder
+
+val occupationIndexer = new StringIndexer()
+  .setInputCol("occupation")
+  .setOutputCol("occupationIndex")
+  .fit(training)
+
+val indexedTrainData = occupationIndexer.transform(training)
+
+val occupationEncoder = new OneHotEncoder()
+  .setInputCol("occupationIndex")
+  .setOutputCol("occupationVec")
+
+val oheEncodedTrainData = occupationEncoder.transform(indexedTrainData)
+
+oheEncodedTrainData.select("occupation", "occupationVec").show(5, truncate=false)
+```
+```
++---------------+--------------+
+|occupation     |occupationVec |
++---------------+--------------+
+|Other-service  |(13,[5],[1.0])|
+|Adm-clerical   |(13,[4],[1.0])|
+|Exec-managerial|(13,[2],[1.0])|
+|Other-service  |(13,[5],[1.0])|
+|Other-service  |(13,[5],[1.0])|
++---------------+--------------+
+only showing top 5 rows
+```
+
+```scala
+val assembler = new VectorAssembler()
+  .setInputCols(Array("age",
+                      "fnlwgt", 
+                      "education-num", 
+                      "capital-gain", 
+                      "capital-loss",
+                      "hours-per-week",
+                      "occupationVec"))
+  .setOutputCol("features")
+
+
+val trainDataWithOccupation = assembler.transform{
+                                labelIndexer.transform(oheEncodedTrainData)
+                              }.select("label", "features")
+```
+
+*For the sake of brevity, from now let's use only LogisticRegression model.*
+
+```scala
+val lr = new LogisticRegression()
+  .setFeaturesCol("features")
+
+val lrParamGrid = new ParamGridBuilder()
+  .addGrid(lr.regParam, Array(1e-2, 5e-3, 1e-3, 5e-4, 1e-4))
+  .build()
+
+val lrCV = new CrossValidator()
+  .setEstimator(lr)
+  .setEvaluator(new BinaryClassificationEvaluator)
+  .setEstimatorParamMaps(lrParamGrid)
+  .setNumFolds(5)
+
+val lrCVModel = lrCV.fit(trainDataWithOccupation)
+
+val testDataWithOccupation = assembler.transform{
+                                labelIndexer.transform(occupationEncoder.transform(occupationIndexer.transform(test)))
+                              }.select("label", "features")
+
+println("cross-validated areaUnderROC: " + lrCVModel.avgMetrics.max)
+println("test areaUnderROC: " + eval.evaluate(lrCVModel.transform(testDataWithOccupation)))
+```
+```
+cross-validated areaUnderROC: 0.8447936545404254
+test areaUnderROC: 0.823490779891881
+```
+
+Adding `occupation` categorical variable yielded an increase in quality.
+
+## Pipelines
