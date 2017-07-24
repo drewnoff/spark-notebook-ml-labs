@@ -427,3 +427,204 @@ test areaUnderROC: 0.823490779891881
 Adding `occupation` categorical variable yielded an increase in quality.
 
 ## Pipelines
+
+Using [pipelines](http://spark.apache.org/docs/1.6.1/ml-guide.html#pipeline) one can combine all the processing stages into one pipeline and perform grid search against hyperparameters of all stages included in the pipeline. Also it's easy to extend given pipeline with new steps.
+
+A Pipeline chains multiple Transformers and Estimators together to specify an ML workflow.
+
+<div style="text-align:left">
+  <img src="https://gitlab.com/droff/ph/raw/master/images/Pipeline.png" width="1057" height="515">
+</div>
+
+ Let's see how we can combine all the preprocessing steps made so far into one pipeline.
+ 
+```scala
+import org.apache.spark.ml.Pipeline
+
+
+// Chain indexers, encoders and assembler in a Pipeline
+val featurePipelineModel = new Pipeline()
+  .setStages(Array(occupationIndexer, 
+                   occupationEncoder,
+                   assembler,
+                   labelIndexer))
+  .fit(training)
+  
+featurePipelineModel.transform(test).select("features", "label").show(3, truncate=false)
+```
+```
++----------------------------------------------+-----+
+|features                                      |label|
++----------------------------------------------+-----+
+|(19,[0,1,2,5,11],[17.0,39815.0,6.0,25.0,1.0]) |0.0  |
+|(19,[0,1,2,5,17],[17.0,175587.0,7.0,30.0,1.0])|0.0  |
+|(19,[0,1,2,5,9],[17.0,191910.0,7.0,20.0,1.0]) |0.0  |
++----------------------------------------------+-----+
+only showing top 3 rows
+```
+
+Now compare this
+```scala
+eval.evaluate(lrCVModel.transform(labelIndexer.transform(assembler.transform(occupationEncoder.transform(occupationIndexer.transform(test))))))
+```
+```
+0.823490779891881
+```
+
+and this
+
+```scala
+eval.evaluate(lrCVModel.transform(featurePipelineModel.transform(test)))
+```
+```
+0.823490779891881
+```
+
+Now let's extend our pipeline by adding one-hot encoding step for each categorical feature.
+
+```scala
+val categCols = Array("workclass", "education", "marital-status", "occupation", "relationship", "race", "sex")
+
+val featureIndexers: Array[org.apache.spark.ml.PipelineStage] = categCols.map(
+  cname => new StringIndexer()
+    .setInputCol(cname)
+    .setOutputCol(s"${cname}_index")
+)
+
+val oneHotEncoders = categCols.map(
+    cname => new OneHotEncoder()
+     .setInputCol(s"${cname}_index")
+     .setOutputCol(s"${cname}_vec")
+)
+
+val assembler = new VectorAssembler()
+  .setInputCols(Array("age",
+                      "fnlwgt", 
+                      "education-num", 
+                      "capital-gain", 
+                      "capital-loss",
+                      "hours-per-week") ++
+                categCols.map(cname => s"${cname}_vec"))
+  .setOutputCol("features")
+
+val rawDataProcessor = new Pipeline()
+  .setStages(featureIndexers ++
+             oneHotEncoders ++
+             Array(assembler, labelIndexer))
+  .fit(training)
+  
+rawDataProcessor.transform(test).limit(3).select("features", "label").show(truncate=false)
+```
+```
++---------------------------------------------------------------------------------------+-----+
+|features                                                                               |label|
++---------------------------------------------------------------------------------------+-----+
+|(56,[0,1,2,5,8,19,28,38,48,51],[17.0,39815.0,6.0,25.0,1.0,1.0,1.0,1.0,1.0,1.0])        |0.0  |
+|(56,[0,1,2,5,8,18,28,44,48,51,55],[17.0,175587.0,7.0,30.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0])|0.0  |
+|(56,[0,1,2,5,8,18,28,36,48,51,55],[17.0,191910.0,7.0,20.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0])|0.0  |
++---------------------------------------------------------------------------------------+-----+
+```
+
+```scala
+val lr = new LogisticRegression()
+  .setFeaturesCol("features")
+
+val lrParamGrid = new ParamGridBuilder()
+  .addGrid(lr.regParam, Array(1e-2, 5e-3, 1e-3, 5e-4, 1e-4))
+  .build()
+
+val lrCV = new CrossValidator()
+  .setEstimator(lr)
+  .setEvaluator(new BinaryClassificationEvaluator)
+  .setEstimatorParamMaps(lrParamGrid)
+  .setNumFolds(5)
+
+val lrCVModel = lrCV.fit(rawDataProcessor.transform(training))
+
+println("cross-validated areaUnderROC: " + lrCVModel.avgMetrics.max)
+println("test areaUnderROC: " + eval.evaluate(lrCVModel.transform(rawDataProcessor.transform(test))))
+```
+```
+cross-validated areaUnderROC: 0.9070537976977229
+test areaUnderROC: 0.8893619862500176
+```
+
+Adding one-hot encoding for each categorical variable yielded a significant increase in quality.
+
+We also can combine several stages with LogisticRegression stage into one pipeline and perform grid search against hyperparameters of several stages included in the pipeline.
+
+For example, let's try to add [Buketizer](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.feature.Bucketizer)
+transformation applied to `age` column and add `splits` parameter values
+to pipeline parameters grid and see how it will affect metric score.
+
+```scala
+data.select(min("age"), max("age")).show()
+```
+```
++--------+--------+
+|min(age)|max(age)|
++--------+--------+
+|      17|      90|
++--------+--------+
+```
+
+```scala
+// We need to cast age column to DoubleType to apply Bucketizer transformation.
+import org.apache.spark.sql.types.DoubleType
+
+val castData = data.withColumn("age", data("age").cast(DoubleType))
+
+val Array(castTraining, castTest) = castData.randomSplit(Array(0.8, 0.2), seed = 12345)
+```
+
+```scala
+import org.apache.spark.ml.feature.Bucketizer
+
+val ageBucketizer = new Bucketizer()
+  .setInputCol("age")
+  .setOutputCol("age-buckets")
+
+val lr = new LogisticRegression()
+  .setFeaturesCol("features")
+
+val pipelineParamGrid = new ParamGridBuilder()
+  .addGrid(lr.regParam, Array(1e-3, 5e-4, 1e-4, 5e-5, 1e-5))
+  .addGrid(ageBucketizer.splits, Array(Array(15.0, 30.0, 40.0, 50.0, 100.0),
+                                       Array(15.0, 21.0, 25.0, 30.0, 40.0, 50.0, 70.0, 100.0)))
+  .build()
+
+val assembler = new VectorAssembler()
+  .setInputCols(Array("age-buckets",
+                      "fnlwgt", 
+                      "education-num", 
+                      "capital-gain", 
+                      "capital-loss",
+                      "hours-per-week") ++
+                categCols.map(cname => s"${cname}_vec"))
+  .setOutputCol("features")
+
+val mlPipeline = new Pipeline()
+  .setStages(Array(ageBucketizer) ++
+             featureIndexers ++
+             oneHotEncoders ++
+             Array(assembler, labelIndexer, lr))
+
+val pipelineCV = new CrossValidator()
+  .setEstimator(mlPipeline)
+  .setEvaluator(new BinaryClassificationEvaluator)
+  .setEstimatorParamMaps(pipelineParamGrid)
+  .setNumFolds(5)
+
+val pipelineCVModel = pipelineCV.fit(castTraining)
+
+println("cross-validated areaUnderROC: " + pipelineCVModel.avgMetrics.max)
+println("test areaUnderROC: " + eval.evaluate(pipelineCVModel.transform(castTest)))
+```
+```
+cross-validated areaUnderROC: 0.9052412424175416
+test areaUnderROC: 0.9033115341268361
+```
+
+We can see what adding `Bucketizer` step into pipeline combained with simultanious param grid search over several stages (`Bucketizer` and `LogisticRegression`) boosted the quality of our ml pipeline.
+
+You can continue to modify and expand the pipeline by adding new stages of data transformation and add new parameters into parameter grid for cross-validation.
