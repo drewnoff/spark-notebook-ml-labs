@@ -15,9 +15,9 @@ In this lab we are going to learn how to teach machine learning models, how to c
 ## Evaluation Metrics
 Model training and model quality assessment is performed on independent sets of examples. As a rule, the available examples are divided into two subsets: training (train) and control (test). The choice of the proportions of the split is a compromise. Indeed, the large size of the training leads to better quality of algorithms, but more noisy estimation of the model on the control. Conversely, the large size of the test sample leads to a less noisy assessment of the quality, however, models are less accurate.
 
-Many classification models produce estimation of belonging to the class $\tilde{h}(x) \in R$ (for example, the probability of belonging to the class 1). They then make a decision about the class of the object by comparing the estimates with a certain threshold $\theta$:
+Many classification models produce estimation of belonging to the class <img src="http://telegra.ph/file/8aacba8ccab5367659ee8.png" border="0" /> (for example, the probability of belonging to the class 1). They then make a decision about the class of the object by comparing the estimates with a certain threshold $\theta$:
 
-    <img src="http://telegra.ph/file/fef0837887443505880f6.png" align="center" border="0"  width="229" height="46" />
+ <img src="http://telegra.ph/file/dba22c4d6f6fd98795bc7.png" align="center" border="0" />
 
 
 In this case, we can consider metrics that are able to work with estimates of belonging to a class.
@@ -56,3 +56,261 @@ We'are going to solve binary classification problem by building the algorithm wh
 * hours-per-week
 
 More on this data one can read in [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names)
+
+```scala
+val spark = sparkSession
+
+val df = spark.read
+  .option("header", "true")
+  .option("inferSchema", "true")
+  .csv("notebooks/spark-notebook-ml-labs/labs/IntroToMLandSparkMLPipelines/data/data.adult.csv")  
+  
+df.show(5)
+```
+
+```
++---+---------+------+------------+-------------+------------------+---------------+-------------+-----+------+------------+------------+--------------+----------+
+|age|workclass|fnlwgt|   education|education-num|    marital-status|     occupation| relationship| race|   sex|capital-gain|capital-loss|hours-per-week|>50K,<=50K|
++---+---------+------+------------+-------------+------------------+---------------+-------------+-----+------+------------+------------+--------------+----------+
+| 34|Local-gov|284843|     HS-grad|            9|     Never-married|Farming-fishing|Not-in-family|Black|  Male|         594|           0|            60|     <=50K|
+| 40|  Private|190290|Some-college|           10|          Divorced|          Sales|Not-in-family|White|  Male|           0|           0|            40|     <=50K|
+| 36|Local-gov|177858|   Bachelors|           13|Married-civ-spouse| Prof-specialty|    Own-child|White|  Male|           0|           0|            40|     <=50K|
+| 22|  Private|184756|Some-college|           10|     Never-married|          Sales|    Own-child|White|Female|           0|           0|            30|     <=50K|
+| 47|  Private|149700|   Bachelors|           13|Married-civ-spouse|   Tech-support|      Husband|White|  Male|       15024|           0|            40|      >50K|
++---+---------+------+------------+-------------+------------------+---------------+-------------+-----+------+------------+------------+--------------+----------+
+only showing top 5 rows
+```
+
+Sometimes there are missing values in the data. Sometimes, in the description of the dataset one can found the description of format of missing values. Particularly in the given dataset  missing values are identified by '?' sign.
+
+**Problem** Find all the variables with missing values. Remove from the dataset all objects with missing values in any variable.
+
+```scala
+val missingValsFeatures = df.columns.filter(column => df.filter(df(column) === "?").count > 0)
+
+println("Features with missing values: " + missingValsFeatures.mkString(", "))
+
+val data = missingValsFeatures.foldLeft(df)((dfstage, column) => dfstage.filter(!dfstage(column).equalTo("?")))
+```
+
+Split on training and test datasets.
+
+```scala
+val Array(training, test) = data.randomSplit(Array(0.8, 0.2), seed = 1234)
+```
+
+### MLlib Transformers and Estimators
+
+`Transformer` transforms one `DataFrame` into another `DataFrame`.
+
+<div style="text-align:left">
+  <img src="https://gitlab.com/droff/ph/raw/master/images/Transformer.png" width="566" height="352">
+</div>
+
+`Estimator` fits on a `DataFrame` to produce a `Transformer`.
+
+<div style="text-align:left">
+  <img src="https://gitlab.com/droff/ph/raw/master/images/Estimator.png" width="681" height="327">
+</div>
+
+## Training classifiers on numeric features
+
+Some preprocessing steps are usually required after loading and cleaning dataset. In this case, these steps will include the following:
+
+ - At first we will work only with numeric features. So let's select them separately in the feature vector "numFeatures" using [VectorAssembler](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.feature.VectorAssembler).
+ - Select the target variable (the one we want to predict, string column of labels) and map it to an ML column of label indices using [StringIndexer](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.feature.StringIndexer), give the name "labelIndex" to a new variable.
+ 
+```scala
+import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.feature.StringIndexer
+
+val assembler = new VectorAssembler()
+  .setInputCols(Array("age",
+                      "fnlwgt", 
+                      "education-num", 
+                      "capital-gain", 
+                      "capital-loss",
+                      "hours-per-week"))
+  .setOutputCol("numFeatures")
+
+val labelIndexer = new StringIndexer()
+  .setInputCol(">50K,<=50K")
+  .setOutputCol("label")
+  .fit(training)
+```
+ 
+```scala
+ labelIndexer.transform(training).select(">50K,<=50K", "label").show(8)
+```
+```
+ +----------+-----+
+|>50K,<=50K|label|
++----------+-----+
+|     <=50K|  0.0|
+|     <=50K|  0.0|
+|     <=50K|  0.0|
+|     <=50K|  0.0|
+|     <=50K|  0.0|
+|     <=50K|  0.0|
+|     <=50K|  0.0|
+|     <=50K|  0.0|
++----------+-----+
+only showing top 8 rows
+```
+ 
+```scala
+ assembler.transform(training)
+         .select("age", "fnlwgt", "education-num", "capital-gain", "capital-loss", "hours-per-week", "numFeatures")
+         .show(5, truncate=false)
+```
+```
++-----+--------------------------------+
+|label|numFeatures                     |
++-----+--------------------------------+
+|0.0  |[17.0,192387.0,5.0,0.0,0.0,45.0]|
+|0.0  |[17.0,340043.0,8.0,0.0,0.0,12.0]|
+|0.0  |[17.0,24090.0,9.0,0.0,0.0,35.0] |
+|0.0  |[17.0,25690.0,6.0,0.0,0.0,10.0] |
+|0.0  |[17.0,28031.0,5.0,0.0,0.0,16.0] |
++-----+--------------------------------+
+only showing top 5 rows
+```
+
+```scala
+import org.apache.spark.ml.classification.LogisticRegression
+import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
+
+
+val lr = new LogisticRegression()
+                .setFeaturesCol("numFeatures")
+                .setLabelCol("label")
+                .setRegParam(0.1)
+
+val lrModel = lr.fit(trainData)
+
+val testData = assembler.transform{
+                labelIndexer.transform(test)
+              }
+              
+val eval = new BinaryClassificationEvaluator()
+                  .setMetricName("areaUnderROC")
+
+println(eval.evaluate(lrModel.transform(testData)))
+```
+```
+0.7937381854879748
+```
+
+## Model selection with MLlib
+Apache Spark MLlib supports model hyperparameter tuning using tools such as `CrossValidator` and `TrainValidationSplit`. These tools require the following items:
+
+ - Estimator: algorithm or Pipeline to tune
+ - Set of ParamMaps: parameters to choose from, sometimes called a “parameter grid” to search over
+ - Evaluator: metric to measure how well a fitted Model does on held-out test data
+ 
+In this section we will need to work only with numeric features and a target variable.
+At the beginning let's have a look at grid search in action.
+We will consider 2 algorithms:
+ - [LogisticRegression](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.LogisticRegression)
+ - [DecisionTreeClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.DecisionTreeClassifier)
+ 
+To start with, let's choose one parameter to optimize for each algorithm:
+ - LogisticRegression — regularization parameter (*regParam*)
+ - DecisonTreeClassifier — maximum depth of the tree (*maxDepth*)
+ 
+The remaining parameters we will leave at their default values. 
+To implement grid search procedure one can use
+[CrossValidator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.CrossValidator) class
+combining with [ParamGridBuilder](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.ParamGridBuilder) class. 
+Also we need to specify appropriate evaluator for this task, in our case we should use [BinaryClassificationEvaluator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.evaluation.BinaryClassificationEvaluator)
+(note that its default metric is areaUnderROC, so we don't neet to specify metric via `setMetricName` method call).
+Set up 5-fold cross validation scheme.
+
+<div style="font-size:large">K-fold cross-validation</div>
+<div style="text-align:left">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/K-fold_cross_validation_EN.jpg" width="562" height="262">
+</div>
+<div style="font-size:x-small">
+  By Fabian Flöck (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons
+</div>
+
+**Problem** Try to find the optimal values of these hyperparameters for each algorithm. Plot the average cross-validation metrics for a given value of hyperparameter for each algorithm (hint: use `avgMetrics` field of resulting `CrossValidatorModel`).
+
+```scala
+import org.apache.spark.ml.classification.{LogisticRegression, DecisionTreeClassifier, RandomForestClassifier}
+import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
+import org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}
+
+
+val lr = new LogisticRegression()
+                .setFeaturesCol("numFeatures")
+                .setLabelCol("label")
+
+val lrParamGrid = new ParamGridBuilder()
+  .addGrid(lr.regParam, Array(1e-2, 5e-3, 1e-3, 5e-4, 1e-4))
+  .build()
+
+val lrCV = new CrossValidator()
+  .setEstimator(lr)
+  .setEvaluator(new BinaryClassificationEvaluator)
+  .setEstimatorParamMaps(lrParamGrid)
+  .setNumFolds(5)
+
+val lrCVModel = lrCV.fit(trainData)
+
+println("cross-validated areaUnderROC: " + lrCVModel.avgMetrics.max)
+println("test areaUnderROC: " + eval.evaluate(lrCVModel.transform(testData)))
+```
+```
+cross-validated areaUnderROC: 0.8297755442702006
+test areaUnderROC: 0.8068812315222861
+```
+
+```scala
+val tree = new DecisionTreeClassifier()
+                .setFeaturesCol("numFeatures")
+                .setLabelCol("label")
+
+val treeParamGrid = new ParamGridBuilder()
+  .addGrid(tree.maxDepth, Array(5, 10, 20, 25, 30))
+  .build()
+
+val treeCV = new CrossValidator()
+  .setEstimator(tree)
+  .setEvaluator(new BinaryClassificationEvaluator)
+  .setEstimatorParamMaps(treeParamGrid)
+  .setNumFolds(5)
+
+val treeCVModel = treeCV.fit(trainData)
+
+println("cross-validated areaUnderROC: " + treeCVModel.avgMetrics.max)
+println("test areaUnderROC: " + eval.evaluate(treeCVModel.transform(testData)))
+```
+```
+cross-validated areaUnderROC: 0.7105377328054816
+test areaUnderROC: 0.6934402983359256
+```
+
+```scala
+lrCVModel.getEstimatorParamMaps
+                            .map(paramMap => paramMap(lr.regParam))
+                            .zip(lrCVModel.avgMetrics)
+                            .toSeq.toDF("regParam", "AUC-ROC")
+                            .collect
+```
+
+<img src="http://telegra.ph/file/62694a00f2434bca1a41a.png" width=900>
+</img>
+
+```scala
+treeCVModel.getEstimatorParamMaps
+                            .map(paramMap => paramMap(tree.maxDepth))
+                            .zip(treeCVModel.avgMetrics)
+                            .toSeq.toDF("maxDepth", "AUC-ROC")
+                            .collect
+```
+
+<img src="http://telegra.ph/file/8c2ba01164df95f3525d4.png" width=900>
+</img>
+
+## Adding categorical features
