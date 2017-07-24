@@ -80,7 +80,7 @@
       "id" : "80AD7CC4C72645D78E62C11F9F1C838D"
     },
     "cell_type" : "code",
-    "source" : "val df = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"spark-notebook-ml-labs/labs/IntroToMLandSparkMLPipelines/data/data.adult.csv\")  ",
+    "source" : "val df = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/spark-notebook-ml-labs/labs/IntroToMLandSparkMLPipelines/data/data.adult.csv\")  ",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -184,7 +184,7 @@
       "id" : "995D5E14FD31463D8C57B7B1485CBC9B"
     },
     "cell_type" : "code",
-    "source" : "labelIndexer.transform(training).select(\">50K,<=50K\", \"label\").limit(8)",
+    "source" : "labelIndexer.transform(training).select(\">50K,<=50K\", \"label\").show(8)",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -194,7 +194,7 @@
       "id" : "00D124318ED3471F8D0E9464E0991432"
     },
     "cell_type" : "code",
-    "source" : "assembler.transform(training)\n         .select(\"age\", \"fnlwgt\", \"education-num\", \"capital-gain\", \"capital-loss\", \"hours-per-week\", \"numFeatures\").limit(4)",
+    "source" : "assembler.transform(training)\n         .select(\"age\", \"fnlwgt\", \"education-num\", \"capital-gain\", \"capital-loss\", \"hours-per-week\", \"numFeatures\")\n         .limit(5)",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -204,7 +204,7 @@
       "id" : "524AD8781A2C40E78FB103D1A215730E"
     },
     "cell_type" : "code",
-    "source" : "val trainData = assembler.transform{\n                labelIndexer.transform(training)\n              }.select(\"label\", \"numFeatures\")\ntrainData.limit(5)",
+    "source" : "val trainData = assembler.transform{\n                labelIndexer.transform(training)\n              }.select(\"label\", \"numFeatures\")\ntrainData.show(5, truncate=false)",
     "outputs" : [ ]
   }, {
     "metadata" : {
@@ -306,7 +306,7 @@
       "input_collapsed" : false,
       "collapsed" : false,
       "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab1296044849-2\"\n}",
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1099791619-2\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
       },
       "id" : "7D0EFB1819E742B19D2276280F94B5E0"
@@ -320,7 +320,7 @@
       "input_collapsed" : false,
       "collapsed" : false,
       "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab1857828929-2\"\n}",
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1136416947-2\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
       },
       "id" : "D576959DAFBC443E80CFDA84833A5BBE"
@@ -595,12 +595,6 @@
     },
     "cell_type" : "markdown",
     "source" : "We can see what adding `Bucketizer` step into pipeline combained with simultanious param grid search over several stages (`Bucketizer` and `LogisticRegression`) boosted the quality of our ml pipeline.\n\nYou can continue to modify and expand the pipeline by adding new stages of data transformation and add new parameters into parameter grid for cross-validation."
-  }, {
-    "metadata" : {
-      "id" : "A45FC7405CFC48F383234412251B65AE"
-    },
-    "cell_type" : "markdown",
-    "source" : "<div>\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-ebiznext-155.png\" width=\"250\" height=\"125\" style=\"margin-left:30px; margin-right:70px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-zengularity-151.png\" width=\"100\" height=\"50\" style=\"margin-right:15px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-valraiso-143.png\" width=\"100\" height=\"50\" style=\"margin-right:15px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-teads-145.png\" width=\"100\" height=\"50\" style=\"margin-right:15px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-tabmo-142.png\" width=\"100\" height=\"50\" style=\"margin-right:15px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-mfglabs-139.png\" width=\"100\" height=\"50\" style=\"margin-right:15px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-lunatech-141.png\" width=\"100\" height=\"50\" style=\"margin-right:15px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/6cc16ce3addfb796e2a32d77996180610d1fb429/logos/logo-criteo-labs-144.png\" width=\"100\" height=\"50\">\n</div>"
   } ],
   "nbformat" : 4
 }
