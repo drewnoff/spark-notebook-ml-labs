@@ -17,7 +17,8 @@ Model training and model quality assessment is performed on independent sets of 
 
 Many classification models produce estimation of belonging to the class $\tilde{h}(x) \in R$ (for example, the probability of belonging to the class 1). They then make a decision about the class of the object by comparing the estimates with a certain threshold $\theta$:
 
-$h(x) = +1$,  if $\tilde{h}(x) \geq \theta$, $h(x) = -1$, if $\tilde{h}(x) < \theta$
+    <img src="http://telegra.ph/file/fef0837887443505880f6.png" align="center" border="0"  width="229" height="46" />
+
 
 In this case, we can consider metrics that are able to work with estimates of belonging to a class.
 In this lab, we will work with [AUC-ROC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve) metric. Detailed understanding of the operating principle of AUC-ROC metric is not required to perform the lab.
