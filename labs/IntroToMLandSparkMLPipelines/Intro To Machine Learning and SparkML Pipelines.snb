@@ -1,0 +1,600 @@
+{
+  "metadata" : {
+    "name" : "Intro To Machine Learning and SparkML Pipelines",
+    "user_save_timestamp" : "1199-01-01T03:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T03:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : {
+      "spark.app.name" : "ScalaIO Machine Learning Pipeline",
+      "spark.master" : "local[4]",
+      "spark.executor.memory" : "2G"
+    }
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "2DD07D009297418F8AD85CE169ABCD6F"
+    },
+    "cell_type" : "markdown",
+    "source" : "# Introduction to Machine Learning and Spark ML Pipelines"
+  }, {
+    "metadata" : {
+      "id" : "3300198B3B0943B080DC7DBE9884D190"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:center\">\n  <img src=\"https://gitlab.com/droff/ph/raw/477d2a011575887dfb65d36dc3ff4c116f3bf586/logos/Spark-logo.png\" width=\"192\" height=\"100\" style=\"margin-right:70px\">\n  <img src=\"https://gitlab.com/droff/ph/raw/477d2a011575887dfb65d36dc3ff4c116f3bf586/logos/spark-notebook-logo.png\" width=\"111\" height=\"128\">\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "C426E89F077D4458812ADBD3017E7300"
+    },
+    "cell_type" : "markdown",
+    "source" : "# Machine learning Pipeline"
+  }, {
+    "metadata" : {
+      "id" : "3D7218E315774439978B9F859CCC5CE1"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this lab we are going to learn how to teach machine learning models, how to correctly set up an experiment, how to tune model hyperparameters and how to compare models. Also we'are going to get familiar with spark.ml package as soon as all of the work we'are going to get done using this package."
+  }, {
+    "metadata" : {
+      "id" : "5EEC312DD9A34425884B50E36008151E"
+    },
+    "cell_type" : "markdown",
+    "source" : "* http://spark.apache.org/docs/latest/ml-guide.html\n* http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.package"
+  }, {
+    "metadata" : {
+      "id" : "F1CC9FFD55F045598503E6FDF35276E8"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Evaluation Metrics\nModel training and model quality assessment is performed on independent sets of examples. As a rule, the available examples are divided into two subsets: training (train) and control (test). The choice of the proportions of the split is a compromise. Indeed, the large size of the training leads to better quality of algorithms, but more noisy estimation of the model on the control. Conversely, the large size of the test sample leads to a less noisy assessment of the quality, however, models are less accurate.\n\nMany classification models produce estimation of belonging to the class $\\tilde{h}(x) \\in R$ (for example, the probability of belonging to the class 1). They then make a decision about the class of the object by comparing the estimates with a certain threshold $\\theta$:\n\n$h(x) = +1$,  if $\\tilde{h}(x) \\geq \\theta$, $h(x) = -1$, if $\\tilde{h}(x) < \\theta$\n\nIn this case, we can consider metrics that are able to work with estimates of belonging to a class.\nIn this lab, we will work with [AUC-ROC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve) metric. Detailed understanding of the operating principle of AUC-ROC metric is not required to perform the lab.\n## Model Hyperparameter Tuning\nIn machine learning problems it is necessary to distinguish the parameters of the model and hyperparameters (structural parameters). The model parameters are adjusted during the training (e.g., weights in the linear model or the structure of the decision tree), while hyperparameters are set in advance (for example, the regularization in linear model or maximum depth of the decision tree). Each model usually has many hyperparameters, and there is no universal set of hyperparameters optimal working in all tasks, for each task one should choose a different set of hyperparameters. _Grid search_ is commonly used to optimize model hyperparameters: for each parameter several values are selected and combination of parameter values where the model shows the best quality (in terms of the metric that is being optimized) is selected. However, in this case, it is necessary to correctly assess the constructed model, namely to do the split into training and test sample. There are several ways how it can be implemented:\n\n - Split the available samples into training and test samples. In this case, the comparison of a large number of models in the search of parameters leads to a situation when the best model on test data does not maintain its quality on new data. We can say that there is overfitting on the test data.\n - To eliminate the problem described above, it is possible to split data into 3 disjoint sub-samples: `train`, `validation` and `test`. The `validation` set is used for models comparison, and `test` set is used for the final quality assessment and comparison of families of models with selected parameters.\n - Another way to compare models is [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics). There are different schemes of cross-validation:\n  - Leave-one-out cross-validation\n  - K-fold cross-validation\n  - Repeated random sub-sampling validation\n  \nCross-validation is computationally expensive operation, especially if you are doing a grid search with a very large number of combinations. So there are a number of compromises:\n - the grid can be made more sparse, touching fewer values for each parameter, however, we must not forget that in such case one can skip a good combination of parameters;\n - cross-validation can be done with a smaller number of partitions or folds, but in this case the quality assessment of cross-validation becomes more noisy and increases the risk to choose a suboptimal set of parameters due to the random nature of the split;\n - the parameters can be optimized sequentially (greedy) — one after another, and not to iterate over all combinations; this strategy does not always lead to the optimal set;\n - enumerate only small number of randomly selected combinations of values of hyperparameters."
+  }, {
+    "metadata" : {
+      "id" : "681A5B7696EE4E75941D30477B87D473"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Data\n\nWe'are going to solve binary classification problem by building the algorithm which determines whether a person makes over 50K a year. Following variables are available:\n* age\n* workclass\n* fnlwgt\n* education\n* education-num\n* marital-status\n* occupation\n* relationship\n* race\n* sex\n* capital-gain\n* capital-loss\n* hours-per-week\n\nMore on this data one can read in [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "3986C01E03884C09B551F434EAB5DA89"
+    },
+    "cell_type" : "code",
+    "source" : "val spark = sparkSession",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "80AD7CC4C72645D78E62C11F9F1C838D"
+    },
+    "cell_type" : "code",
+    "source" : "val df = spark.read\n  .option(\"header\", \"true\")\n  .option(\"inferSchema\", \"true\")\n  .csv(\"notebooks/spark-notebook-ml-labs/labs/IntroToMLandSparkMLPipelines/data/data.adult.csv\")  ",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5CC83488592D4FFBA9D63A226935D96D"
+    },
+    "cell_type" : "code",
+    "source" : "df.limit(5)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "44EA054CC3514338B1F53B9B9722F0BF"
+    },
+    "cell_type" : "markdown",
+    "source" : "Sometimes there are missing values in the data. Sometimes, in the description of the dataset one can found the description of format of missing values. Particularly in the given dataset  missing values are identified by '?' sign.\n\n**Problem** Find all the variables with missing values. Remove from the dataset all objects with missing values in any variable."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D22FE57836E541998BA905B0252FB07B"
+    },
+    "cell_type" : "code",
+    "source" : "val missingValsFeatures = df.columns.filter(column => df.filter(df(column) === \"?\").count > 0)\n\nprintln(\"Features with missing values: \" + missingValsFeatures.mkString(\", \"))\n\nval data = missingValsFeatures.foldLeft(df)((dfstage, column) => dfstage.filter(!dfstage(column).equalTo(\"?\")))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "D8D5DBE2B17641939EB490F5A2E80C9C"
+    },
+    "cell_type" : "markdown",
+    "source" : "Split on training and test datasets."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "043DA92BF95A46D9B1CE7171EB007DA2"
+    },
+    "cell_type" : "code",
+    "source" : "val Array(training, test) = data.randomSplit(Array(0.8, 0.2), seed = 1234)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "7AE65B7403934817B40C0C18D3AFE774"
+    },
+    "cell_type" : "markdown",
+    "source" : "### MLlib Transformers and Estimators"
+  }, {
+    "metadata" : {
+      "id" : "429E47695E694CCF9F3EDDA47C1B1343"
+    },
+    "cell_type" : "markdown",
+    "source" : "`Transformer` transforms one `DataFrame` into another `DataFrame`."
+  }, {
+    "metadata" : {
+      "id" : "B3D8D8D439CA4AA583BF354AE382B80B"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:left\">\n  <img src=\"https://gitlab.com/droff/ph/raw/master/images/Transformer.png\" width=\"566\" height=\"352\">\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "BC347194CA8E49E0A8FD0430038614D6"
+    },
+    "cell_type" : "markdown",
+    "source" : "`Estimator` fits on a `DataFrame` to produce a `Transformer`."
+  }, {
+    "metadata" : {
+      "id" : "2943774D4879475382D91BCB027CFCD7"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:left\">\n  <img src=\"https://gitlab.com/droff/ph/raw/master/images/Estimator.png\" width=\"681\" height=\"327\">\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "FDC6151EF3B3469481C85B1CE0B103B3"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Training classifiers on numeric features"
+  }, {
+    "metadata" : {
+      "id" : "AABD089AF368408F81FAC58D9C7D0DFC"
+    },
+    "cell_type" : "markdown",
+    "source" : "Some preprocessing steps are usually required after loading and cleaning dataset. In this case, these steps will include the following:\n\n - At first we will work only with numeric features. So let's select them separately in the feature vector \"numFeatures\" using [VectorAssembler](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.feature.VectorAssembler).\n - Select the target variable (the one we want to predict, string column of labels) and map it to an ML column of label indices using [StringIndexer](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.feature.StringIndexer), give the name \"labelIndex\" to a new variable."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "295D6680F4B2436384642C3EAA6E218B"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.VectorAssembler\nimport org.apache.spark.ml.feature.StringIndexer\n\nval assembler = new VectorAssembler()\n  .setInputCols(Array(\"age\",\n                      \"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\"))\n  .setOutputCol(\"numFeatures\")\n\nval labelIndexer = new StringIndexer()\n  .setInputCol(\">50K,<=50K\")\n  .setOutputCol(\"label\")\n  .fit(training)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "995D5E14FD31463D8C57B7B1485CBC9B"
+    },
+    "cell_type" : "code",
+    "source" : "labelIndexer.transform(training).select(\">50K,<=50K\", \"label\").show(8)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "00D124318ED3471F8D0E9464E0991432"
+    },
+    "cell_type" : "code",
+    "source" : "assembler.transform(training)\n         .select(\"age\", \"fnlwgt\", \"education-num\", \"capital-gain\", \"capital-loss\", \"hours-per-week\", \"numFeatures\")\n         .limit(5)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "524AD8781A2C40E78FB103D1A215730E"
+    },
+    "cell_type" : "code",
+    "source" : "val trainData = assembler.transform{\n                labelIndexer.transform(training)\n              }.select(\"label\", \"numFeatures\")\ntrainData.show(5, truncate=false)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F5C8FDC16C4D482F9D876C00BEA165B5"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.classification.LogisticRegression\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\n\n\nval lr = new LogisticRegression()\n                .setFeaturesCol(\"numFeatures\")\n                .setLabelCol(\"label\")\n                .setRegParam(0.1)\n\nval lrModel = lr.fit(trainData)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6B1E03D882D84D698E81C3B798FD7E3B"
+    },
+    "cell_type" : "code",
+    "source" : "val testData = assembler.transform{\n                labelIndexer.transform(test)\n              }",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "BC029CEEF51E4A8596F87D2B78A77F94"
+    },
+    "cell_type" : "code",
+    "source" : "val eval = new BinaryClassificationEvaluator()\n                  .setMetricName(\"areaUnderROC\")\n\nprintln(eval.evaluate(lrModel.transform(testData)))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "E1F6FC29B90A428D800EF818579F58D8"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Model selection with MLlib\nApache Spark MLlib supports model hyperparameter tuning using tools such as `CrossValidator` and `TrainValidationSplit`. These tools require the following items:\n\n - Estimator: algorithm or Pipeline to tune\n - Set of ParamMaps: parameters to choose from, sometimes called a “parameter grid” to search over\n - Evaluator: metric to measure how well a fitted Model does on held-out test data"
+  }, {
+    "metadata" : {
+      "id" : "2797280B7D8E490D8C69DE421E730265"
+    },
+    "cell_type" : "markdown",
+    "source" : "In this section we will need to work only with numeric features and a target variable.\nAt the beginning let's have a look at grid search in action.\nWe will consider 2 algorithms:\n - [LogisticRegression](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.LogisticRegression)\n - [DecisionTreeClassifier](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.classification.DecisionTreeClassifier)\n \nTo start with, let's choose one parameter to optimize for each algorithm:\n - LogisticRegression — regularization parameter (*regParam*)\n - DecisonTreeClassifier — maximum depth of the tree (*maxDepth*)\n \nThe remaining parameters we will leave at their default values. \nTo implement grid search procedure one can use\n[CrossValidator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.CrossValidator) class\ncombining with [ParamGridBuilder](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.tuning.ParamGridBuilder) class. \nAlso we need to specify appropriate evaluator for this task, in our case we should use [BinaryClassificationEvaluator](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.evaluation.BinaryClassificationEvaluator)\n(note that its default metric is areaUnderROC, so we don't neet to specify metric via `setMetricName` method call).\nSet up 5-fold cross validation scheme."
+  }, {
+    "metadata" : {
+      "id" : "FF01A8CDB111416ABE957E877A793ABB"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"font-size:large\">K-fold cross-validation</div>\n<div style=\"text-align:left\">\n  <img src=\"https://upload.wikimedia.org/wikipedia/commons/1/1c/K-fold_cross_validation_EN.jpg\" width=\"562\" height=\"262\">\n</div>\n<div style=\"font-size:x-small\">\n  By Fabian Flöck (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "EF27CAA566E04232AEC9CFC49A2F2B81"
+    },
+    "cell_type" : "markdown",
+    "source" : "**Problem** Try to find the optimal values of these hyperparameters for each algorithm. Plot the average cross-validation metrics for a given value of hyperparameter for each algorithm (hint: use `avgMetrics` field of resulting `CrossValidatorModel`)."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7BFE57FA1AC340E28BBA55FE9513BD60"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.classification.{LogisticRegression, DecisionTreeClassifier, RandomForestClassifier}\nimport org.apache.spark.ml.evaluation.BinaryClassificationEvaluator\nimport org.apache.spark.ml.tuning.{ParamGridBuilder, CrossValidator}\n\n\nval lr = new LogisticRegression()\n                .setFeaturesCol(\"numFeatures\")\n                .setLabelCol(\"label\")\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(1e-2, 5e-3, 1e-3, 5e-4, 1e-4))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(trainData)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8E42871F7DF2428F8C7901A12A063319"
+    },
+    "cell_type" : "code",
+    "source" : "println(\"cross-validated areaUnderROC: \" + lrCVModel.avgMetrics.max)\nprintln(\"test areaUnderROC: \" + eval.evaluate(lrCVModel.transform(testData)))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "D2CB230B21174A878C811CE6F13F21A3"
+    },
+    "cell_type" : "code",
+    "source" : "val tree = new DecisionTreeClassifier()\n                .setFeaturesCol(\"numFeatures\")\n                .setLabelCol(\"label\")\n\nval treeParamGrid = new ParamGridBuilder()\n  .addGrid(tree.maxDepth, Array(5, 10, 20, 25, 30))\n  .build()\n\nval treeCV = new CrossValidator()\n  .setEstimator(tree)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(treeParamGrid)\n  .setNumFolds(5)\n\nval treeCVModel = treeCV.fit(trainData)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2185D3BB0F144FC284AF94D49B1F3F57"
+    },
+    "cell_type" : "code",
+    "source" : "println(\"cross-validated areaUnderROC: \" + treeCVModel.avgMetrics.max)\nprintln(\"test areaUnderROC: \" + eval.evaluate(treeCVModel.transform(testData)))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1099791619-2\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "7D0EFB1819E742B19D2276280F94B5E0"
+    },
+    "cell_type" : "code",
+    "source" : "lrCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(lr.regParam))\n                            .zip(lrCVModel.avgMetrics)\n                            .toSeq.toDF(\"regParam\", \"AUC-ROC\")\n                            .collect",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1136416947-2\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "D576959DAFBC443E80CFDA84833A5BBE"
+    },
+    "cell_type" : "code",
+    "source" : "treeCVModel.getEstimatorParamMaps\n                            .map(paramMap => paramMap(tree.maxDepth))\n                            .zip(treeCVModel.avgMetrics)\n                            .toSeq.toDF(\"maxDepth\", \"AUC-ROC\")\n                            .collect",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "5796CB09E6A04C868B06834372440656"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Adding categorical features"
+  }, {
+    "metadata" : {
+      "id" : "F329C50DFF5F4439BDABB14D308E1632"
+    },
+    "cell_type" : "markdown",
+    "source" : "Up to this point we did not use categorical features from the dataset. Let's see how additional categorical features will affect the quality of the classification. A common technique to convert categorical feature into numerical ones is [one-hot](https://en.wikipedia.org/wiki/One-hot) encoding. This can be done using [StringIndexer](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.StringIndexer) transformation followed by [OneHotEncoder](http://spark.apache.org/docs/1.6.1/api/scala/index.html#org.apache.spark.ml.feature.OneHotEncoder) transformation.\n\n*Let's start with encoding just one new feature `occupation` and after that generalize encoding step for all categorical features and combine all processing steps using [pipeline](http://spark.apache.org/docs/1.6.1/ml-guide.html#pipeline)*"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "1EF8BB8D58BE403AADE26E26E14DEEEE"
+    },
+    "cell_type" : "code",
+    "source" : "data.groupBy(\"occupation\").count.show(truncate=false)\nprintln(data.select(\"occupation\").distinct.count)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "80CD66B45BE146998C04BFF9D13FCE6A"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.OneHotEncoder\n\nval occupationIndexer = new StringIndexer()\n  .setInputCol(\"occupation\")\n  .setOutputCol(\"occupationIndex\")\n  .fit(training)\n\nval indexedTrainData = occupationIndexer.transform(training)\n\nval occupationEncoder = new OneHotEncoder()\n  .setInputCol(\"occupationIndex\")\n  .setOutputCol(\"occupationVec\")\n\nval oheEncodedTrainData = occupationEncoder.transform(indexedTrainData)\n\noheEncodedTrainData.select(\"occupation\", \"occupationVec\").limit(5)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2E841C874D65405188408597B0FC8F50"
+    },
+    "cell_type" : "code",
+    "source" : "val assembler = new VectorAssembler()\n  .setInputCols(Array(\"age\",\n                      \"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\",\n                      \"occupationVec\"))\n  .setOutputCol(\"features\")\n\n\nval trainDataWithOccupation = assembler.transform{\n                                labelIndexer.transform(oheEncodedTrainData)\n                              }.select(\"label\", \"features\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "A165BD5B117349CA91CEF187CEAFF007"
+    },
+    "cell_type" : "markdown",
+    "source" : "*For the sake of brevity, from now let's use only LogisticRegression model.*"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F16D7F76854D452B8E5133CD8A5EBC0F"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\n  .setFeaturesCol(\"features\")\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(1e-2, 5e-3, 1e-3, 5e-4, 1e-4))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(trainDataWithOccupation)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "CF24B52C5DA141CA865C45735CE4551C"
+    },
+    "cell_type" : "code",
+    "source" : "val testDataWithOccupation = assembler.transform{\n                                labelIndexer.transform(occupationEncoder.transform(occupationIndexer.transform(test)))\n                              }.select(\"label\", \"features\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E7902B1AC34C4B8A8FA321B5951987E0"
+    },
+    "cell_type" : "code",
+    "source" : "println(\"cross-validated areaUnderROC: \" + lrCVModel.avgMetrics.max)\nprintln(\"test areaUnderROC: \" + eval.evaluate(lrCVModel.transform(testDataWithOccupation)))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "04CDB18D4A9E4A6384B950358A54675C"
+    },
+    "cell_type" : "markdown",
+    "source" : "Adding `occupation` categorical variable yielded an increase in quality."
+  }, {
+    "metadata" : {
+      "id" : "D893CE81ECB84308A552138EB876433A"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Pipelines"
+  }, {
+    "metadata" : {
+      "id" : "D279C9B3198946D48A1A9C9E40A368EE"
+    },
+    "cell_type" : "markdown",
+    "source" : "Using [pipelines](http://spark.apache.org/docs/1.6.1/ml-guide.html#pipeline) one can combine all the processing stages into one pipeline and perform grid search against hyperparameters of all stages included in the pipeline. Also it's easy to extend given pipeline with new steps.\n\nA Pipeline chains multiple Transformers and Estimators together to specify an ML workflow."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "8FBBD6915E364B3BBE564CC6DD77A0E6"
+    },
+    "cell_type" : "markdown",
+    "source" : "<div style=\"text-align:left\">\n  <img src=\"https://gitlab.com/droff/ph/raw/master/images/Pipeline.png\" width=\"1057\" height=\"515\">\n</div>"
+  }, {
+    "metadata" : {
+      "id" : "F33CFE5BAB1C4B278FB9A7C28016ABB8"
+    },
+    "cell_type" : "markdown",
+    "source" : " Let's see how we can combine all the preprocessing steps made so far into one pipeline."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8CBA081604CC4D11A7B370250DB6A335"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.Pipeline\n\n\n// Chain indexers, encoders and assembler in a Pipeline\nval featurePipelineModel = new Pipeline()\n  .setStages(Array(occupationIndexer, \n                   occupationEncoder,\n                   assembler,\n                   labelIndexer))\n  .fit(training)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "C6B076016C2F406F808218B6E4A6D859"
+    },
+    "cell_type" : "code",
+    "source" : "featurePipelineModel.transform(test).select(\"features\", \"label\").limit(3)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "56F99D760F4D46CC8F0366495D55842B"
+    },
+    "cell_type" : "code",
+    "source" : "eval.evaluate(lrCVModel.transform(labelIndexer.transform(assembler.transform(occupationEncoder.transform(occupationIndexer.transform(test))))))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5A6C6F21D60340D4BCF548C4D3C6AA42"
+    },
+    "cell_type" : "code",
+    "source" : "eval.evaluate(lrCVModel.transform(featurePipelineModel.transform(test)))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "547273F4614F4E8E95E374D2F9759053"
+    },
+    "cell_type" : "markdown",
+    "source" : "Now let's extend our pipeline by adding one-hot encoding step for each categorical feature."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E62240E6A06B42CC8AA49AD8A7272910"
+    },
+    "cell_type" : "code",
+    "source" : "val categCols = Array(\"workclass\", \"education\", \"marital-status\", \"occupation\", \"relationship\", \"race\", \"sex\")\n\nval featureIndexers: Array[org.apache.spark.ml.PipelineStage] = categCols.map(\n  cname => new StringIndexer()\n    .setInputCol(cname)\n    .setOutputCol(s\"${cname}_index\")\n)\n\nval oneHotEncoders = categCols.map(\n    cname => new OneHotEncoder()\n     .setInputCol(s\"${cname}_index\")\n     .setOutputCol(s\"${cname}_vec\")\n)\n\nval assembler = new VectorAssembler()\n  .setInputCols(Array(\"age\",\n                      \"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\") ++\n                categCols.map(cname => s\"${cname}_vec\"))\n  .setOutputCol(\"features\")\n\nval rawDataProcessor = new Pipeline()\n  .setStages(featureIndexers ++\n             oneHotEncoders ++\n             Array(assembler, labelIndexer))\n  .fit(training)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8DD31D3BA4054DF08AE02D82489228EB"
+    },
+    "cell_type" : "code",
+    "source" : "rawDataProcessor.transform(test).limit(3).select(\"features\", \"label\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "BF3105D54D0646488BB1BD7168A2E95E"
+    },
+    "cell_type" : "code",
+    "source" : "val lr = new LogisticRegression()\n  .setFeaturesCol(\"features\")\n\nval lrParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(1e-2, 5e-3, 1e-3, 5e-4, 1e-4))\n  .build()\n\nval lrCV = new CrossValidator()\n  .setEstimator(lr)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(lrParamGrid)\n  .setNumFolds(5)\n\nval lrCVModel = lrCV.fit(rawDataProcessor.transform(training))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E6CE1231B7914499BE7F01C498F38ED1"
+    },
+    "cell_type" : "code",
+    "source" : "println(\"cross-validated areaUnderROC: \" + lrCVModel.avgMetrics.max)\nprintln(\"test areaUnderROC: \" + eval.evaluate(lrCVModel.transform(rawDataProcessor.transform(test))))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "544E5F9A75484F238B8E03A4A32CC949"
+    },
+    "cell_type" : "markdown",
+    "source" : "Adding one-hot encoding for each categorical variable yielded a significant increase in quality."
+  }, {
+    "metadata" : {
+      "id" : "381BE3ADF02346668B5C2F242089ED97"
+    },
+    "cell_type" : "markdown",
+    "source" : "We also can combine several stages with LogisticRegression stage into one pipeline and perform grid search against hyperparameters of several stages included in the pipeline."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "85ECF5E33F154845A038EC9F71F2F5A3"
+    },
+    "cell_type" : "markdown",
+    "source" : "For example, let's try to add [Buketizer](http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.ml.feature.Bucketizer)\ntransformation applied to `age` column and add `splits` parameter values\nto pipeline parameters grid and see how it will affect metric score."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "BEF557AD59414C568B55E45B1CC38606"
+    },
+    "cell_type" : "code",
+    "source" : "data.select(min(\"age\"), max(\"age\"))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "0C7C0F51A07C436A823D55D5E7319155"
+    },
+    "cell_type" : "code",
+    "source" : "// We need to cast age column to DoubleType to apply Bucketizer transformation.\nimport org.apache.spark.sql.types.DoubleType\n\nval castData = data.withColumn(\"age\", data(\"age\").cast(DoubleType))\n\nval Array(castTraining, castTest) = castData.randomSplit(Array(0.8, 0.2), seed = 12345)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "9601D696BA2B44C193B42429F0A96AA9"
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.ml.feature.Bucketizer\n\nval ageBucketizer = new Bucketizer()\n  .setInputCol(\"age\")\n  .setOutputCol(\"age-buckets\")\n\nval lr = new LogisticRegression()\n  .setFeaturesCol(\"features\")\n\nval pipelineParamGrid = new ParamGridBuilder()\n  .addGrid(lr.regParam, Array(1e-3, 5e-4, 1e-4, 5e-5, 1e-5))\n  .addGrid(ageBucketizer.splits, Array(Array(15.0, 30.0, 40.0, 50.0, 100.0),\n                                       Array(15.0, 21.0, 25.0, 30.0, 40.0, 50.0, 70.0, 100.0)))\n  .build()\n\nval assembler = new VectorAssembler()\n  .setInputCols(Array(\"age-buckets\",\n                      \"fnlwgt\", \n                      \"education-num\", \n                      \"capital-gain\", \n                      \"capital-loss\",\n                      \"hours-per-week\") ++\n                categCols.map(cname => s\"${cname}_vec\"))\n  .setOutputCol(\"features\")\n\nval mlPipeline = new Pipeline()\n  .setStages(Array(ageBucketizer) ++\n             featureIndexers ++\n             oneHotEncoders ++\n             Array(assembler, labelIndexer, lr))\n\nval pipelineCV = new CrossValidator()\n  .setEstimator(mlPipeline)\n  .setEvaluator(new BinaryClassificationEvaluator)\n  .setEstimatorParamMaps(pipelineParamGrid)\n  .setNumFolds(5)\n\nval pipelineCVModel = pipelineCV.fit(castTraining)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7F129445DA8F4AEC8B4DFC8720451AA8"
+    },
+    "cell_type" : "code",
+    "source" : "println(\"cross-validated areaUnderROC: \" + pipelineCVModel.avgMetrics.max)\nprintln(\"test areaUnderROC: \" + eval.evaluate(pipelineCVModel.transform(castTest)))",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "981D044870FA41F8B6B927580837FA53"
+    },
+    "cell_type" : "markdown",
+    "source" : "We can see what adding `Bucketizer` step into pipeline combained with simultanious param grid search over several stages (`Bucketizer` and `LogisticRegression`) boosted the quality of our ml pipeline.\n\nYou can continue to modify and expand the pipeline by adding new stages of data transformation and add new parameters into parameter grid for cross-validation."
+  } ],
+  "nbformat" : 4
+}
