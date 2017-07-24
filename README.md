@@ -9,9 +9,6 @@ In these labs we are going to get familiar with tools for data analysis and mach
 Available labs:
 * [Data Analysis Toolbox](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DataAnalysisToolbox)
 * [Titanic Survival Exploration](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/TitanicSurvivalExploration)
-* (*) [Introduction To Machine Learning](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/IntroToMachineLearning)
+* [Introduction To Machine Learning and Spark ML Pipelines]https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/IntroToMLandSparkMLPipelines)
 * [Bag of Words Meets Bags of Popcorn](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/BagOfWordsMeetsBagsOfPopcorn)
 * [Neural Networks & Backpropagation with ND4J](https://github.com/drewnoff/spark-notebook-ml-labs/tree/master/labs/DLFramework)
-
-### Labs Updates
- * lab can be replaced with [labs](https://www.dropbox.com/s/oid55diw61vvhhi/scalaIO-notebooks.zip?dl=0) from my [ScalaIO](http://scala.io/2016/talks.html#/#MFT-5837) workshop. Spark 2.x, Spark DataFrames API, plotly charts, Spark ML.
